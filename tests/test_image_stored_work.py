@@ -5,7 +5,6 @@ class TestSimpleStoredWork(object):
 
     ARTIST = Key('artist')
     WORK = open('tests/image_stored.pbm').read()
-    WORKSIZE = 1037
 
     @classmethod
     def setup_class(cls):
@@ -16,10 +15,17 @@ class TestSimpleStoredWork(object):
         self.sim.reset()
         self.contract = self.sim.load_contract(self.ARTIST, self.code)
 
-    def test_work(self):
+    def test_do_nothing(self):
         data = []
         response = self.sim.tx(self.ARTIST, self.contract, 0, data)
-        work = coerce_to_bytes(response[0])
-        assert len(work) == self.WORKSIZE
-        assert work == self.WORK
+        assert response[0] == 0
+
+    def test_exhibit(self):
+        data = ["exhibit"]
+        response = self.sim.tx(self.ARTIST, self.contract, 0, data)
+        work = ''
+        for fragment in response:
+            work += coerce_to_bytes(fragment)
+        image = open("tests/image_stored.pbm").read()
+        assert work == image
 
