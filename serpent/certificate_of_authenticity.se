@@ -1,0 +1,4 @@
+ARTIST = 0x8802b7f0bfa5e9f5825f2fc708e1ad00d2c2b5d6
+ARTWORK.HASH = 0x76bba376ea574e63ab357b2374d1cee5aa77d24db38115e3824c5cc4f443d5f7
+
+return((msg.data[0] == ARTIST) and (msg.data[1] == ARTWORK.HASH))

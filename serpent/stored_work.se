@@ -1,0 +1,3 @@
+WORK = "The art happens here."
+
+return(WORK)

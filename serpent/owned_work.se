@@ -1,0 +1,4 @@
+OWNER = 0x7c8999dc9a822c1f0df42023113edb4fdd543266
+
+// Get the owner Ethereum address
+return(OWNER)

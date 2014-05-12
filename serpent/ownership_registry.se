@@ -1,0 +1,12 @@
+if tx.value < tx.basefee * 200:
+    // If not enough gas, stop
+    stop
+
+// If data was provided, it won't overwrite the code, and the artwork is unregistered
+if msg.datasize == 1 and msg.data[0] > 1000 and contract.storage[msg.data[0]] == 0:
+    // Set the owner to be the sender
+    contract.storage[msg.data[0]] = msg.sender
+    return(1)
+else:
+    // Do nothing
+    return(0)
