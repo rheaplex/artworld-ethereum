@@ -1,0 +1,31 @@
+HEX = "0123456789ABCDEF"
+ARTWORK.BASE = "<svg><rect x=\"23\" y=\"23\" height=\"123\" width=\"123\" style=\"stroke:#000000\"/></svg>"
+ARTWORK.LENGTH = 80
+ARTWORK.INSERT = 65
+
+// Make sure we have enough gas to run the contact
+if tx.value < tx.basefee * 500:
+    // If not, stop
+    stop
+
+// If there are enough arguments
+// and the command to create the work is being given
+if msg.datasize == 1 and msg.data[0] == "create":
+    // Copy the most significant hex bytes of the key as an html colour
+    work = ARTWORK.BASE
+    work[ARTWORK.INSERT] = HEX[msg.sender[0] & 0x0F]
+    work[ARTWORK.INSERT + 1] = HEX[msg.sender[0] >> 4]
+    work[ARTWORK.INSERT + 2] = HEX[msg.sender[1] & 0x0F]
+    work[ARTWORK.INSERT + 3] = HEX[msg.sender[1] >> 4]
+    work[ARTWORK.INSERT + 4] = HEX[msg.sender[2] & 0x0F]
+    work[ARTWORK.INSERT + 5] = HEX[msg.sender[2] >> 4]
+    return(work, ARTWORK.LENGTH)
+// If there are enough arguments
+// and the command to get the artwork return size is given
+if msg.datasize == 1 and msg.data[0] == "size":
+    // Return the size of the artwork that will be created
+    return(ARTWORK.LENGTH)
+// Otherwise
+else:
+    // Logical false for failure
+    return(0)

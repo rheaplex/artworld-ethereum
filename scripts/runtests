@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for test in tests/test_*.py;
+do
+    py.test ${test}
+done
