@@ -1,0 +1,25 @@
+from sim import Key, Simulator, load_serpent
+
+class TestConceptualArt(object):
+
+    ARTIST = Key('artist')
+
+    @classmethod
+    def setup_class(cls):
+        cls.code = load_serpent('serpent/conceptual_art.se')
+        cls.sim = Simulator({cls.ARTIST.address: 10**18})
+
+    def setup_method(self, method):
+        self.sim.reset()
+        self.contract = self.sim.load_contract(self.ARTIST, self.code)
+
+    def test_initial_state(self):
+        # Get storage data only returns int...
+        assert self.sim.get_storage_dict(self.contract) == {}
+
+    def test_response(self):
+        data = []
+        ans = self.sim.tx(self.ARTIST, self.contract, 0, data)
+        assert ans == []
+        assert self.sim.get_storage_dict(self.contract) == {}
+

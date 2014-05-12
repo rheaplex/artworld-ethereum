@@ -1,0 +1,27 @@
+init:
+    ARTWORK.NUMBER.INDEX = 1001 
+    contract.storage[ARTWORK.NUMBER.INDEX] = 0
+
+code:
+    ARTWORK.BASE = "Work #                    "
+    ARTWORK.LENGTH = 26
+    ARTWORK.INSERT = 6
+    ARTWORK.NUMBER.INDEX = 1001
+    // Make sure we have enough gas to run the contact
+    if tx.value < tx.basefee * 400:
+        // If not, stop
+        stop
+
+    // Get the number of the work to produce
+    num = contract.storage[ARTWORK.NUMBER.INDEX]
+    // And format it into the string containing the artwork
+    index = ARTWORK.INSERT
+    work = ARTWORK.BASE
+    while num:
+        work[index] = "0123456789"[num % 10]
+        num = num / 10
+        index = index + 1
+    // Store the number to use for the next work
+    contract.storage[ARTWORK.NUMBER.INDEX] = contract.storage[ARTWORK.NUMBER.INDEX] + 1
+    // Return the work
+    return(work)
