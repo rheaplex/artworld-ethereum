@@ -3,16 +3,17 @@ from pyethereum.utils import coerce_to_bytes
 
 class TestNumberedWorks(object):
 
-    ARTIST = Key('artist')
-    AUDIENCE = Key('audience')
+    ARTIST = Key('artist') # 8802b7f0bfa5e9f5825f2fc708e1ad00d2c2b5d6
+    BEHOLDER = Key('beholder') # 7e5188934964c0c267839653f7a49c879c2c8dfc
     INDEX1001 = coerce_to_bytes(1001)
-    ARTWORK_LENGTH = 26
-    ARTWORK_INSERT = 6
+    ARTWORK = "Work #"
+    ARTWORK_NUMBER = 1
 
     @classmethod
     def setup_class(cls):
         cls.code = load_serpent('serpent/numbered_works.se')
-        cls.sim = Simulator({cls.ARTIST.address: 10**18})
+        cls.sim = Simulator({cls.ARTIST.address: 10**18,
+                             cls.BEHOLDER.address: 10**18})
 
     def setup_method(self, method):
         self.sim.reset()
@@ -20,4 +21,10 @@ class TestNumberedWorks(object):
 
     def test_initial_state(self):
         # Get storage data only returns int...
-        assert self.sim.get_storage_data(self.contract, self.INDEX1001) == 0
+        assert self.sim.get_storage_data(self.contract, self.INDEX1001) == 1
+
+    def test_create_work(self):
+        data = []
+        response = self.sim.tx(self.BEHOLDER, self.contract, 0, data)
+        assert coerce_to_bytes(response[0]) == self.ARTWORK
+        assert response[1] == self.ARTWORK_NUMBER
