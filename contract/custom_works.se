@@ -1,0 +1,34 @@
+HEX = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
+ARTWORK = ["<svg><rect x=\"23\" y=\"23\" ", "height=\"123\" width=\"123\" ", "style=\"fill:none;stroke:#", ";stroke-width:32\" /></svg>"]
+ARTWORK.LENGTH = 10
+ARTWORK.INSERT.END = 8
+
+// Make sure we have enough gas to run the contact
+//if tx.value < tx.basefee * 500:
+    // If not, stop
+//    stop
+
+// If there are enough arguments
+// and the command to create the work is being given
+if msg.datasize == 1 and msg.data[0] == "create":
+    artwork = array(ARTWORK.LENGTH)
+    artwork[0] = ARTWORK[0]
+    artwork[1] = ARTWORK[1]
+    artwork[2] = ARTWORK[2]
+    artwork[9] = ARTWORK[3]
+    // Copy the most significant hex bytes of the key as an html colour
+    index = 0
+    hash.bytes = msg.sender
+    while index < 3:
+        current.byte = hash.bytes % 256
+        hash.bytes = hash.bytes / 256
+        hi = HEX[current.byte / 16]
+        lo = HEX[current.byte % 16]
+        artwork[ARTWORK.INSERT.END - (index * 2)] = lo
+        artwork[ARTWORK.INSERT.END - (index * 2) + 1] = hi
+        index = index + 1
+    return(artwork, ARTWORK.LENGTH)
+// Otherwise
+else:
+    // Logical false for failure
+    return(0)
