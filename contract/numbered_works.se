@@ -1,0 +1,19 @@
+init:
+    ARTWORK.NUMBER.INDEX = 1001 
+    contract.storage[ARTWORK.NUMBER.INDEX] = 1
+
+code:
+    ARTWORK = "Work #"
+    ARTWORK.NUMBER.INDEX = 1001
+    
+    // Make sure we have enough gas to run the contact
+    //if tx.value < tx.basefee * 400:
+        // If not, stop
+    //    stop
+
+    // Get the number of the work to produce
+    number = contract.storage[ARTWORK.NUMBER.INDEX]
+    // Store the number to use for the next work
+    contract.storage[ARTWORK.NUMBER.INDEX] = contract.storage[ARTWORK.NUMBER.INDEX] + 1
+    // Return the work
+    return([ARTWORK, number], 2)
