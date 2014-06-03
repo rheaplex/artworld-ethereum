@@ -1,0 +1,9 @@
+init:
+    contract.storage[1000] = "hot"
+    contract.storage[1001] = "cold"
+
+code:
+    // Swap
+    temp = contract.storage[1000]
+    contract.storage[1000] = contract.storage[1001]
+    contract.storage[1001] = temp
