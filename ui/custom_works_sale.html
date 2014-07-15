@@ -1,0 +1,69 @@
+<html>
+<head>
+  <script type="text/javascript"
+	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+  </script>
+  <script>
+    if (typeof(window.eth) === "undefined") {
+      document.write('Please run in AlethZero.<br/>');
+    }
+  </script>
+  <script type="text/javascript" src="BigInteger.js"></script>
+  <script type="text/javascript" src="ethString.js"></script>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans;
+    }
+    h1 {
+      font-size: 72pt;
+    }
+    #toggle {
+      color: #B0C4DE;
+    }
+  </style>
+<title>Custom Artwork</title>
+</head>
+<body>
+  <canvas id="artwork"></canvas>
+  <a id="create" href="javascript:void(0)" onclick="purchase();">purchase</a>
+  <script>
+    var contract = "";
+
+    var stripe_height = 100;
+
+    var fetch = function() {
+        var source = eth.storageAt(contract, eth.secretToAddress(eth.key)).bin()
+        if (source) {
+            var artwork = document.getElementById('artwork')
+            artwork.height = stripe_height;
+            var ctx = artwork.getContext('2d');
+            for(var i = 0; i < 10; i++) {
+                // Get each 2 bytes, multiply by 16 to get 000..FFF
+                ctx.fillStyle = source.substring(i * 2, i * 2 + 1) * 16;
+                ctx.fillRect(x, 0, 1, stripe_height);
+            }
+        }
+    };
+
+    var purchase = function() {
+        var price = eth.storageAt(contract, 1001).bin();
+        if (confirm("This will take a payment of " + price +
+                    " and costs gas to run.")) {
+          var result = eth.transact(eth.key, "0", contract, padStr("toggle"), "10000", eth.gasPrice);
+          var artwork = "";
+          foreach(var element in result) {
+              artwork += element.unbin();
+          }
+          document.getElementById("artwork").innerText = artwork;
+          $("#purchase").hide();
+        }
+
+        eth.watch(contract, eth.secretToAddress(eth.key), fetch);
+        fetch();
+
+        
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+{
+ ;; Next record position
+ [[0x10]] 0x1000
+
+ (return
+   0x0
+   (lll
+     {
+      ;; Action
+      ;; 0 - first cell in message
+      [action] (calldataload 0)
+      (when (= @action "register")
+        {
+         ;;TODO: Check correct message length
+         ;;TODO: Check digest in range
+         ;; Artwork digest
+         [digest] (calldataload 32)
+         ;; If already registered, don't continue
+         (when @@ @digest
+           (return "Arwork already registered."))
+         ;; Get storage for new record
+         [storage] @@0x10
+         ;; Store digest
+         [[@storage]] @digest
+         ;; Artist account
+         [storage] (+ @storage 1)
+         [[@storage]] (caller)
+         ;; Artist resale percentage
+         [storage] (+ @storage 1)
+         [[@storage]] (calldataload 64)
+         ;; Artist is the current owner
+         [storage] (+ @storage 1)
+         [[@storage]] (caller)
+         ;; Skip purchaser and price
+         [storage] (+ @storage 3)
+         ;; Copy over the url and description
+         ;; 96 is 32 x 3 = 3rd cell in message
+         [source] 96
+         (for [i] 6    (< @i 64)    [i] (+ @i 1)
+              {
+               [[@storage]] (calldataload @source)
+               [storage] (+ @storage 1)
+               [source] (+ @source 32)
+               })
+         ;; Store digest-to-record link
+         [[@digest]] @@0x10
+         ;; Increment next record position
+         ;; 64 = size of record
+         [[0x10]] (+ @@0x10 64)
+         })
+      (when (= @action "offer")
+        {
+         ;;TODO: Check correct message length
+         ;;TODO: Check digest in range
+         ;; Get artwork record storage for digest or stop
+         ;; 32 = second cell in message
+         [storage] @@(calldataload 32)
+         (when (not @storage)
+           (return "Artwork not registered."))
+         ;; If the caller is the owner
+         (when (= @@ (+ @storage 3) (caller))
+           {
+            ;; Offer subject
+            [[(+ @storage 4)]] (calldataload 64)
+            ;; Offer price
+            [[(+ @storage 5)]] (calldataload 96)
+            })
+         })
+      (when (= @action "accept")
+        {
+         ;;TODO: Check correct message length
+         ;;TODO: Check digest in range
+         ;;TODO: Error messages for bad price or buyer
+         ;; Get artwork record storage for digest or stop
+         ;; 32 = second cell in message
+         [storage] @@(calldataload 32)
+         (when (not @storage)
+           (return "Artwork not registered."))
+         [buyer] @@(+ @storage 4)
+         [price] @@(+ @storage 5)
+         ;; If the caller is the buyer and it's the correct payment
+         ;; Or there's no buyer and it's the correct nonzero payment
+         (when (|| (&& (= @buyer (caller))
+                       (= @price (callvalue)))
+                   (&& (= @buyer 0)
+                       (> @price 0)))
+           {
+            ;; For payment
+            ;; Ethereum doesn't allow fractional amounts
+            ;; Warn users about making prices divisible
+            [hundredth] (/ @price 100)
+            [arr] @@(+ @storage 2)
+            ;; Pay artist
+            (call @@(+ @storage 1) (* @hundredth @arr) 0 0 0 0 0)
+            ;; Pay owner
+            (call @@(+ @storage 3) (* @hundredth (- 100 @arr)) 0 0 0 0 0)
+            ;; Transfer ownership
+            [[(+ @storage 3)]] (caller)
+            ;; Clear offer subject and price
+            [[(+ @storage 4)]] 0
+            [[(+ @storage 5)]] 0
+            })
+         })
+      }
+     0x0))}
