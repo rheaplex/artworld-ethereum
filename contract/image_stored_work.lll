@@ -1,0 +1,23 @@
+{
+    [[1000]] "data:image/png;base64,iVBORw0KGg"
+    [[1001]] "oAAAANSUhEUgAAAAgAAAAICAYAAADED7"
+    [[1002]] "6LAAAABmJLR0QA/wD/AP+gvaeTAAAACX"
+    [[1003]] "BIWXMAAAsTAAALEwEAmpwYAAAAB3RJTU"
+    [[1004]] "UH3gYRFzcpSNmfCAAAABl0RVh0Q29tbW"
+    [[1005]] "VudABDcmVhdGVkIHdpdGggR0lNUFeBDh"
+    [[1006]] "cAAACxSURBVBjTLY6xTQNREAXn7d/zv8"
+    [[1007]] "Sy6IIU4TaogpRWkFyBG6ACEhIKQHRBhn"
+    [[1008]] "Bgobu/uwTHS0ejeTo+fxRATY4kACySUY"
+    [[1009]] "Vl4mEGy8q4/pKRFNCbYO6kO26t8fh25u"
+    [[1010]] "7rnW3itd/y8vDEfOi4SawxNmZb4vvyQ0"
+    [[1011]] "VgEr45UICyAKgqQCSFjUx8cgTwf/Jmf8"
+    [[1012]] "CaQYHuT5+Vy8pYBjEGQrgJmzu2m/Aaib"
+    [[1013]] "XGtO/sTBiCDCKLiuAPDKdHVGIkqssAAA"
+    [[1014]] "AASUVORK5CYII="
+
+    (return
+      0
+      (lll
+        (return "Image is in memory locations 1000..1014 .")
+        0))
+}
