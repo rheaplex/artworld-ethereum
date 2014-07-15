@@ -1,0 +1,48 @@
+<html>
+<head>
+  <script type="text/javascript"
+	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+  </script>
+  <script>
+    if (typeof(window.eth) === "undefined") {
+      document.write('Please run in AlethZero.<br/>');
+    }
+  </script>
+  <script type="text/javascript" src="BigInteger.js"></script>
+  <script type="text/javascript" src="ethString.js"></script>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans;
+    }
+    h1 {
+      font-size: 72pt;
+    }
+    #toggle {
+      color: #B0C4DE;
+    }
+  </style>
+<title>Custom Artwork</title>
+</head>
+<body>
+  <div id="artwork"></div>
+  <a id="create" href="javascript:void(0)" onclick="create();">create</a>
+  <script>
+    // The custom work contract
+    var contract = "0x79c333bb3bf567aa40c73db3cacb4a0637621309";
+
+    // Update the span with the data from the contact
+    var create = function() {
+      if (confirm("This costs gas to run.")) {
+          var result = eth.transact(eth.key, "0", contract, padStr("toggle"), "10000", eth.gasPrice);
+          var artwork = "";
+          foreach(var element in result) {
+              artwork += element.unbin();
+          }
+          document.getElementById("artwork").innerText = artwork;
+          $("#create").hide();
+      }
+    };
+  </script>
+</body>
+</html>
