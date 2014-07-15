@@ -1,0 +1,14 @@
+init:
+    // Price: 1 szabo
+    contract.storage[1001] = 100000000000
+    // Artist
+    contract.storage[1002] = msg.caller
+
+code:
+    if tx.ether != contract.storage[1001]:
+        return("Wrong price")
+    if contract.storage[msg.sender]:
+        return("Already paid")
+    contract.storage[msg.sender] = msg.sender + 1
+    send(contract.storage[1002], tx.ether, 0)
+    return("OK")
