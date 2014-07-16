@@ -96,7 +96,7 @@ var update_last_record = function() {
   record_after_last = valAt(RECORD_AFTER_LAST_LOC);
   var count = Math.floor((parseInt(record_after_last, 16) - RECORD_BASE)
                         / CELL_SIZE);
-  $("#work_count").text("Serving: " + count + " artworks");
+  $("#work_count").html("Serving <i>" + count + "</i> artworks");
   //$("#result").html(JSON.stringify(get_artwork_details("0x1000")));
 
   /*$("#result").html("" + valAt(0x1000)
@@ -264,9 +264,9 @@ var select_artist_artwork = function(location) {
 };
 
 var update_offer_ui = function(artwork) {
-  $("#offer_digest").value = artwork.digest;
-  $("#offer_recipient").value = artwork.buyer;
-  $("#offer_price").value = artwork.price;
+  $("#offer_digest").val(artwork.digest);
+  $("#offer_recipient").val(artwork.buyer);
+  $("#offer_price").val(artwork.price);
 };
 
 var select_owner_artwork = function(location) {
@@ -277,11 +277,11 @@ var select_owner_artwork = function(location) {
 };
 
 var update_accept_ui = function(artwork) {
-  $("#accept_digest").value = artwork.digest;
-  $("#accept_arr").value = artwork.arr;
-  $("#accept_price").value = artwork.price;
-  $("#accept_url").value = artwork.url;
-  $("#accept_desc").value = artwork.desc;
+  $("#accept_digest").val(artwork.digest);
+  $("#accept_arr").val(artwork.arr);
+  $("#accept_price").val(artwork.price);
+  $("#accept_url").val(artwork.url);
+  $("#accept_desc").val(artwork.desc);
 };
 
 var select_buyer_artwork = function(location) {
@@ -299,8 +299,8 @@ var select_other_artwork = function (location) {
 
 var clear_ui = function() {
   $("#result").text("");
-  $("#find_url").text("");
-  $("#find_digest").text("");
+  $("#find_url").val("");
+  $("#find_digest").val("");
 
   $("#artwork_digest").text("");
   $("#artwork_artist").text("");
