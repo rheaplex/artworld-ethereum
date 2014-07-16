@@ -79,10 +79,10 @@ var url_ripemd160 = function(url, callback) {
   $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(url)
            + '&callback=?',
             function(data) {
-              var digest = "0x" + hex_rmd160(data);
+              var digest = "0x" + hex_rmd160(data.contents);
               callback(digest);
             }).fail(function() {
-              $("#result").text("Couldn't get digest.");
+              $("#result").text("Couldn't get digest.")
   });
 };
 
@@ -273,6 +273,7 @@ var select_owner_artwork = function(location) {
   var artwork = get_artwork_details(location);
   clear_ui();
   update_offer_ui(artwork);
+  update_artwork_details(artwork);
 };
 
 var update_accept_ui = function(artwork) {
@@ -298,6 +299,8 @@ var select_other_artwork = function (location) {
 
 var clear_ui = function() {
   $("#result").text("");
+  $("#find_url").text("");
+  $("#find_digest").text("");
 
   $("#artwork_digest").text("");
   $("#artwork_artist").text("");
