@@ -3,22 +3,15 @@
   <script type="text/javascript"
 	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
   </script>
-  <script type="text/javascript" src="../ripemd.js"></script>
-  <script type="text/javascript" src="registry.js">
+  <script type="text/javascript" src="js/ripemd.js"></script>
+  <script type="text/javascript" src="js/registry.js">
   </script>
   <script>
     if (typeof(window.eth) === "undefined") {
       document.write('Please run in AlethZero.<br/>');
     }
   </script>
-  <style>
-    body {
-      font-family: sans;
-    }
-    h1 {
-      font-size: 72pt;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="css/registry.css" />
 <title>Artwork Registry</title>
 </head>
 <body>
@@ -42,18 +35,18 @@
 
   <div id="list_div">
     <h2>Artworks</h2>
-    <h3>Get Digest For File To Register</h3>
+    <h3>Get Artwork File Digest</h3>
     <table>
       <tr><td>URL For Digest:</td><td><input type="text" id="find_url" maxlength="960"/></td></tr>
       <tr><td>Digest of URL:</td><td><input type="text" id="find_digest" maxlength="42"/></td></tr>
       <tr><td><a href="javascript:void(0)" onclick="create_url_digest();">
             create digest for url</a></td><td></td></tr>
     </table>
-    <h3>Registered Artworks</h3>
+    <h3>Artwork Details</h3>
     <table>
       <tr><td>digest:</td><td><p id="artwork_digest"></p></td></tr>
       <tr><td>artist:</td><td><p id="artwork_artist"></p></td></tr>
-      <tr><td>arr:</td><td><p id="artwork_arr">%</p></td></tr>
+      <tr><td>arr:</td><td><p id="artwork_arr"></p></td></tr>
       <tr><td>owner:</td><td><p id="artwork_owner"></p></td></tr>
       <tr><td>buyer:</td><td><p id="artwork_buyer"></p></td></tr>
       <tr><td>price:</td><td><p id="artwork_price"></p></td></tr>
@@ -90,7 +83,7 @@
   <div id="offer_div">
     <h2>Sell</h2>
     <table>
-      <tr><td>digest:</td><td><input type="text" id="offer_digest" maxlength="42"/></td></tr>
+      <tr><td>digest:</td><td><p id="offer_digest"></p></td></tr>
       <tr><td>recipient:</td><td><input type="text" id="offer_recipient" maxlength="42"/>(Empty for anyone)</td></tr>
       <tr><td>price:</td><td><input type="text" id="offer_price"/>(0 for no cost)</td></tr>
     </table>
@@ -103,11 +96,11 @@
   <div id="accept_div">
     <h2>Buy</h2>
     <table>
-      <tr><td>digest:</td><td><input type="text" id="accept_digest" maxlength="42"/></td></tr>
-      <tr><td>arr:</td><td><p id="accept_arr">%</p></tr>
+      <tr><td>digest:</td><td><p id="accept_digest"></p></td></tr>
+      <tr><td>arr:</td><td><p id="accept_arr"></p></tr>
       <tr><td>price:</td><td><p id="accept_price"></p></tr>
       <tr><td>url:</td><td><p id="accept_url"></p></tr>
-      <tr><td>descr:</td><td><p id="accept_descr"></p></td></tr>
+      <tr><td>desc:</td><td><p id="accept_desc"></p></td></tr>
     </table>
     <a id="register" href="javascript:void(0)" onclick="accept_artwork();">buy</a>
   </div>
