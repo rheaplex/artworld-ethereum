@@ -1,0 +1,40 @@
+<html>
+<head>
+  <script type="text/javascript"
+	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+  </script>
+  <script type="text/javascript"
+	  src="js/art_is.js">
+  </script>
+  <script>
+    if (typeof(window.eth) === "undefined") {
+      document.write('Please run in AlethZero.<br/>');
+    }
+  </script>
+  <link rel="stylesheet" type="text/css" href="css/art_is.css" />
+<title>Art is...</title>
+</head>
+<body>
+  <div id="debug"></div>
+  <div id="definition_section">
+    <h2>The Definition Of Art</h2>
+    <div id="definition"></div>
+  </div>
+  <div id="change_section">
+    <h2>Change The Definition</h2>
+    <table>
+      <tr><td>Definition:</td>
+        <td><select onchange="update_change_definition_ui();" id="change_definition_index"></select></td></tr>
+      <tr><td>Currently:</td><td><span id="definition_to_change"></span>&nbsp;</td></tr>
+      <tr><td>Extent:</td><td><select id="change_definition_extent"></select></td></tr>
+      <tr><td>Connection:</td><td><select id="change_definition_connection"></select></td></tr>
+      <tr><td>Relation:</td><td><select id="change_definition_relation"></select></td></tr>
+      <tr><td>Subject:</td><td><select id="change_definition_subject"></select></td></tr>
+      <tr><td>Cost:</td><td><span id="price">X</span> Wei.</td></tr>
+      <tr><td>&nbsp;</td><td></td></tr>
+      <tr><td><a id="change" href="javascript:void(0)" onclick="change_definition();"><b>update</b></a></td>
+        <td><a id="dismiss" href="javascript:void(0)" onclick="cancel_change_definition();"><b>cancel</b></td></tr>
+    </table>
+  </div>
+</body>
+</html>
