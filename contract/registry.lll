@@ -91,9 +91,9 @@
             [hundredth] (/ @price 100)
             [arr] @@(+ @storage 2)
             ;; Pay artist
-            (call @@(+ @storage 1) (* @hundredth @arr) 0 0 0 0 0)
+            (call (- (gas) 250) @@(+ @storage 1) (* @hundredth @arr) 0 0 0 0)
             ;; Pay owner
-            (call @@(+ @storage 3) (* @hundredth (- 100 @arr)) 0 0 0 0 0)
+            (call (- (gas) 250) @@(+ @storage 3) (* @hundredth (- 100 @arr)) 0 0 0 0)
             ;; Transfer ownership
             [[(+ @storage 3)]] (caller)
             ;; Clear offer subject and price

@@ -3,28 +3,15 @@
   <script type="text/javascript"
 	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
   </script>
+  <script type="text/javascript"
+	  src="js/is_art.js">
+  </script>
   <script>
     if (typeof(window.eth) === "undefined") {
       document.write('Please run in AlethZero.<br/>');
     }
   </script>
-  <script type="text/javascript" src="BigInteger.js"></script>
-  <script type="text/javascript" src="ethString.js"></script>
-  <style>
-    body {
-      text-align: center;
-      font-family: sans;
-    }
-    h1 {
-      font-size: 72pt;
-    }
-    #_1000 {
-      color: #550000;
-    }
-    #toggle {
-      color: #B0C4DE;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="css/is_art.css" />
 <title>Is This Contract Art?</title>
 </head>
 <body>
@@ -32,46 +19,5 @@
     This contract <span id="_1000">may be</span> art
   </h1>
   <a id="toggle" href="javascript:void(0)" onclick="toggle();">toggle</a>
-  <script>
-    // pad() isn't happy at the moment, use this instead until it is:
-    var padStr = function(str){
-        var padded = str.slice();
-        while(padded.length < 32) {
-            padded = "\0" + padded;
-        }
-        return padded;
-    };
-
-    // The is_art contract
-    var contract = "0x9ff88526196e302e0ed8665a3c685c2afd16d064";
-
-    // Update the spans with the data from the contact
-    var fetch = function() {
-      document.getElementById("_1000").innerText = eth.storageAt(contract, 1000).bin();
-    };
-
-    // Update when we're notified (and at the start)
-    eth.watch(contract, eth.secretToAddress(eth.key), fetch);
-    fetch();
-
-    // Allow the user to toggle the contract state, but warn them it costs gas
-    var toggle = function() {
-      if (confirm("This costs gas to run.")) {
-        eth.transact(eth.key, "0", contract, padStr("toggle"), "10000", eth.gasPrice);
-      }
-    };
-
-    // Only show the toggle link when the mouse moves over the spans
-    var hider = null;
-    $("#is_it").mousemove(function() {
-      clearTimeout(hider);
-      $("#toggle").show();
-      hider = setTimeout('$("#toggle").hide();', 5000);
-    }).mouseleave(function() {
-      //clearTimeout(hider);
-      //$("#toggle").hide();  
-    });
-    $("#toggle").hide();
-  </script>
 </body>
 </html>

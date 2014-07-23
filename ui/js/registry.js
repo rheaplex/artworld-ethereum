@@ -24,7 +24,7 @@ if (DEBUG && typeof(window.eth) === "undefined") {
 // The contract
 ////////////////////////////////////////////////////////////////////////////////
 
-var contract = "0x651d6c01f7db3c38f2c81fe5e927f036e751f095";
+var contract = "0x288b242afc156c232202e65a6fe0f5b4e88da143";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Offsets and lengths within an artwork record
@@ -158,12 +158,19 @@ var create_url_digest = function() {
 };
 
 var receive_url_digest = function(digest) {
+  $("debug").text(digest);
   update_ui_for_digest(digest);
 };
 
 var update_ui_for_digest = function(digest) {
   var location = valAt(digest);
+  var url = $("#find_url").val();
+  clear_ui();
+  // Having cleared the UI, restore the URL and set the digest
+  $("#find_url").val(url);
+  $("#find_digest").val(digest);
   if(location != "0x") {
+    // If the work is already registered, set the UI from the artwork details
     var artwork = get_artwork_details(location);
     var me = eth.secretToAddress(eth.key);
     if(artwork.owner == me) {
@@ -174,11 +181,9 @@ var update_ui_for_digest = function(digest) {
         || (artwork.buyer == "" && artwork.price > 0)) {
       update_accept_ui(artwork);
     }
+    update_artwork_details(artwork);
   } else {
-    var url = $("#find_url").val();
-    clear_ui();
-    $("#find_url").val(url);
-    $("#find_digest").val(digest);
+    // Otherwise, set up the register UI
     $("#register_digest").val(digest);
     $("#register_url").val(url);
   }
@@ -264,7 +269,7 @@ var select_artist_artwork = function(location) {
 };
 
 var update_offer_ui = function(artwork) {
-  $("#offer_digest").val(artwork.digest);
+  $("#offer_digest").text(artwork.digest);
   $("#offer_recipient").val(artwork.buyer);
   $("#offer_price").val(artwork.price);
 };
@@ -277,17 +282,17 @@ var select_owner_artwork = function(location) {
 };
 
 var update_accept_ui = function(artwork) {
-  $("#accept_digest").val(artwork.digest);
-  $("#accept_arr").val(artwork.arr);
-  $("#accept_price").val(artwork.price);
-  $("#accept_url").val(artwork.url);
-  $("#accept_desc").val(artwork.desc);
+  $("#accept_digest").text(artwork.digest);
+  $("#accept_arr").text(artwork.arr + "%");
+  $("#accept_price").text(artwork.price);
+  $("#accept_url").text(artwork.url);
+  $("#accept_desc").text(artwork.desc);
 };
 
 var select_buyer_artwork = function(location) {
   var artwork = get_artwork_details(location);
   clear_ui();
-  update_accept_ui();
+  update_accept_ui(artwork);
   update_artwork_details(artwork);
 };
 
@@ -316,18 +321,22 @@ var clear_ui = function() {
   $("#register_url").val("");
   $("#register_desc").val("");
 
-  $("#offer_digest").val("");
   $("#offer_digest").text("");
-  $("#offer_price").text("");
+  $("#offer_recipient").val("");
+  $("#offer_price").val("0");
 
-  $("#accept_digest").val("");
+  $("#accept_digest").text("");
+  $("#accept_arr").text("");
+  $("#accept_price").text("");
+  $("#accept_url").text("");
+  $("#accept_desc").text("");
 };
 
 var update_artwork_details = function(artwork) {
   //$("#result").html(JSON.stringify(artwork));
   $("#artwork_digest").text(artwork.digest);
   $("#artwork_artist").text(artwork.artist);
-  $("#artwork_arr").text(artwork.arr);
+  $("#artwork_arr").text(artwork.arr + "%");
   $("#artwork_owner").text(artwork.owner);
   $("#artwork_buyer").text(artwork.buyer);
   $("#artwork_price").text(artwork.price);
@@ -363,39 +372,48 @@ var format_accept = function(digest) {
 
 var register_artwork = function() {
   var digest = $("#register_digest").val();
-  var arr = $("#register_arr").val();
-  var url = $("#register_url").val();
-  var desc = $("#register_desc").val();
-  if (confirm("This costs gas to run.")) {
-    var message = format_register(digest, arr, url, desc);
-    var res = eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
-    $("result").innerText = res;
+  if(digest) {
+    var arr = $("#register_arr").val();
+    var url = $("#register_url").val();
+    var desc = $("#register_desc").val();
+    if (confirm("This costs gas to run.")) {
+      var message = format_register(digest, arr, url, desc);
+      var res = eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
+      clear_ui();
+      $("result").innerText = res;
+    }
   }
 };
 
 // Offer an artwork for sale via the contract
 
 var offer_artwork = function() {
-  var digest = $("#offer_digest").val();
-  var recipient = $("#offer_recipient").val();
-  var price = $("#offer_price").val();
-  if (confirm("This costs gas to run.")) {
-    var message = format_offer(digest, recipient, price);
-    var res = eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
-    $("result").innerText = res;
+  var digest = $("#offer_digest").text();
+  if(digest) {
+    var recipient = $("#offer_recipient").val();
+    var price = $("#offer_price").val();
+    if (confirm("This costs gas to run.")) {
+      var message = format_offer(digest, recipient, price);
+      var res = eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
+    clear_ui();
+      $("result").innerText = res;
+    }
   }
 };
 
 // Accept an artwork for sale via the contract
 
 var accept_artwork = function() {
-  var digest = $("#accept_digest").val();
-  // get from storage in case it changes
-  var price = get_artwork_price(digest);
-  if (confirm("This costs gas to run and will cost" + price + " Wei to buy.")) {
-    var message = format_accept(digest);
-    var res = eth.transact(eth.key, price, contract, message, "100000", eth.gasPrice);
-    $("result").innerText = res;
+  var digest = $("#accept_digest").text();
+  if(digest) {
+    // get from storage in case it changes
+    var price = get_artwork_price(digest);
+    if (confirm("This costs gas to run and will cost " + price + " Wei to buy.")) {
+      var message = format_accept(digest);
+      var res = eth.transact(eth.key, price, contract, message, "100000", eth.gasPrice);
+      clear_ui();
+      $("result").innerText = res;
+    }
   }
 };
 
