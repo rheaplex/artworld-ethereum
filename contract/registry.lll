@@ -1,6 +1,9 @@
 {
+ (def 'next-record 0x10)
+ (def 'RECORD-SIZE 64)
  ;; Next record position
- [[0x10]] 0x1000
+ ;; This starts one cell above the maximum value of RipeMD
+ [[next-record]] 0x10000000000000000000000000000000000000000
 
  (return
    0x0
@@ -19,7 +22,7 @@
          (when @@ @digest
            (return "Arwork already registered."))
          ;; Get storage for new record
-         [storage] @@0x10
+         [storage] @@next-record
          ;; Store digest
          [[@storage]] @digest
          ;; Artist account
@@ -43,10 +46,9 @@
                [source] (+ @source 32)
                })
          ;; Store digest-to-record link
-         [[@digest]] @@0x10
+         [[@digest]] @@next-record
          ;; Increment next record position
-         ;; 64 = size of record
-         [[0x10]] (+ @@0x10 64)
+         [[next-record]] (+ @@next-record RECORD-SIZE)
          })
       (when (= @action "offer")
         {
