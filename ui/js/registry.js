@@ -24,7 +24,7 @@ if (DEBUG && typeof(window.eth) === "undefined") {
 // The contract
 ////////////////////////////////////////////////////////////////////////////////
 
-var contract = "0x288b242afc156c232202e65a6fe0f5b4e88da143";
+var contract = "0xaf1206fcb32fbdb42878c429e61a49d5143e6f32";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Offsets and lengths within an artwork record
@@ -46,7 +46,7 @@ var CELL_SIZE = 64;
 // Where the records are located
 ////////////////////////////////////////////////////////////////////////////////
 
-var RECORD_BASE = 0x1000;
+var RECORD_BASE = bigInt("0x10000000000000000000000000000000000000000");
 var RECORD_AFTER_LAST_LOC = 0x10;
 var record_after_last = 0;
 
@@ -60,15 +60,14 @@ var stringAt = function(location, count) {
   var result = "";
   for(var i = 0; i < count; i++) {
     result += eth.stateAt(contract,
-                          "0x" + (location + i).toString(16),
+                          location.add(i),
                           0).bin();
   }
   return result;
 };
 
 var valAt = function(location_number) {
-  var location = "0x" + location_number.toString(16);
-  return eth.stateAt(contract, location, 0);
+  return eth.stateAt(contract, location_number, 0);
 };
 
 // Get the ripemd160 hash for any file on the internet
@@ -82,7 +81,7 @@ var url_ripemd160 = function(url, callback) {
               var digest = "0x" + hex_rmd160(data.contents);
               callback(digest);
             }).fail(function() {
-              $("#result").text("Couldn't get digest.")
+              $("#result").text("<i>Couldn't get digest.</i>")
   });
 };
 
@@ -93,22 +92,9 @@ var url_ripemd160 = function(url, callback) {
 // Keep the last record variable up to date
 
 var update_last_record = function() {
-  record_after_last = valAt(RECORD_AFTER_LAST_LOC);
-  var count = Math.floor((parseInt(record_after_last, 16) - RECORD_BASE)
-                        / CELL_SIZE);
+  record_after_last = bigInt(valAt(RECORD_AFTER_LAST_LOC));
+  var count = record_after_last.minus(RECORD_BASE) / CELL_SIZE;
   $("#work_count").html("Serving <i>" + count + "</i> artworks");
-  //$("#result").html(JSON.stringify(get_artwork_details("0x1000")));
-
-  /*$("#result").html("" + valAt(0x1000)
-                   + "<br/>" + valAt(0x1001)
-                   + "<br/>" + valAt(0x1002)
-                   + "<br/>" + valAt(0x1003)
-                   + "<br/>" + stringAt(0x1000 + URL, URL_LENGTH)
-                   + "<br/>" + stringAt(0x1000 + DESC, DESC_LENGTH)
-                   //+ "<br/>" + eth.stateAt(contract, "0x1140", 0).bin()
-                   );*/
-
-  //eth.transactions({"to": contract})
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -116,21 +102,22 @@ var update_last_record = function() {
 ////////////////////////////////////////////////////////////////////////////////
 
 // Get the record of the artwork starting at the given location
+// location_spec can be a string containing a hex number, or it can be a bigInt
 
-var get_artwork_details = function(record_location) {
-  var location = parseInt(record_location, 16);
-  var price = valAt(location + CURRENT_SALE_PRICE);
-  var buyer = valAt(location + CURRENT_PURCHASER_ADDRESS);
+var get_artwork_details = function(location_spec) {
+  var location = bigInt(location_spec);
+  var price = valAt(location.add(CURRENT_SALE_PRICE));
+  var buyer = valAt(location.add(CURRENT_PURCHASER_ADDRESS));
   return {
-    "location": record_location,
+    "location": location.toHex(),
     "digest": valAt(location),
-    "artist": valAt(location + ARTIST_ADDRESS),
-    "arr": parseInt(valAt(location + ARTIST_RESALE_PERCENTAGE), 16),
-    "owner": valAt(location + CURRENT_OWNER_ADDRESS),
+    "artist": valAt(location.add(ARTIST_ADDRESS)),
+    "arr": parseInt(valAt(location.add(ARTIST_RESALE_PERCENTAGE)), 16),
+    "owner": valAt(location.add(CURRENT_OWNER_ADDRESS)),
     "buyer": buyer == "0x" ? "" : buyer,
     "price": price == "0x" ? 0 : parseInt(price, 16),
-    "url": stringAt(location + URL, URL_LENGTH),
-    "desc": stringAt(location + DESC, DESC_LENGTH)
+    "url": stringAt(location.add(URL), URL_LENGTH),
+    "desc": stringAt(location.add(DESC), DESC_LENGTH)
   };
 };
 
@@ -239,8 +226,9 @@ var list_contracts = function() {
   var other_list = $("#list_other");
   clear_lists();
   var me = eth.secretToAddress(eth.key);
-  for(var i = RECORD_BASE; i < record_after_last; i += CELL_SIZE) {
-    var artwork = get_artwork_details("0x" + i.toString(16));
+  // i is a bigInt, don't use standard math!
+  for(var i = RECORD_BASE; i.lesser(record_after_last); i = i.plus(CELL_SIZE)) {
+    var artwork = get_artwork_details(i);
     var other = true;
     if(artwork.artist == me) {
       append_artist(artist_list, artwork);
@@ -378,9 +366,9 @@ var register_artwork = function() {
     var desc = $("#register_desc").val();
     if (confirm("This costs gas to run.")) {
       var message = format_register(digest, arr, url, desc);
-      var res = eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
+      eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
       clear_ui();
-      $("result").innerText = res;
+      $("#result").html("<i>Registered " + digest + "</i>");
     }
   }
 };
@@ -394,9 +382,9 @@ var offer_artwork = function() {
     var price = $("#offer_price").val();
     if (confirm("This costs gas to run.")) {
       var message = format_offer(digest, recipient, price);
-      var res = eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
+      eth.transact(eth.key, "0", contract, message, "100000", eth.gasPrice);
     clear_ui();
-      $("result").innerText = res;
+      $("#result").html("<i>Offered " + digest + " for sale for " + price + " Wei.</i>");
     }
   }
 };
@@ -410,9 +398,9 @@ var accept_artwork = function() {
     var price = get_artwork_price(digest);
     if (confirm("This costs gas to run and will cost " + price + " Wei to buy.")) {
       var message = format_accept(digest);
-      var res = eth.transact(eth.key, price, contract, message, "100000", eth.gasPrice);
+      eth.transact(eth.key, price, contract, message, "100000", eth.gasPrice);
       clear_ui();
-      $("result").innerText = res;
+      $("#result").html("<i>Bought " + digest + "</i>");
     }
   }
 };
