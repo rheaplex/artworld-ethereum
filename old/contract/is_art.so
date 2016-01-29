@@ -1,0 +1,16 @@
+contract IsArt {
+
+    bool currentState;
+
+    function toggle() {
+        currentState = ! currentState;
+    }
+
+    function is() returns (bool value) {
+        return currentState;
+    }
+
+    function init() {
+        currentState = false;
+    }
+}

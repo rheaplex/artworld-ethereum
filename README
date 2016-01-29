@@ -1,0 +1,38 @@
+Artworld Ethereum
+=================
+
+Ethereum art projects.
+
+See projects/ for project sources.
+
+truffle-meteor-build is a build helper script
+
+Dependencies
+------------
+
+truffle, meteor, testrpc
+
+https://github.com/consensys/truffle
+
+https://www.meteor.com/
+
+https://github.com/ConsenSys/eth-testrpc
+
+Running Locally
+---------------
+
+In one terminal window, start testrpc:
+
+    testrpc
+
+In another window, for e.g. is-art:
+
+    cd projects/is-art
+    truffle deploy
+    ../../truffle-meteor-build
+
+Then open the UI in a web browser
+
+    chromium environments/development/meteor/index.html
+
+If you stop testrpc you'll need to deploy again when you restart it.
