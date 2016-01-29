@@ -1,0 +1,22 @@
+body {
+    text-align: center;
+    font-family: sans;
+}
+
+h1 {
+    font-size: 128pt;
+}
+
+#hot {
+    color: #550000;
+}
+
+#cold {
+    color: #000044;
+}
+
+#hot_cold {
+    position: absolute;
+    top: 50%; left: 50%; width: 500px; height: 600px;
+    margin: -200px 0 0 -250px;
+}

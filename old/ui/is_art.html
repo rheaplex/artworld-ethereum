@@ -1,0 +1,23 @@
+<html>
+<head>
+  <script type="text/javascript"
+	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+  </script>
+  <script type="text/javascript"
+	  src="js/is_art.js">
+  </script>
+  <script>
+    if (typeof(window.web3) === "undefined") {
+      document.write('Please run in AlethZero.<br/>');
+    }
+  </script>
+  <link rel="stylesheet" type="text/css" href="css/is_art.css" />
+<title>Is This Contract Art?</title>
+</head>
+<body>
+  <h1 id="is_it">
+    This contract <span id="_1000">may be</span> art
+  </h1>
+  <a id="toggle" href="javascript:void(0)" onclick="toggle();">toggle</a>
+</body>
+</html>

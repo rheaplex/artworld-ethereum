@@ -1,0 +1,51 @@
+contract OwnershipHistory {
+    struct Ownership {
+        address owner;
+        uint256 timestamp;
+        uint256 price;
+    }
+    
+    uint256 nextOwnerIndex;
+    mapping(uint256 => Ownership) owners;
+    address artist;
+
+    /// Get the count of ownership records.
+    function ownershipCount() returns () {
+        return nextOwnerIndex - 1;
+    }
+
+    /// Get the ownership. Indexes are base zero and must be less than ownershipCount().
+    function ownershipByIndex(uint256 id) returns (Ownership owner) {
+        return owners[id];
+    }
+
+    /// Get the current ownership information.
+    function currentOwnership() returns (Ownership owner) {
+        return owners[nextOwnerIndex - 1];
+    }
+
+    /// Take ownership, paying $(currentOwnership().price) for the privilege and setting the price the next purchaser must pay to $(price).
+    function takeOwnership(uint256 price) {
+        Ownership ownership = currentOwnership();
+        if (tx.value == ownership.price
+            && tx.sender != ownership.owner) {
+            owner.owner = newOwner;
+            owner.timestamp = tx.timestamp;
+            owner.price = price;
+            nextOwnerIndex++;
+        }
+    }
+
+    /// Set the price purchasers must pay to $(newPrice) .
+    function setPrice(uint256 newPrice) {
+        Ownership ownership = currentOwnership();
+        if(tx.sender == ownership.owner) {
+            ownership.price = newPrice;
+        }
+    }
+
+    function init() {
+        artist = tx.sender;
+        setOwnership(artist, tx.gasprice * 10000);
+    }
+}

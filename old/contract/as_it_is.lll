@@ -1,0 +1,39 @@
+;; Pay to set the aesthetic properties of an artwork (based on your address)
+{
+ ;; Constant values
+ ;; Price increment (wei)
+ (def 'PRICE-INCREMENT 1000)
+
+ ;; Storage locations
+ (def 'artist 0x10)
+ (def 'price 0x11)
+ (def 'aesthetics 0x12)
+
+ ;; State
+ ;; Artist
+ [[artist]] (caller)
+ ;; Price (wei)
+ [[price]] 1000000
+ ;; Last setter, also source of colour and shape
+ [[aesthetics]] (caller)
+
+ (return
+   0x0
+   (lll
+     {
+      [action] (calldataload 0)
+      (when (&& (= @action "set")
+                (= (callvalue) @@price)
+                (not @@(caller)))
+        {
+         ;; Record setter, we use their hash to determine aesthetic properties
+         [[aesthetics]] (caller)
+         ;; Pay artist
+         (call @@artist (callvalue) 0 0 0 0 0)
+         ;; Record setter, so they cannot set again (artist gets extra freebie)
+         [[(caller)]] 1
+         ;; Increment cost of setting
+         [[price]] (+ [[price]] [[PRICE-INCREMENT]])
+         })
+      }
+     0x0))}

@@ -1,0 +1,24 @@
+contract CatalogueRaisonne {
+
+    uint numWorks;
+    mapping (uint256 => string32) works;
+    
+    address artist;
+
+    function CatalogueRaisonne () {
+        artist = sender;
+        numWorks = 0;
+    }
+
+    function addWork (uint256 hash, string32 desc) {
+        if (msg.sender == artist) {
+            works[hash] = desc;
+            numworks++;
+        }
+    }
+
+    function checkWork (uint256 hash) returns (bool featured) {
+        return mapping[hash] != null;
+    }
+
+}
