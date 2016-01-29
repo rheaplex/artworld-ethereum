@@ -1,0 +1,18 @@
+<head>
+  <title>Is This Contract Art?</title>
+</head>
+
+<body>
+  {{> is_art }}
+  {{> dapp_modalPlaceholder}}
+</body>
+
+<template name="is_art">
+  <h1 id="is_art">This contract <span id="status">{{ status }}</span> art</h1>
+</template>
+
+<template name="toggle_is_art">
+  <h2>Toggle the contract's state</h2>
+  <h3>Pay gas from account:</h3>
+  {{> dapp_selectAccount accounts=my_accounts}}
+</template>

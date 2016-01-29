@@ -1,0 +1,43 @@
+;; Self-selling contract
+{
+ ;; Constant values
+ ;; Number of seconds between sales
+ (def 'OWNERSHIP-DURATION (* 250 60))
+ ;; Price (wei)
+ (def 'PRICE (^ 10 6))
+ (def 'PRICE-INCREMENT (^ 10 2))
+
+ ;; Storage locations
+ (def 'artist 0x10)
+ (def 'price 0x11)
+ (def 'owner 0x12)
+ (def 'owner-until 0x13)
+
+ ;; State
+ ;; Contract owner/payee
+ [[artist]] (caller)
+ ;; Current owner
+ [[owner]] (caller)
+ ;; Make the initial ownership short enough to demo
+ [[owner-until]] (+ (timestamp) 60)
+
+ (return
+   0x0
+   (lll
+     {
+      [action] (calldataload 0)
+      (when (= @action "buy")
+        {
+         ;; If the artwork is currently for sale, and the buyer is paying enough
+         (when (&& (> (timestamp) @@owner-until)
+                   (= (callvalue) @@price))
+           {
+            ;; Pay the artist and update the state
+            (call (- (gas) 200) @@artist (callvalue) 0 0 0 0)
+            [[owner]] (caller)
+            [[owner-until]] (+ (timestamp) OWNERSHIP-DURATION)
+            [[price]] (+ @@price PRICE-INCREMENT)
+            })
+         })
+      }
+     0x0))}

@@ -1,0 +1,22 @@
+body {
+    text-align: center;
+    font-family: sans;
+}
+
+h1 {
+    font-size: 72pt;
+}
+
+#_1000 {
+    color: #550000;
+}
+
+#toggle {
+    color: #B0C4DE;
+}
+
+#is_it {
+    position: absolute;
+    top: 50%; left: 50%; width: 500px; height: 600px;
+    margin: -200px 0 0 -250px;
+}

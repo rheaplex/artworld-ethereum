@@ -1,0 +1,19 @@
+{
+ (def 'STATE 1000)
+
+ [[STATE]] "may be"
+
+ (return
+   0
+   (lll
+     {
+      [action] (calldataload 0)
+      (when (= @action "toggle")
+        {
+         (if (= @@STATE "is")
+             [[STATE]] "is not"
+             [[STATE]] "is")
+        })
+     }
+     0x0))
+}

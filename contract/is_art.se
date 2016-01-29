@@ -1,9 +1,0 @@
-init:
-    contract.storage[1000] = "may be"
-
-code:
-    if msg.data[0] == "toggle":
-        if contract.storage[1000] == "is":
-            contract.storage[1000] = "is not"
-        else:
-            contract.storage[1000] = "is"
