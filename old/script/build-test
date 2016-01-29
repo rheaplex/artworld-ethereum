@@ -1,0 +1,34 @@
+#!/bin/bash
+# -*- mode: bash -*-
+
+# Chech for the correct number of arguments
+
+if [ "$#" -ne 1 ]; then
+    echo "usage: build-test <PROJECT-DIRECTORY>"
+    echo "       e.g.: build-test myapp"
+    exit 1
+fi
+
+# Set up the configuration
+
+PROJECT=$1
+BASEDIR=$(dirname $(dirname $(readlink -f "${BASH_SOURCE[0]}")))
+# If the dir is "", set it to "."
+[[ -z  "${BASEDIR}" ]] && BASEDIR="."
+SRC="${BASEDIR}/src/${PROJECT}"
+DESTDIR="${BASEDIR}/build/test"
+DEST="${DESTDIR}/$PROJECT"
+
+# Build process
+
+mkdir -p "${DEST}"
+
+pushd "${SRC}"
+
+echo "Deploying contracts to blockchain with embark deploy"
+embark deploy
+
+echo "Building project with meteor-build-client to ${DEST}"
+meteor-build-client "${DEST}" --path ''
+
+popd

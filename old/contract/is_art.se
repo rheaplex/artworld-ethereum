@@ -1,0 +1,14 @@
+data _state
+
+def init():
+    self._state = "may be"
+
+def toggle():
+    if self._state == "is":
+        self._state = "is not"
+    else:
+        self._state = "is"
+
+def state():
+    return (self._state)
+    
