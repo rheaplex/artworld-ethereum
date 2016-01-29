@@ -1,0 +1,18 @@
+// Update to store & use hash of artist and hash (yes, double hash)
+
+contract CertificateOfAuthenticity {
+
+    address artist;
+    int32   artworkHash;
+
+    function isAuthentic (address artistCandidate, int32 artworkHashCandidate)
+        returns (bool authentic) {
+        return artistCandidate == artist && artworkHashCandidate == artworkHash;
+    }
+
+    function CertificateOfAuthenticity () {
+        artist = 0x8802b7f0bfa5e9f5825f2fc708e1ad00d2c2b5d6;
+        artworkHash = 0x76bba376ea574e63ab357b2374d1cee5aa77d24db38115e3824c5cc4f443d5f7;
+    }
+
+}

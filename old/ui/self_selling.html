@@ -1,0 +1,26 @@
+<html>
+<head>
+  <script type="text/javascript"
+	  src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+  </script>
+  <script type="text/javascript" src="js/self_selling.js">
+  </script>
+  <script>
+    if (typeof(window.eth) === "undefined") {
+      document.write('Please run in AlethZero.<br/>');
+    }
+  </script>
+  <link rel="stylesheet" type="text/css" href="css/self_selling.css" />
+<title>Self-Selling</title>
+</head>
+<body>
+ <h2>Self-selling</h2>
+ <h4 id="sale_state"></h4>
+ <h4 id="current_owner"></h4>
+ <div id="purchase_div">
+   <h2>Buy</h2>
+   price:<span id="purchase_price"></span><br />
+   <a id="register" href="javascript:void(0)" onclick="accept_artwork();">buy</a>
+ </div>
+</body>
+</html>

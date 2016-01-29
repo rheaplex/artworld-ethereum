@@ -1,0 +1,26 @@
+#!/bin/bash
+# -*- mode: bash -*-
+
+# Chech for the correct number of arguments
+
+if [ "$#" -ne 1 ]; then
+    echo "usage: run-tests <PROJECT-DIRECTORY>"
+    echo "       e.g.: run-tests myapp"
+    exit 1
+fi
+
+# Set up the configuration
+
+PROJECT=$1
+BASEDIR=$(dirname $(dirname "${BASH_SOURCE[0]}"))
+# If the dir is "", set it to "."
+[[ -z  "${BASEDIR}" ]] && BASEDIR="."
+PROJECTDIR="${BASEDIR}/src/${PROJECT}/"
+
+# Run the tests
+
+pushd "${PROJECTDIR}"
+
+mocha --no-timeouts "tests/"
+
+popd
