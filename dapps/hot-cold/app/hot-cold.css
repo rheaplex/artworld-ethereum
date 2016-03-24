@@ -1,0 +1,20 @@
+body {
+    text-align: center;
+    font-family: sans;
+}
+
+h1 {
+    font-size: 72pt;
+}
+
+h1 {
+    font-size: 128pt;
+}
+
+#hot {
+    color: #550000;
+}
+
+#cold {
+    color: #000044;
+}

@@ -3,9 +3,11 @@ Artworld Ethereum
 
 Ethereum art projects.
 
-See projects/ for project sources.
+See dapps/ for project sources.
 
-truffle-meteor-build is a build helper script
+truffle-meteor-build is a build helper script for dapps.
+
+See tokens/ for token details.
 
 Dependencies
 ------------
@@ -36,3 +38,10 @@ Then open the UI in a web browser
     chromium environments/development/meteor/index.html
 
 If you stop testrpc you'll need to deploy again when you restart it.
+
+Deploying
+---------
+
+Note that we use port 8546.
+
+geth --unlock <account id> --rpc --rpcport 8546 --rpccorsdomain localhost

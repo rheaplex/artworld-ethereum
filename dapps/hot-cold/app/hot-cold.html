@@ -1,0 +1,21 @@
+<head>
+  <title>Hot/Cold</title>
+</head>
+
+<body>
+  {{> hot_cold }}
+  {{> dapp_modalPlaceholder}}
+</body>
+
+<template name="hot_cold">
+  <h1 id="temperatures">
+    <span id="hot">{{ hot }}</span><br/>
+    <span id="cold">{{ cold }}</span><br/>
+  </h1>
+</template>
+
+<template name="swap_hot_cold">
+  <h2>Swap temperatures</h2>
+  <h3>Pay gas from account:</h3>
+  {{> dapp_selectAccount accounts=my_accounts}}
+</template>
