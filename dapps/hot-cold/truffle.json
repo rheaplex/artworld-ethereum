@@ -1,0 +1,30 @@
+{
+  "build": {
+    "hot-cold.html": {
+      "files": [
+        "hot-cold.html"
+      ],
+      "post-process": []
+    },
+    "hot-cold.js": {
+      "files": [
+        "hot-cold.js"
+      ],
+      "post-process": [
+        "bootstrap",
+        "frontend-dependencies"
+      ]
+    },
+    "app.css": [
+      "hot-cold.css"
+    ],
+    "images/": "images/"
+  },
+  "deploy": [
+    "HotCold"
+  ],
+  "rpc": {
+    "host": "localhost",
+    "port": 8545
+  }
+}
