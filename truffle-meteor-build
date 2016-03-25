@@ -29,7 +29,7 @@ then
 fi
 
 app_dir="${base_dir}/app"
-dot_metoer_dir="${app_dir}/.meteor"
+dot_meteor_dir="${app_dir}/.meteor"
 environment_dir="${base_dir}/environments/${environment}"
 truffle_build_dir="${environment_dir}/build"
 meteor_build_dir="${environment_dir}/meteor"
@@ -42,8 +42,8 @@ fi
 
 pushd "${base_dir}" > /dev/null
 echo "Truffle: building ${environment} in ${truffle_build_dir}"
-truffle build "${environment}"
-cp -r "${app_dir}/.meteor" "${truffle_build_dir}"
+truffle build -e "${environment}"
+cp -r "${dot_meteor_dir}" "${truffle_build_dir}"
 pushd "${truffle_build_dir}" > /dev/null
 echo "Meteor: building client in ${meteor_build_dir}"
 meteor-build-client "${meteor_build_dir}" -p ''
