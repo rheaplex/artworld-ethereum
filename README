@@ -29,7 +29,7 @@ In one terminal window, start testrpc:
 
 In another window, for e.g. is-art:
 
-    cd projects/is-art
+    cd dapps/is-art
     truffle deploy
     ../../truffle-meteor-build
 
@@ -42,6 +42,19 @@ If you stop testrpc you'll need to deploy again when you restart it.
 Deploying
 ---------
 
-Note that we use port 8546.
+Make sure to only run the truffle deploy command once.
 
-geth --unlock <account id> --rpc --rpcport 8546 --rpccorsdomain localhost
+    geth --unlock <account id> --rpc --rpccorsdomain localhost
+
+    truffle deploy -e production
+
+    ../../truffle-meteor-build
+
+Running In A Browser In Production
+----------------------------------
+
+Better --rpccorsdomain value gratefully received.
+
+    geth --unlock <accound id> --rpc --rpccorsdomain null
+
+    chromium environments/production/meteor/index.html
