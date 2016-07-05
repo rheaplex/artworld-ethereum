@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+}
+
+#status {
+    visibility: hidden;
+}
+
+#canvas {
+    /* Make the div square: 50% of viewport */
+    width: 50vw;
+    height: 50vw;
+
+    position:absolute;
+    left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+}
+
+#change-colour {
+    float: left;
+    width: 600px;
+    height: 550px;
+
+    position:absolute;
+    left:0; right:0;
+    top:0; bottom:0;
+    margin: auto;
+    padding: 20px;
+
+    background-color: white;
+    border: 1px solid gray;
+
+    visibility: hidden;
+}
+
+@keyframes changing-colour {
+    from { color: white; }
+    to { color: lightgray; }
+}
+
+#changing {
+    /* Center the text vertically  */
+    position:absolute;
+    left:0; right:0;
+    top:50%;
+    transform: translateY(-50%);
+    /* And horizontally */
+    text-align: center;
+
+    color: white;
+    animation: changing-colour 1s infinite alternate;
+    font-size: 72px;
+    text-shadow: 0 0 1em black;
+
+    z-index: 2000;
+
+    visibility: hidden;
+}
