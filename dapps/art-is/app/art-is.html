@@ -1,0 +1,40 @@
+<head>
+  <title>Art Is...</title>
+</head>
+
+<body>
+  <div class="art-is-wrapper">
+    <h1>Art is</h1>
+    {{> art_is}}
+  </div>
+  {{> dapp_modalPlaceholder}}
+</body>
+
+<template name="art_is">
+  {{#each definitions}}
+    {{> display_definition}}
+  {{/each}}
+</template>
+
+<template name="display_definition">
+  <p class="definition display">
+    <b>{{index}}:</b>
+    <span class="initial-cap">
+      {{lookupExtent extent}}
+      {{lookupConnection connection}}
+      {{lookupRelation relation}}
+      {{lookupSubject subject}}.
+    </span>
+    <!-- Add mouse-over to display Set by {{setter}} -->
+    <button data-definition="{{number}}" hidden>Edit</button>
+  </p>
+</template>
+
+<template name="edit_definition">
+  <h2>Change Definition {{index}}</h2>
+  {{lookupExtent extent}} {{lookupConnection connection}}
+  {{lookupRelation relation}} {{lookupSubject subject}}.
+  <p>This will cost {{cost}}, plus gas</p>
+  <h3>Pay fee and gas from account:</h3>
+  {{> dapp_selectAccount accounts=my_accounts}}
+</template>
