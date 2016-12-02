@@ -22,7 +22,7 @@ fi
 environment="${1:-development}"
 base_dir="$(pwd)"
 
-if [ ! -f "${base_dir}/truffle.json" ]
+if [ ! -f "${base_dir}/truffle.js" ] && [ ! -f "${base_dir}/truffle.json" ]
 then
     echo "Please call from within the top level of a Truffle project."
     exit 1
@@ -47,5 +47,6 @@ cp -r "${dot_meteor_dir}" "${truffle_build_dir}"
 pushd "${truffle_build_dir}" > /dev/null
 echo "Meteor: building client in ${meteor_build_dir}"
 meteor-build-client "${meteor_build_dir}" -p ''
+#meteor build "${meteor_build_dir}" --directory --debug
 popd > /dev/null
 popd > /dev/null
