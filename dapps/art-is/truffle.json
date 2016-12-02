@@ -1,0 +1,30 @@
+{
+  "build": {
+    "art-is.html": {
+      "files": [
+        "art-is.html"
+      ],
+      "post-process": []
+    },
+    "art-is.js": {
+      "files": [
+        "art-is.js"
+      ],
+      "post-process": [
+        "bootstrap",
+        "frontend-dependencies"
+      ]
+    },
+    "app.css": [
+      "art-is.css"
+    ],
+    "images/": "images/"
+  },
+  "deploy": [
+    "ArtIs"
+  ],
+  "rpc": {
+    "host": "localhost",
+    "port": 8545
+  }
+}
