@@ -1,18 +1,60 @@
-<head>
-  <title>Is This Contract Art?</title>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Is This Contract Art?</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
+          rel="stylesheet">
+    <link href="../../shared/css/bootstrap.css"
+          rel="stylesheet">
+    <link href="../../shared/css/shared.css"
+          rel="stylesheet">
+    <link href="is-art.css"
+          rel="stylesheet">
+  </head>
+  <body>
+    <div id="updating">Updating...</div>
 
-<body>
-  {{> is_art }}
-  {{> dapp_modalPlaceholder}}
-</body>
+    <div id="status"></div>
 
-<template name="is_art">
-  <h1 id="is_art">This contract <span id="status">{{ status }}</span> art</h1>
-</template>
+    <div id="representation">
+      <div id="is-art">
+        <h1>This<br>
+          contract<br>
+          <span id="is-art-status">may be</span> art</h1>
+      </div>
+    </div>
 
-<template name="toggle_is_art">
-  <h2>Toggle this contract's status as art</h2>
-  <h3>Pay gas from account:</h3>
-  {{> dapp_selectAccount accounts=my_accounts}}
-</template>
+    <!-- Here so we don't have to try to click outside the represenation. -->
+    <div id="background" onclick="Shared.showGui(event, -1)"></div>
+
+    <div id="is-art-gui" class="gui">
+      <h2>Toggle</h2>
+      <form>
+        <div class="form-group">
+          <label for="gui-gas-account">Account to pay gas from</label>
+          <select class="form-control" id="gui-gas-account"></select>
+        </div>
+        <button type="button" class="btn btn-primary"
+                onClick="IsArt.userSelectedUpdate()">Update</button>
+        &nbsp;
+        <button type="button" class="btn btn-default"
+                onClick="IsArt.userSelectedCancel()">Cancel</button>
+      </form>
+      <br>
+      <p><b><i>Note that toggling the status of the contract will cost
+            gas!</i></b></p>
+      <p>To toggle the status of the contract, press &quot;Update&quot;.</p>
+      <p>Otherwise, just press &quot;Cancel&quot;.</p>
+    </div>
+
+    <script src="../../shared/js/jquery.js"></script>
+    <script src="../../shared/js/bootstrap.js"></script>
+    <script src="../../shared/js/web3.js"></script>
+    <script src="../../shared/js/shared.js"></script>
+    <script src="IsArt.sol.js"></script>
+    <script src="is-art.js"></script>
+  </body>
+</html>
