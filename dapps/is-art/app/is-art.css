@@ -1,18 +1,25 @@
-body {
-    text-align: center;
-    font-family: sans;
+#is-art {
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
-h1 {
+#is-art h1 {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
     font-size: 72pt;
 }
 
-#is_art {
-    position: absolute;
-    top: 50%; left: 50%; width: 500px; height: 600px;
-    margin: -200px 0 0 -250px;
+#is-art-status {
+    color: #550000;
 }
 
-#status {
-    color: #550000;
+#is-art-gui {
+    width: 440px;
+    height: 300px;
 }

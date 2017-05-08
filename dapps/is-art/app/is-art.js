@@ -1,5 +1,5 @@
 /*  IsArt - Ethereum contract that is or isn't art.
-    Copyright (C) 2015, 2016  Rhea Myers <rob@Rhea Myers.org>
+    Copyright (C) 2015, 2016, 2017  Rhea Myers <rob@Rhea Myers.org>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,80 +15,71 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var TOGGLE_ACCOUNT_SELECTOR = '.dapp-modal-container .dapp-select-account';
+////////////////////////////////////////////////////////////////////////////////
+// The main contract behaviour object
+////////////////////////////////////////////////////////////////////////////////
 
-var bytesToString = function (value) {
-  return web3.toAscii(value).replace(/\0+$/, "");
+var IsArt = {};
+
+////////////////////////////////////////////////////////////////////////////////
+// Blockchain interaction
+////////////////////////////////////////////////////////////////////////////////
+
+IsArt.commitNetworkToggle = function () {
+  this.contract.toggle.sendTransaction({from: Shared.selectedGasAccount()},
+                                        // Callback so we're async for Metamask
+                                        function (error, result) {});
 };
 
-if (Meteor.isClient) {
+////////////////////////////////////////////////////////////////////////////////
+// Representation of the contract's state
+////////////////////////////////////////////////////////////////////////////////
 
-  Template.is_art.helpers({
-    status: function () {
-      return Session.get('status');
+IsArt.setContractStatus = function (status) {
+  $('#is-art-status').text(Shared.bytesToString(status));
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Contract manipulation GUI
+////////////////////////////////////////////////////////////////////////////////
+
+IsArt.guiDisplayHook = function () {};
+
+////////////////////////////////////////////////////////////////////////////////
+// GUI user actions
+////////////////////////////////////////////////////////////////////////////////
+
+IsArt.userSelectedUpdate = function () {
+  this.commitNetworkToggle();
+  Shared.showUpdating();
+  Shared.hideGui();
+};
+
+IsArt.userSelectedCancel = function () {
+  Shared.hideGui();
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Main Program Lifecycle
+////////////////////////////////////////////////////////////////////////////////
+
+$(window).on('load', function () {
+  Shared.init(IsArt.guiDisplayHook);
+  IsArt.contract = Shared.instantiateContract(contract_data);
+  IsArt.filter = Shared.installFilter(IsArt.contract.Status,
+                                      {},
+                                      function(result) {
+                                        var status = result.args.is_art;
+                                        IsArt.setContractStatus(status);
+                                        // Hide updating when tx is mined.
+                                        // Any update will do this,
+                                        // so it's not ideal.
+                                        // But it's better than nothing.
+                                        Shared.hideUpdating();
+                                      });
+  IsArt.contract.is_art.call(function (err, value) {
+    if (! err) {
+      IsArt.setContractStatus(value);
     }
   });
-
-  // Keep track of when we're updating the contract state on the blockchain
-  // and don't show the update dialog during that time so the user doesn't
-  // waste gas trying to change it again.
-  var updating = false;
-
-  Template.is_art.events({
-    'click': function(){
-      if (! updating) {
-        EthElements.Modal.question({
-          template: 'toggle_is_art',
-          data: {
-            my_accounts: EthAccounts.find().fetch()
-          },
-          ok: function(){
-            updating = true;
-            var is_art = IsArt.deployed();
-            // Update the state on the blockchain
-            var account = TemplateVar.getFrom(TOGGLE_ACCOUNT_SELECTOR, 'value');
-            is_art.toggle({ from: account }).then(function() {
-              return is_art.is_art.call();
-            }).then(function(value) {
-              // We don't need to update the status, the event will do this
-              //Session.set('status', bytesToString(value));
-              updating = false;
-            }).catch(function(e) {
-              console.log(e);
-              alert("Error sending toggling; see log.");
-            });
-          },
-          cancel: true
-        });
-      }
-    }
-  });
-
-  // Why do we put this inside window.onload?
-  // Truffle adds init code *after* this file is inlined, so we can't access
-  //   IsArt.deployed here as it doesn't exist until the init code is called.
-  window.onload = function() {
-
-    EthAccounts.init();
-
-    var is_art = IsArt.deployed();
-
-    is_art.is_art.call().then(function(value) {
-      var string_value = bytesToString(value);
-      Session.setDefault('status', string_value);
-    });
-
-    is_art.Status({}, function(error, result){
-      if (! error) {
-        // Store the new status in local storage, updating the UI as a result
-        Session.set('status', bytesToString(result.args.is_art));
-      }
-    });
-  };
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
+});
