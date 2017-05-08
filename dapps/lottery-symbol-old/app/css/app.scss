@@ -1,0 +1,23 @@
+.symbol {
+    background-color: lightgrey;
+
+    text-align: center;
+    line-height: 100%;
+    font-size: 75vmin;
+
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+.symbol-gui {
+    width: 500px;
+    height: 400px;
+    /*visibility: visible;*/
+}

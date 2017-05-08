@@ -1,0 +1,44 @@
+{
+  "name": "lottery-symbol",
+  "version": "1.0.0",
+  "description": "An Ethereum DApp that allows people to enter a lottery to set its aesthetic properties.",
+  "main": " ",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "webpack-dev-server --hot --inline --history-api-fallback"
+  },
+  "keywords": [
+    "ethereum",
+    "aesthetics"
+  ],
+  "author": "Rob Myers <rob@robmyers.org>",
+  "license": "GPL-3.0+",
+  "devDependencies": {
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.26.2",
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-loader": "^1.6.3",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0",
+    "extract-text-webpack-plugin": "^2.0.0",
+    "react-hot-loader": "^1.3.1",
+    "sass-loader": "^6.0.2",
+    "style-loader": "^0.13.2",
+    "truffle-solidity-loader": "0.0.8",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
