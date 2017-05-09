@@ -1,13 +1,16 @@
-body {
-    text-align: center;
-    font-family: sans;
+#hot-cold {
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
-h1 {
-    font-size: 72pt;
-}
-
-h1 {
+#temperatures {
+    font-family: 'Open Sans', sans-serif;
     font-size: 128pt;
 }
 
@@ -17,4 +20,9 @@ h1 {
 
 #cold {
     color: #000044;
+}
+
+#hot-cold-gui {
+    width: 440px;
+    height: 300px;
 }

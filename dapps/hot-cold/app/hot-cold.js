@@ -1,5 +1,5 @@
 /*  HotCold - Ethereum contract of relational physical/perceptual properties.
-    Copyright (C) 2015, 2016  Rhea Myers <rob@Rhea Myers.org>
+    Copyright (C) 2015, 2016, 2017 Rhea Myers <rob@Rhea Myers.org>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,95 +15,77 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var SWAP_ACCOUNT_SELECTOR = '.dapp-modal-container .dapp-select-account';
+////////////////////////////////////////////////////////////////////////////////
+// The main contract behaviour object
+////////////////////////////////////////////////////////////////////////////////
 
-var bytesToString = function (value) {
-  return web3.toAscii(value).replace(/\0+$/, "");
+var HotCold = {};
+
+////////////////////////////////////////////////////////////////////////////////
+// Blockchain interaction
+////////////////////////////////////////////////////////////////////////////////
+
+HotCold.commitNetworkSwap = function () {
+  this.contract.swap.sendTransaction({from: Shared.selectedGasAccount()},
+                                        // Callback so we're async for Metamask
+                                        function (error, result) {});
 };
 
-if (Meteor.isClient) {
+////////////////////////////////////////////////////////////////////////////////
+// Representation of the contract's state
+////////////////////////////////////////////////////////////////////////////////
 
-  Template.hot_cold.helpers({
-    hot: function () {
-      return Session.get('hot');
-    },
-    cold: function () {
-      return Session.get('cold');
+HotCold.updateRepresentation = function () {
+  this.contract.hot.call(function (err, result) {
+    if (! err) {
+      $('#hot').text(Shared.bytesToString(result));
     }
   });
-
-  // Keep track of when we're updating the contract state on the blockchain
-  // and don't show the update dialog during that time so the user doesn't
-  // waste gas trying to change it again.
-  var updating = false;
-
-  Template.hot_cold.events({
-    'click': function(){
-      if (! updating) {
-        EthElements.Modal.question({
-          template: 'swap_hot_cold',
-          data: {
-            my_accounts: EthAccounts.find().fetch()
-          },
-          ok: function(){
-            updating = true;
-            var hot_cold = HotCold.deployed();
-            // Update the state on the blockchain
-            var account = TemplateVar.getFrom(SWAP_ACCOUNT_SELECTOR, 'value');
-            hot_cold.swap({ from: account }).then(function(value) {
-              updating = false;
-            }).catch(function(e) {
-              console.log(e);
-              alert("Error sending toggling; see log.");
-            });
-          },
-          cancel: true
-        });
-      }
+  this.contract.cold.call(function (err, result) {
+    if (! err) {
+      $('#cold').text(Shared.bytesToString(result));
     }
   });
+};
 
-  // Why do we put this inside window.onload?
-  // Truffle adds init code *after* this file is inlined, so we can't access
-  //   HotCold.deployed here as it doesn't exist until the init code is called.
-  window.onload = function() {
+////////////////////////////////////////////////////////////////////////////////
+// Contract manipulation GUI
+////////////////////////////////////////////////////////////////////////////////
 
-    EthAccounts.init();
+HotCold.guiDisplayHook = function () {};
 
-    var hot_cold = HotCold.deployed();
+////////////////////////////////////////////////////////////////////////////////
+// GUI user actions
+////////////////////////////////////////////////////////////////////////////////
 
-    hot_cold.hot.call().then(function(value) {
-      var string_value = bytesToString(value);
-      Session.setDefault('hot', string_value);
-    });
+HotCold.userSelectedUpdate = function () {
+  this.commitNetworkSwap();
+  Shared.showUpdating();
+  Shared.hideGui();
+};
 
-    hot_cold.cold.call().then(function(value) {
-      var string_value = bytesToString(value);
-      Session.setDefault('cold', string_value);
-    });
+HotCold.userSelectedCancel = function () {
+  Shared.hideGui();
+};
 
-    hot_cold.Swap({}, function(error, result){
-      if (! error) {
-        // Store the new state in local storage, updating the UI as a result
-        // Session.set('hot', bytesToString(result.args.hot));
-        // Session.set('hot', bytesToString(result.args.cold));
-        // BUT events with more than one value are borked in webthree.js atm
-        hot_cold.hot.call().then(function(value) {
-          var string_value = bytesToString(value);
-          Session.set('hot', string_value);
-        });
+////////////////////////////////////////////////////////////////////////////////
+// Main Program Lifecycle
+////////////////////////////////////////////////////////////////////////////////
 
-        hot_cold.cold.call().then(function(value) {
-          var string_value = bytesToString(value);
-          Session.set('cold', string_value);
-        });
-      }
-    });
-  };
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
+$(window).on('load', function () {
+  Shared.init(HotCold.guiDisplayHook);
+  HotCold.contract = Shared.instantiateContract(contract_data);
+  HotCold.filter = Shared.installFilter(HotCold.contract.Swap,
+                                      {},
+                                      function(result) {
+                                        var status = result.args;
+                                        console.log(status);
+                                        HotCold.updateRepresentation();
+                                        // Hide updating when tx is mined.
+                                        // Any update will do this,
+                                        // so it's not ideal.
+                                        // But it's better than nothing.
+                                        Shared.hideUpdating();
+                                      });
+  HotCold.updateRepresentation();
+});

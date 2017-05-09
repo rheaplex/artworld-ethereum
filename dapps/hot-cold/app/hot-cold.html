@@ -1,18 +1,63 @@
-<head>
-  <title>Hot/Cold</title>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Hot/Cold</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
+          rel="stylesheet">
+    <link href="../../shared/css/bootstrap.css"
+          rel="stylesheet">
+    <link href="../../shared/css/shared.css"
+          rel="stylesheet">
+    <link href="hot-cold.css"
+          rel="stylesheet">
+  </head>
+  <body>
+    <div id="updating">Updating...</div>
 
-<body>
-  {{> hot_cold }}
-  {{> dapp_modalPlaceholder}}
-</body>
+    <div id="status"></div>
 
-<template name="hot_cold">
-  <h1 id="temperatures">
-    <span id="hot">{{ hot }}</span><br/>
-    <span id="cold">{{ cold }}</span><br/>
-  </h1>
-</template>
+    <div id="representation">
+      <div id="hot-cold">
+        <h1 id="temperatures">
+          <span id="hot">hot</span><br/>
+          <span id="cold">cold</span></h1>
+      </div>
+    </div>
+
+    <!-- Here so we don't have to try to click outside the represenation. -->
+    <div id="background" onclick="Shared.showGui(event, -1)"></div>
+
+    <div id="hot-cold-gui" class="gui">
+      <h2>Swap Temperatures</h2>
+      <form>
+        <div class="form-group">
+          <label for="gui-gas-account">Account to pay gas from</label>
+          <select class="form-control" id="gui-gas-account"></select>
+        </div>
+        <button type="button" class="btn btn-primary"
+                onClick="HotCold.userSelectedUpdate()">Update</button>
+        &nbsp;
+        <button type="button" class="btn btn-default"
+                onClick="HotCold.userSelectedCancel()">Cancel</button>
+      </form>
+      <br>
+      <p><b><i>Note that swapping the temperatures will cost
+            gas!</i></b></p>
+      <p>To swap the temperatures, press &quot;Update&quot;.</p>
+      <p>Otherwise, just press &quot;Cancel&quot;.</p>
+    </div>
+
+    <script src="../../shared/js/jquery.js"></script>
+    <script src="../../shared/js/bootstrap.js"></script>
+    <script src="../../shared/js/web3.js"></script>
+    <script src="../../shared/js/shared.js"></script>
+    <script src="HotCold.sol.js"></script>
+    <script src="hot-cold.js"></script>
+  </body>
+</html>
 
 <template name="swap_hot_cold">
   <h2>Swap temperatures</h2>
