@@ -35,7 +35,7 @@ IsArt.commitNetworkToggle = function () {
 // Representation of the contract's state
 ////////////////////////////////////////////////////////////////////////////////
 
-IsArt.setContractStatus = function (status) {
+IsArt.setStatusRepresentation = function (status) {
   $('#is-art-status').text(Shared.bytesToString(status));
 };
 
@@ -70,7 +70,7 @@ $(window).on('load', function () {
                                       {},
                                       function(result) {
                                         var status = result.args.is_art;
-                                        IsArt.setContractStatus(status);
+                                        IsArt.setStatusRepresentation(status);
                                         // Hide updating when tx is mined.
                                         // Any update will do this,
                                         // so it's not ideal.
@@ -79,7 +79,7 @@ $(window).on('load', function () {
                                       });
   IsArt.contract.is_art.call(function (err, value) {
     if (! err) {
-      IsArt.setContractStatus(value);
+      IsArt.setStatusRepresentation(value);
     }
   });
 });
