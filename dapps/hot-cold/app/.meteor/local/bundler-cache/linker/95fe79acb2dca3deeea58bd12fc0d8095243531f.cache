@@ -1,0 +1,1 @@
+[{"type":"js","data":"(function () {\n\n/* Imports */\nvar Meteor = Package.meteor.Meteor;\n\n\n\n/* Exports */\nif (typeof Package === 'undefined') Package = {};\nPackage['blaze-html-templates'] = {};\n\n})();\n","servePath":"/packages/blaze-html-templates.js","sourceMap":{"version":3,"sources":[],"names":[],"mappings":";;;;;","file":"/packages/blaze-html-templates.js"}}]
