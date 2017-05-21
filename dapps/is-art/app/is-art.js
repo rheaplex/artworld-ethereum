@@ -63,20 +63,37 @@ IsArt.userSelectedCancel = function () {
 // Main Program Lifecycle
 ////////////////////////////////////////////////////////////////////////////////
 
+IsArt.connectToWeb3 = function () {
+  if (typeof web3 !== 'undefined') {
+    // Use current provider
+    window.web3 = new Web3(web3.currentProvider);
+  } else {
+    console.log('No web3!');
+    var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+    window.web3 = new Web3(provider);
+  }
+};
+
 $(window).on('load', function () {
+  IsArt.connectToWeb3();
   Shared.init(IsArt.guiDisplayHook);
-  IsArt.contract = Shared.instantiateContract(contract_data);
-  IsArt.filter = Shared.installFilter(IsArt.contract.Status,
-                                      {},
-                                      function(result) {
-                                        var status = result.args.is_art;
-                                        IsArt.setStatusRepresentation(status);
-                                        // Hide updating when tx is mined.
-                                        // Any update will do this,
-                                        // so it's not ideal.
-                                        // But it's better than nothing.
-                                        Shared.hideUpdating();
-                                      });
+  IsArt.contract = web3.eth.contract(contract_data.abi).at(
+    contract_data.address
+  );
+  IsArt.filter = IsArt.contract.Status(
+    {},
+    function(error, result) {
+      if (! error) {
+        var status = result.args.is_art;
+        IsArt.setStatusRepresentation(status);
+        // Hide updating when tx is mined.
+        // Any update will do this,
+        // so it's not ideal.
+        // But it's better than nothing.
+        Shared.hideUpdating();
+      }
+    }
+  );
   IsArt.contract.is_art.call(function (err, value) {
     if (! err) {
       IsArt.setStatusRepresentation(value);
