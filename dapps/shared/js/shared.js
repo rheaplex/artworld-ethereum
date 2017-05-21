@@ -22,40 +22,8 @@ var Shared = {};
 ////////////////////////////////////////////////////////////////////////////////
 
 Shared.bytesToString = function (value) {
+  // Strings from events are null padded, remove the nulls.
   return web3.toAscii(value).replace(/\0+$/, "");
-};
-
-////////////////////////////////////////////////////////////////////////////////
-// Web3
-////////////////////////////////////////////////////////////////////////////////
-
-Shared.connectToWeb3 = function () {
-  if (typeof web3 !== 'undefined') {
-    // Use current provider
-    window.web3 = new Web3(web3.currentProvider);
-  } else {
-    console.log('No web3!');
-    var provider = new Web3.providers.HttpProvider("http://localhost:8545");
-    window.web3 = new Web3(provider);
-  }
-};
-
-////////////////////////////////////////////////////////////////////////////////
-// ABI wrangling
-////////////////////////////////////////////////////////////////////////////////
-
-Shared.instantiateContract = function (contractData) {
-  return web3.eth.contract(contractData.abi).at(contractData.address);
-};
-
-Shared.installFilter = function (event, spec, callback, errorCallback) {
-  return event(spec, function (error, result) {
-    if (! error) {
-      callback(result);
-    } else if (errorCallback) {
-      errorCallback(error);
-    }
-  });
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +37,6 @@ Shared.selectedGasAccount = function () {
 Shared.makeGasAccountList = function (accounts) {
   var select = $('#gui-gas-account');
   select.find('option').remove();
-  // Add current
   for (var index in accounts) {
     var account = accounts[index];
     select.append($("<option></option>")
@@ -82,14 +49,13 @@ Shared.setupGasAccounts = function () {
   var self = this;
   web3.eth.getAccounts(function(err, accs) {
     if (err != null) {
-      alert("There was an error fetching your accounts.");
+      this.stopRunning("There was an error fetching your accounts.");
       return;
     }
     if (accs.length == 0) {
-      alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+      this.stopRunning("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
       return;
     }
-
     self.makeGasAccountList(accs);
   });
 };
@@ -141,7 +107,7 @@ Shared.hideStatus = function () {
 
 Shared.stopRunning = function (message) {
   $('#representation').hide();
-  // Disable clicking to show the gui
+  // Disable clicking to display the gui
   $('#background').prop('onclick',null);
   this.hideUpdating();
   this.hideGui();
@@ -156,7 +122,6 @@ Shared.init = function (_gui_display_hook) {
   if (_gui_display_hook) {
     this.gui_display_hook = _gui_display_hook;
   }
-  this.connectToWeb3();
   if (typeof web3 === 'undefined') {
     this.stopRunning('Cannot connect to the Ethereum network.');
   } else {
