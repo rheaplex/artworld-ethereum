@@ -26591,7 +26591,8 @@ Shared.setupGasAccounts = function () {
       return;
     }
     if (accs.length == 0) {
-      Shared.stopRunning("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+      self.hideGui();
+      alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
       return;
     }
     self.makeGasAccountList(accs);
