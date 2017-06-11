@@ -7,8 +7,16 @@ body {
     float: left;
     width: 100vw;
     height: 100vh;
-
+    top:        0;
+    left:       0;
     position: absolute;
+}
+
+#representation {
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
 }
 
 @keyframes updating {
@@ -31,21 +39,35 @@ body {
     text-shadow: 0 0 1em black;
 
     z-index: 2000;
+
+    display: none;
 }
 
 #status {
+    display: none;
+}
+
+.gui-container {
+    float: left;
+    width: 100vw;
+    height: 100vh;
+    top:        0;
+    left:       0;
+    position: absolute;
 }
 
 .gui {
-    float: left;
+/*    float: left;
 
     position:absolute;
     left:0; right:0;
     top:0; bottom:0;
-    margin: auto;
-    padding: 0 20px;
+    margin: auto;*/
+    padding: 20px;
 
     background-color: white;
     border: 1px solid gray;
     border-radius: 5px;
+
+    display: none;
 }

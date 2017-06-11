@@ -1,18 +1,11 @@
 #is-art {
-    width: 75vmin;
-    height: 75vmin;
-    position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-}
-
-#is-art h1 {
     font-family: 'Open Sans', sans-serif;
     text-align: center;
     font-size: 72pt;
+    line-height: 100%;
+
+    /* Position the text vertically in a visually pleasing way */
+    padding-bottom: 48pt;
 }
 
 #is-art-status {
@@ -20,6 +13,4 @@
 }
 
 #is-art-gui {
-    width: 440px;
-    height: 300px;
 }
