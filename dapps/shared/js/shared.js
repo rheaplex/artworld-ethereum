@@ -49,11 +49,11 @@ Shared.setupGasAccounts = function () {
   var self = this;
   web3.eth.getAccounts(function(err, accs) {
     if (err != null) {
-      this.stopRunning("There was an error fetching your accounts.");
+      Shared.stopRunning("There was an error fetching your accounts.");
       return;
     }
     if (accs.length == 0) {
-      this.stopRunning("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
+      Shared.stopRunning("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
       return;
     }
     self.makeGasAccountList(accs);
@@ -84,7 +84,7 @@ Shared.showGui = function () {
 
 Shared.hideGui = function () {
   $('.gui').hide();
-  this.gui_is_showing = false
+  this.gui_is_showing = false;
 };
 
 Shared.showUpdating = function () {
@@ -94,15 +94,19 @@ Shared.showUpdating = function () {
 
 Shared.hideUpdating = function () {
   $('#updating').hide();
-  this.state_is_updating = false
+  this.state_is_updating = false;
+};
+
+Shared.showRepresentation = function () {
+  $('#representation').show();
 };
 
 Shared.setStatus = function (message) {
-  $('#status').text(message).show();
+  $('#status').html(message).show();
 };
 
 Shared.hideStatus = function () {
-  $('#status').text('').hide();
+  $('#status').html('').hide();
 };
 
 Shared.stopRunning = function (message) {
@@ -118,15 +122,29 @@ Shared.stopRunning = function (message) {
 // Shared setup
 ////////////////////////////////////////////////////////////////////////////////
 
-Shared.init = function (_gui_display_hook) {
+Shared.init = function (_gui_display_hook, callWhenReady) {
   if (_gui_display_hook) {
     this.gui_display_hook = _gui_display_hook;
   }
-  if (typeof web3 === 'undefined') {
-    this.stopRunning('Cannot connect to the Ethereum network.');
+  if (typeof web3 !== 'undefined') {
+    // Use injected provider from Mist or Metamask etc.
+    window.web3 = new Web3(web3.currentProvider);
+    if (callWhenReady) {
+      callWhenReady();
+    }
   } else {
-    this.hideStatus();
-    this.hideGui();
-    this.hideUpdating();
+    // Try to connect to a locally running Ethereum node
+    var providerURL = 'http://localhost:8545';
+    var provider = new Web3.providers.HttpProvider(providerURL);
+    // This will complain about synchronous requests on the main thread being
+    // deprecated, but we don't seem to have an asynchronous replacement yet.
+    if (provider.isConnected()) {
+      window.web3 = new Web3(provider);
+      if (callWhenReady) {
+        callWhenReady();
+      }
+    } else {
+      Shared.stopRunning('Cannot connect to the Ethereum network.');
+    }
   }
 };

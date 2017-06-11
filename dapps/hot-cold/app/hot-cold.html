@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Hot/Cold</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
           rel="stylesheet">
     <link href="../../shared/css/bootstrap.css" rel="stylesheet">
@@ -16,7 +16,8 @@
 
     <div id="status"></div>
 
-    <div id="representation">
+    <div id="representation"
+         class="d-flex align-items-center justify-content-center">
       <div id="hot-cold">
         <h1 id="temperatures">
           <span id="hot">hot</span><br/>
@@ -24,30 +25,30 @@
       </div>
     </div>
 
-    <!-- Here so we don't have to try to click outside the represenation. -->
-    <div id="background" onclick="Shared.showGui(event, -1)"></div>
-
-    <div id="hot-cold-gui" class="gui">
-      <h2>Swap Temperatures</h2>
-      <form>
-        <div class="form-group">
-          <label for="gui-gas-account">Account to pay gas from</label>
-          <select class="form-control" id="gui-gas-account"></select>
-        </div>
-        <button type="button" class="btn btn-primary"
-                onClick="HotCold.userSelectedUpdate()">Update</button>
-        &nbsp;
-        <button type="button" class="btn btn-default"
-                onClick="HotCold.userSelectedCancel()">Cancel</button>
-      </form>
-      <br>
-      <p><b><i>Note that swapping the temperatures will cost
-            gas!</i></b></p>
-      <p>To swap the temperatures, press &quot;Update&quot;.</p>
-      <p>Otherwise, just press &quot;Cancel&quot;.</p>
+    <div class="gui-container d-flex align-items-center justify-content-center">
+      <div id="hot-cold-gui" class="gui">
+        <h2>Swap Temperatures</h2>
+        <form>
+          <div class="form-group">
+            <label for="gui-gas-account">Account to pay gas from</label>
+            <select class="form-control" id="gui-gas-account"></select>
+          </div>
+          <button type="submit" class="btn btn-primary" id="gui-update"
+                  onClick="HotCold.userSelectedUpdate()">Update</button>
+          &nbsp;
+          <button type="button" class="btn btn-default" id="gui-cancel"
+                  onClick="HotCold.userSelectedCancel()">Cancel</button>
+        </form>
+        <br>
+        <p><b><i>Note that swapping the temperatures will cost
+              gas!</i></b></p>
+        <p>To swap the temperatures, press &quot;Update&quot;.</p>
+        <p>Otherwise, just press &quot;Cancel&quot;.</p>
+      </div>
     </div>
 
     <script src="../../shared/js/jquery.js"></script>
+    <script src="../../shared/js/tether.js"></script>
     <script src="../../shared/js/bootstrap.js"></script>
     <script src="../../shared/js/web3.js"></script>
     <script src="../../shared/js/shared.js"></script>

@@ -26,7 +26,7 @@ $(BUILD_DIR)/app.js: $(JS)
 	cat $(JS) > $(BUILD_DIR)/app.js
 
 $(BUILD_DIR)/app.css: $(CSS)
-	cat $(HTML) > $(BUILD_DIR)/app.css
+	cat $(CSS) > $(BUILD_DIR)/app.css
 
 .PHONY: clean
 
