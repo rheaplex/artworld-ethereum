@@ -43,19 +43,23 @@ IsArt.setStatusRepresentation = function (status) {
 // Contract manipulation GUI
 ////////////////////////////////////////////////////////////////////////////////
 
-IsArt.guiDisplayHook = function () {};
+IsArt.guiDisplayHook = function () {
+  $('#myInputID').focus();
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // GUI user actions
 ////////////////////////////////////////////////////////////////////////////////
 
 IsArt.userSelectedUpdate = function () {
+  event.stopPropagation();
   this.commitNetworkToggle();
   Shared.showUpdating();
   Shared.hideGui();
 };
 
 IsArt.userSelectedCancel = function () {
+  event.stopPropagation();
   Shared.hideGui();
 };
 
@@ -63,40 +67,34 @@ IsArt.userSelectedCancel = function () {
 // Main Program Lifecycle
 ////////////////////////////////////////////////////////////////////////////////
 
-IsArt.connectToWeb3 = function () {
-  if (typeof web3 !== 'undefined') {
-    // Use current provider
-    window.web3 = new Web3(web3.currentProvider);
-  } else {
-    console.log('No web3!');
-    var provider = new Web3.providers.HttpProvider("http://localhost:8545");
-    window.web3 = new Web3(provider);
-  }
-};
-
 $(window).on('load', function () {
-  IsArt.connectToWeb3();
-  Shared.init(IsArt.guiDisplayHook);
-  IsArt.contract = web3.eth.contract(contract_data.abi).at(
-    contract_data.address
-  );
-  IsArt.filter = IsArt.contract.Status(
-    {},
-    function(error, result) {
-      if (! error) {
-        var status = result.args.is_art;
-        IsArt.setStatusRepresentation(status);
-        // Hide updating when tx is mined.
-        // Any update will do this,
-        // so it's not ideal.
-        // But it's better than nothing.
-        Shared.hideUpdating();
+  Shared.init(IsArt.guiDisplayHook, function () {
+    IsArt.contract = web3.eth.contract(contract_data.abi).at(
+      contract_data.address
+    );
+    IsArt.filter = IsArt.contract.Status(
+      {},
+      function(error, result) {
+        if (! error) {
+          var status = result.args.is_art;
+          IsArt.setStatusRepresentation(status);
+          // Hide updating when tx is mined.
+          // Any update will do this,
+          // so it's not ideal.
+          // But it's better than nothing.
+          Shared.hideUpdating();
+        }
       }
-    }
-  );
-  IsArt.contract.is_art.call(function (err, value) {
-    if (! err) {
-      IsArt.setStatusRepresentation(value);
-    }
+    );
+    Shared.showRepresentation();
+    $('.gui-container').click(function(event) {
+      event.stopPropagation();
+      Shared.showGui(event, -1);
+    });
+    IsArt.contract.is_art.call(function (err, value) {
+      if (! err) {
+        IsArt.setStatusRepresentation(value);
+      }
+    });
   });
 });
