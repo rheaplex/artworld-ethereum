@@ -5,56 +5,34 @@ Ethereum art projects.
 
 See dapps/ for project sources.
 
-truffle-meteor-build is a build helper script for dapps.
-
 See tokens/ for token details.
 
-Dependencies
-------------
+DApps
+=====
 
-truffle, meteor, testrpc
+Exhibiting
+----------
 
-https://github.com/consensys/truffle
+Use the version in the build/ (or environments/production/build) directory of
+each project.
 
-https://www.meteor.com/
+You should serve them from a (local) web server.
 
-https://github.com/ConsenSys/eth-testrpc
+They work with MetaMask:
 
-Running Locally
----------------
+https://metamask.io/
 
-In one terminal window, start testrpc:
+Or in Mist:
 
-    testrpc
+https://github.com/ethereum/mist
 
-In another window, for e.g. is-art:
+Or in a web browser on a machine with a running standalone Ethereum
+node:
 
-    cd dapps/is-art
-    truffle deploy
-    ../../truffle-meteor-build
+https://github.com/ethereum/go-ethereum
 
-Then open the UI in a web browser
+Building
+--------
 
-    chromium environments/development/meteor/index.html
-
-If you stop testrpc you'll need to deploy again when you restart it.
-
-Deploying
----------
-
-Make sure to only run the truffle deploy command once.
-
-    geth --unlock <account id> --rpc --rpccorsdomain localhost
-
-    truffle deploy -e production
-
-    ../../truffle-meteor-build
-
-Running In A Browser In Production
-----------------------------------
-
-Better --rpccorsdomain value gratefully received.
-
-    geth --unlock <accound id> --rpc --rpccorsdomain null
-
-    chromium environments/production/meteor/index.html
+You shouldn't need to build and deploy the projects. Use the already built
+versions.
