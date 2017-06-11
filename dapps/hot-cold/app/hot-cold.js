@@ -59,12 +59,14 @@ HotCold.guiDisplayHook = function () {};
 ////////////////////////////////////////////////////////////////////////////////
 
 HotCold.userSelectedUpdate = function () {
+  event.stopPropagation();
   this.commitNetworkSwap();
   Shared.showUpdating();
   Shared.hideGui();
 };
 
 HotCold.userSelectedCancel = function () {
+  event.stopPropagation();
   Shared.hideGui();
 };
 
@@ -73,19 +75,29 @@ HotCold.userSelectedCancel = function () {
 ////////////////////////////////////////////////////////////////////////////////
 
 $(window).on('load', function () {
-  Shared.init(HotCold.guiDisplayHook);
-  HotCold.contract = Shared.instantiateContract(contract_data);
-  HotCold.filter = Shared.installFilter(HotCold.contract.Swap,
-                                      {},
-                                      function(result) {
-                                        var status = result.args;
-                                        console.log(status);
-                                        HotCold.updateRepresentation();
-                                        // Hide updating when tx is mined.
-                                        // Any update will do this,
-                                        // so it's not ideal.
-                                        // But it's better than nothing.
-                                        Shared.hideUpdating();
-                                      });
-  HotCold.updateRepresentation();
+  Shared.init(HotCold.guiDisplayHook, function () {
+    HotCold.contract = web3.eth.contract(contract_data.abi).at(
+      contract_data.address
+    );
+    HotCold.filter = HotCold.contract.Swap(
+      {},
+      function(error, result) {
+        if (! error) {
+          var status = result.args;
+          console.log(status);
+          HotCold.updateRepresentation();
+          // Hide updating when tx is mined.
+          // Any update will do this,
+          // so it's not ideal.
+          // But it's better than nothing.
+          Shared.hideUpdating();
+        }
+      });
+    Shared.showRepresentation();
+    $('.gui-container').click(function() {
+      event.stopPropagation();
+      Shared.showGui(event, -1);
+    });
+    HotCold.updateRepresentation();
+  });
 });
