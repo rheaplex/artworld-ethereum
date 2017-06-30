@@ -1,0 +1,100 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Art is...</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
+          rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="updating">Updating...</div>
+
+    <div id="status"></div>
+
+    <!-- Combine the representation and GUI containers -->
+    <div id="representation"
+      class="d-flex align-items-center justify-content-center">
+      <div id="art-is-gui" class="gui">
+        <h2>Change Definition #<span id="change-definition-index">n</h2>
+        <form>
+          <div class="form-group row">
+            <label for="change-definition-extent"
+                   class="col-3 col-form-label">Extent</label>
+            <div class="col-9">
+              <select class="form-control"
+                      id="change-definition-extent"></select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="change-definition-connection"
+                   class="col-3 col-form-label">Connection</label>
+            <div class="col-9">
+              <select class="form-control"
+                      id="change-definition-connection"></select>
+              </div>
+          </div>
+          <div class="form-group row">
+            <label for="change-definition-relation"
+                   class="col-3 col-form-label">Relation</label>
+            <div class="col-9">
+              <select class="form-control"
+                      id="change-definition-relation"></select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="change-definition-subject"
+                   class="col-3 col-form-label">Subject</label>
+            <div class="col-9">
+              <select class="form-control"
+                      id="change-definition-subject"></select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="gui-gas-account"
+                   class="col-3 col-form-label">Pay using account</label>
+            <div class="col-9">
+              <select class="form-control" id="gui-gas-account"></select>
+            </div>
+          </div>
+          <p class=".form-text"><i><b>The payment for this is
+            <span id="price">X</span> wei (plus gas)!!!</b></i></p>
+          <button id="update-button" type="button" class="btn btn-primary"
+                  onClick="ArtIsGui.userSelectedUpdate()">Update</button>
+          &nbsp;
+          <button type="button" class="btn btn-default"
+                  onClick="ArtIsGui.userSelectedCancel()">Cancel</button>
+          <div class=".form-text"><br>To pay and update the definition, press
+            &quot;Update&quot;.<br>
+            Otherwise, just press &quot;Cancel&quot;.</div>
+        </form>
+      </div>
+
+      <div id="art-is">
+        <h2>The Definition Of Art</h2>
+        <table id="definitions">
+          <tbody>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+            <tr class="definition"></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
