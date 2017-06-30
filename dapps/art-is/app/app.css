@@ -1,0 +1,38 @@
+#art-is {
+    /* Position the text vertically in a visually pleasing way */
+    padding-bottom: 48pt;
+}
+
+.definition {
+    font-size: large;
+}
+
+td:not(:first-child) {
+    padding-left: 1em;
+}
+
+.highlight {
+    background: lightblue;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: blue;
+}
+
+.theorist {
+    font-style: italic;
+    color: lightgray;
+    font-size: small;
+}
+
+#art-is-gui {
+}
+
+.hide-flex {
+    display: none !important;
+}
