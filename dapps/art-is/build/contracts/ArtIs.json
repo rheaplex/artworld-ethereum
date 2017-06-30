@@ -1,0 +1,470 @@
+{
+  "contract_name": "ArtIs",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint8"
+        }
+      ],
+      "name": "isDefIndexInRange",
+      "outputs": [
+        {
+          "name": "result",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "defValue",
+          "type": "uint8"
+        }
+      ],
+      "name": "isDefValueInRange",
+      "outputs": [
+        {
+          "name": "result",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint8"
+        },
+        {
+          "name": "extent",
+          "type": "uint8"
+        },
+        {
+          "name": "connection",
+          "type": "uint8"
+        },
+        {
+          "name": "relation",
+          "type": "uint8"
+        },
+        {
+          "name": "subject",
+          "type": "uint8"
+        }
+      ],
+      "name": "isDefValid",
+      "outputs": [
+        {
+          "name": "result",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint8"
+        },
+        {
+          "name": "extent",
+          "type": "uint8"
+        },
+        {
+          "name": "connection",
+          "type": "uint8"
+        },
+        {
+          "name": "relation",
+          "type": "uint8"
+        },
+        {
+          "name": "subject",
+          "type": "uint8"
+        }
+      ],
+      "name": "setDefinition",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "drain",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "definitions",
+      "outputs": [
+        {
+          "name": "theorist",
+          "type": "address"
+        },
+        {
+          "name": "extent",
+          "type": "uint8"
+        },
+        {
+          "name": "connection",
+          "type": "uint8"
+        },
+        {
+          "name": "relation",
+          "type": "uint8"
+        },
+        {
+          "name": "subject",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "theorist",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "index",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "name": "extent",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "name": "connection",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "name": "relation",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "name": "subject",
+          "type": "uint8"
+        }
+      ],
+      "name": "DefinitionChanged",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6101e0604081905260016060818152600a608052606460a0526101f460c0526103e860e0526207a12061010052620f424061012052631dcd650061014052633b9aca006101605264e8d4a510006101805266038d7ea4c680006101a052670de0b6b3a76400006101c0529091600d919083905b8281111561008d578251825591602001919060010190610072565b5b506100ae9291505b808211156100aa5760008155600101610096565b5090565b505034610000575b60005b60008054600160a060020a03191633600160a060020a03161790555b60015b15156100e357610000565b5060005b600c8160ff161015610251576040805160a081018252600054600160a060020a0316815260ff60018401811660208301526003840181169282019290925290606082019060029084160460040160ff16815260200160038360ff168115610000570460050160ff16815250600d8260ff16600c811015610000570160005b5081518154602084015160408501516060860151608090960151600160a060020a0319909316600160a060020a039094169390931760a060020a60ff0219167401000000000000000000000000000000000000000060ff928316021760a860020a60ff0219167501000000000000000000000000000000000000000000938216939093029290921760b060020a60ff021916760100000000000000000000000000000000000000000000948316949094029390931760b860020a60ff0219167701000000000000000000000000000000000000000000000091909316029190911790555b6001016100e7565b5b505b61053b806102636000396000f300606060405236156100675763ffffffff60e060020a6000350416632540424b811461006c57806333dfe91d146100935780633e709982146100ba5780634e705549146100f95780639890220b14610121578063f2fde38b14610130578063fd51fc4c1461014b575b610000565b346100005761007f60ff60043516610198565b604080519115158252519081900360200190f35b346100005761007f60ff600435166101a5565b604080519115158252519081900360200190f35b346100005761007f60ff600435811690602435811690604435811690606435811690608435166101c7565b604080519115158252519081900360200190f35b61011f60ff60043581169060243581169060443581169060643581169060843516610239565b005b346100005761011f61041b565b005b346100005761011f600160a060020a036004351661046e565b005b346100005761015b6004356104c6565b60408051600160a060020a03909616865260ff94851660208701529284168584015290831660608501529091166080830152519081900360a00190f35b600c60ff8216105b919050565b600060008260ff16101580156101bf5750600f8260ff1611155b90505b919050565b600060ff82168190116101d987610198565b80156101e8575060018360ff16115b80156101f857506101f8866101a5565b5b80156102095750610209856101a5565b5b801561021a575061021a846101a5565b5b801561022b575061022b836101a5565b5b91505b5095945050505050565b600061024886868686866101c7565b151561025357610000565b60018660ff16600c811015610000570160005b5054341461027357610000565b503380600d60ff8816600c811015610000570160005b50805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039290921691909117905584600d60ff8816600c811015610000570160005b50805474ff0000000000000000000000000000000000000000191660a060020a60ff938416021790558490600d908816600c811015610000570160005b50805475ff000000000000000000000000000000000000000000191660a860020a60ff938416021790558390600d908816600c811015610000570160005b50805476ff00000000000000000000000000000000000000000000191660b060020a60ff938416021790558290600d908816600c811015610000570160005b50805477ff0000000000000000000000000000000000000000000000191660b860020a60ff9384160217905560408051600160a060020a03841681528883166020820152878316818301528683166060820152858316608082015291841660a0830152517f62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd39160c0908290030190a15b505050505050565b60005433600160a060020a03908116911614156100675760008054604051600160a060020a0391821692309092163180156108fc0292909190818181858888f193505050505061046b565b610000565b5b565b60005433600160a060020a0390811691161480156104945750600160a060020a03811615155b156104c2576000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b50565b600d81600c811015610000570160005b5054600160a060020a038116915060ff60a060020a820481169160a860020a810482169160b060020a820481169160b860020a900416855600a165627a7a72305820199d3c4925c1adda14434af329647784ef55e4026072407b292be6718317a2a20029",
+  "networks": {
+    "1495428897758": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x72623f010e7d8e70f82fc59cdb099aeb7a6b9e2a",
+      "updated_at": 1495605635311
+    },
+    "1496003260689": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x8ddca9c68c0e6b03743ac2fc525100efa3829cb3",
+      "updated_at": 1496004130448
+    },
+    "1497211278675": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x939009bd6d4a825990f4b68879250463389c256b",
+      "updated_at": 1497211317014
+    },
+    "1498701577587": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x809e5a15c9f00de6a6b5a05eea0d5c87c5bf9ead",
+      "updated_at": 1498701596034
+    },
+    "1498791874742": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x9ae7b068a4774a5013545476965f6ee02a6503bf",
+      "updated_at": 1498795480538
+    },
+    "1498795610388": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc09ea835cc364019686d8048efc5d7d0c9e0f1b0",
+      "updated_at": 1498795618873
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1498795618873
+}
