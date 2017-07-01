@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-pragma solidity ^0.4.4;
+pragma solidity ^0.4.8;
 
 
 contract owned {
@@ -104,8 +104,6 @@ contract ArtIs is owned {
     {
         bool subjectIsSet = subject > 0;
         result = isDefIndexInRange(index)
-            // Make sure at least the subject is specified
-            && (subject > 1)
             && isDefValueInRange(extent)
             && isDefValueInRange(connection)
             && isDefValueInRange(relation)
@@ -146,7 +144,12 @@ contract ArtIs is owned {
 
     function drain() public {
         if (msg.sender == owner) {
-            owner.send(this.balance);
+            if (this.balance > 0) {
+                // Transfer is 0.4.10
+                if (! owner.send(this.balance)) {
+                    throw;
+                }
+            }
         } else {
             throw;
         }

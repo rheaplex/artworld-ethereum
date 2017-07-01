@@ -14731,7 +14731,7 @@ window.__contracts__ = {
       "type": "event"
     }
   ],
-  "unlinked_binary": "0x6101e0604081905260016060818152600a608052606460a0526101f460c0526103e860e0526207a12061010052620f424061012052631dcd650061014052633b9aca006101605264e8d4a510006101805266038d7ea4c680006101a052670de0b6b3a76400006101c0529091600d919083905b8281111561008d578251825591602001919060010190610072565b5b506100ae9291505b808211156100aa5760008155600101610096565b5090565b505034610000575b60005b60008054600160a060020a03191633600160a060020a03161790555b60015b15156100e357610000565b5060005b600c8160ff161015610251576040805160a081018252600054600160a060020a0316815260ff60018401811660208301526003840181169282019290925290606082019060029084160460040160ff16815260200160038360ff168115610000570460050160ff16815250600d8260ff16600c811015610000570160005b5081518154602084015160408501516060860151608090960151600160a060020a0319909316600160a060020a039094169390931760a060020a60ff0219167401000000000000000000000000000000000000000060ff928316021760a860020a60ff0219167501000000000000000000000000000000000000000000938216939093029290921760b060020a60ff021916760100000000000000000000000000000000000000000000948316949094029390931760b860020a60ff0219167701000000000000000000000000000000000000000000000091909316029190911790555b6001016100e7565b5b505b61053b806102636000396000f300606060405236156100675763ffffffff60e060020a6000350416632540424b811461006c57806333dfe91d146100935780633e709982146100ba5780634e705549146100f95780639890220b14610121578063f2fde38b14610130578063fd51fc4c1461014b575b610000565b346100005761007f60ff60043516610198565b604080519115158252519081900360200190f35b346100005761007f60ff600435166101a5565b604080519115158252519081900360200190f35b346100005761007f60ff600435811690602435811690604435811690606435811690608435166101c7565b604080519115158252519081900360200190f35b61011f60ff60043581169060243581169060443581169060643581169060843516610239565b005b346100005761011f61041b565b005b346100005761011f600160a060020a036004351661046e565b005b346100005761015b6004356104c6565b60408051600160a060020a03909616865260ff94851660208701529284168584015290831660608501529091166080830152519081900360a00190f35b600c60ff8216105b919050565b600060008260ff16101580156101bf5750600f8260ff1611155b90505b919050565b600060ff82168190116101d987610198565b80156101e8575060018360ff16115b80156101f857506101f8866101a5565b5b80156102095750610209856101a5565b5b801561021a575061021a846101a5565b5b801561022b575061022b836101a5565b5b91505b5095945050505050565b600061024886868686866101c7565b151561025357610000565b60018660ff16600c811015610000570160005b5054341461027357610000565b503380600d60ff8816600c811015610000570160005b50805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039290921691909117905584600d60ff8816600c811015610000570160005b50805474ff0000000000000000000000000000000000000000191660a060020a60ff938416021790558490600d908816600c811015610000570160005b50805475ff000000000000000000000000000000000000000000191660a860020a60ff938416021790558390600d908816600c811015610000570160005b50805476ff00000000000000000000000000000000000000000000191660b060020a60ff938416021790558290600d908816600c811015610000570160005b50805477ff0000000000000000000000000000000000000000000000191660b860020a60ff9384160217905560408051600160a060020a03841681528883166020820152878316818301528683166060820152858316608082015291841660a0830152517f62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd39160c0908290030190a15b505050505050565b60005433600160a060020a03908116911614156100675760008054604051600160a060020a0391821692309092163180156108fc0292909190818181858888f193505050505061046b565b610000565b5b565b60005433600160a060020a0390811691161480156104945750600160a060020a03811615155b156104c2576000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b50565b600d81600c811015610000570160005b5054600160a060020a038116915060ff60a060020a820481169160a860020a810482169160b060020a820481169160b860020a900416855600a165627a7a723058200c095a4afb19fa0c46813ed4070ac39af98282cd31f2ca998f26de02c8ae6c960029",
+  "unlinked_binary": "0x6101e0604081905260016060818152600a608052606460a0526101f460c0526103e860e0526207a12061010052620f424061012052631dcd650061014052633b9aca006101605264e8d4a510006101805266038d7ea4c680006101a052670de0b6b3a76400006101c0529091600d919083905b8281111561008d578251825591602001919060010190610072565b5b506100ae9291505b808211156100aa5760008155600101610096565b5090565b505034610000575b60005b60008054600160a060020a03191633600160a060020a03161790555b60015b15156100e357610000565b5060005b600c8160ff161015610251576040805160a081018252600054600160a060020a0316815260ff60018401811660208301526003840181169282019290925290606082019060029084160460040160ff16815260200160038360ff168115610000570460050160ff16815250600d8260ff16600c811015610000570160005b5081518154602084015160408501516060860151608090960151600160a060020a0319909316600160a060020a039094169390931760a060020a60ff0219167401000000000000000000000000000000000000000060ff928316021760a860020a60ff0219167501000000000000000000000000000000000000000000938216939093029290921760b060020a60ff021916760100000000000000000000000000000000000000000000948316949094029390931760b860020a60ff0219167701000000000000000000000000000000000000000000000091909316029190911790555b6001016100e7565b5b505b61054a806102636000396000f300606060405236156100675763ffffffff60e060020a6000350416632540424b811461006c57806333dfe91d146100935780633e709982146100ba5780634e705549146100f95780639890220b14610121578063f2fde38b14610130578063fd51fc4c1461014b575b610000565b346100005761007f60ff60043516610198565b604080519115158252519081900360200190f35b346100005761007f60ff600435166101a5565b604080519115158252519081900360200190f35b346100005761007f60ff600435811690602435811690604435811690606435811690608435166101c7565b604080519115158252519081900360200190f35b61011f60ff6004358116906024358116906044358116906064358116906084351661022a565b005b346100005761011f61040c565b005b346100005761011f600160a060020a036004351661047d565b005b346100005761015b6004356104d5565b60408051600160a060020a03909616865260ff94851660208701529284168584015290831660608501529091166080830152519081900360a00190f35b600c60ff8216105b919050565b600060008260ff16101580156101bf5750600f8260ff1611155b90505b919050565b600060ff82168190116101d987610198565b80156101e957506101e9866101a5565b5b80156101fa57506101fa856101a5565b5b801561020b575061020b846101a5565b5b801561021c575061021c836101a5565b5b91505b5095945050505050565b600061023986868686866101c7565b151561024457610000565b60018660ff16600c811015610000570160005b5054341461026457610000565b503380600d60ff8816600c811015610000570160005b50805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a039290921691909117905584600d60ff8816600c811015610000570160005b50805474ff0000000000000000000000000000000000000000191660a060020a60ff938416021790558490600d908816600c811015610000570160005b50805475ff000000000000000000000000000000000000000000191660a860020a60ff938416021790558390600d908816600c811015610000570160005b50805476ff00000000000000000000000000000000000000000000191660b060020a60ff938416021790558290600d908816600c811015610000570160005b50805477ff0000000000000000000000000000000000000000000000191660b860020a60ff9384160217905560408051600160a060020a03841681528883166020820152878316818301528683166060820152858316608082015291841660a0830152517f62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd39160c0908290030190a15b505050505050565b60005433600160a060020a039081169116141561006757600030600160a060020a031631111561046f5760008054604051600160a060020a0391821692309092163180156108fc0292909190818181858888f19350505050151561046f57610000565b5b61047a565b610000565b5b565b60005433600160a060020a0390811691161480156104a35750600160a060020a03811615155b156104d1576000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b50565b600d81600c811015610000570160005b5054600160a060020a038116915060ff60a060020a820481169160a860020a810482169160b060020a820481169160b860020a900416855600a165627a7a72305820517bc26792bc6ff08897d58aca258fb56cfc12a33aac594d670d80d0857bb9020029",
   "networks": {
     "1495428897758": {
       "events": {
@@ -14996,10 +14996,54 @@ window.__contracts__ = {
       "links": {},
       "address": "0xc09ea835cc364019686d8048efc5d7d0c9e0f1b0",
       "updated_at": 1498795618873
+    },
+    "1498870120101": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xa42303b4c077bba1c769e580270ea4e11f8285ed",
+      "updated_at": 1498870146232
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1498797680180
+  "updated_at": 1498882672498
 },
   "Migrations": {
   "contract_name": "Migrations",
@@ -15099,10 +15143,16 @@ window.__contracts__ = {
       "links": {},
       "address": "0xd7964e7c208bcfee0f92edd71983abdd342b93b5",
       "updated_at": 1498795618872
+    },
+    "1498870120101": {
+      "events": {},
+      "links": {},
+      "address": "0x92806c99d321a160dfcaefc8a8be979ad0ed78c8",
+      "updated_at": 1498870146232
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1498795618872
+  "updated_at": 1498870146232
 },
   "owned": {
   "contract_name": "owned",
@@ -15113,10 +15163,10 @@ window.__contracts__ = {
       "type": "constructor"
     }
   ],
-  "unlinked_binary": "0x6060604052346000575b60008054600160a060020a03191633600160a060020a03161790555b5b60358060336000396000f30060606040525b60005600a165627a7a723058200278783566c880dd55e8e1fa9e323a8cbe71dd4c3edc57f78b6c84b892a1a4280029",
+  "unlinked_binary": "0x6060604052346000575b60008054600160a060020a03191633600160a060020a03161790555b5b60358060336000396000f30060606040525b60005600a165627a7a72305820421973b036ee682c10943ee10495ca36921b4bdfe44d5471219e0e031be762250029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1498797680181
+  "updated_at": 1498882672498
 }
 };
 
@@ -41746,6 +41796,11 @@ Shared.bytesToString = function (value) {
 // GUI Account display
 ////////////////////////////////////////////////////////////////////////////////
 
+Shared.setGasAccountChangedCallback = function (callback, callOnCreation) {
+  this.gas_account_changed_callback = callback;
+  this.gas_account_changed_callback_call_on_creation = callOnCreation;
+};
+
 Shared.selectedGasAccount = function () {
   return $('#gui-gas-account').val();
 };
@@ -41758,6 +41813,12 @@ Shared.makeGasAccountList = function (accounts) {
     select.append($("<option></option>")
                   .attr("value", account)
                   .text(index + ": " + account));
+  }
+  if (this.gas_account_changed_callback) {
+    select.change(this.gas_account_changed_callback);
+  }
+  if (this.gas_account_changed_callback_call_on_creation) {
+    this.gas_account_changed_callback();
   }
 };
 
@@ -41888,7 +41949,7 @@ Shared.init = function (_gui_display_hook, callWhenReady) {
 // The main contract behaviour object
 ////////////////////////////////////////////////////////////////////////////////
 
-var ArtIsGui = {};
+const ArtIsGui = {};
 
 ArtIsGui.NUM_DESCS = 12;
 
@@ -41910,7 +41971,7 @@ ArtIsGui.PRICES = [
 ArtIsGui.indexes = [1,2,3,4,5,6,7,8,9,10,11,12];
 
 ArtIsGui.extent = [
-  "",
+  "what it is because",
   "good because it is", "bad because it is",
   "moral because it is", "immoral because it is",
   "creepy because it is",
@@ -41920,8 +41981,8 @@ ArtIsGui.extent = [
 ];
 
 ArtIsGui.connection = [
-  "",
   "not",
+  "universally",
   "ontologically", "epistemologically", "logically",
   "psychologically",
   "childishly", "sophisticatedly", "conservatively",
@@ -41931,7 +41992,7 @@ ArtIsGui.connection = [
 ];
 
 ArtIsGui.relation = [
-  "",
+  "engaging with",
   "reliant on", "derivative of", "determined by", "defined by",
   "embracing of",
   "reacting to", "commenting on", "embracing", "resolving",
@@ -41941,10 +42002,10 @@ ArtIsGui.relation = [
 ];
 
 ArtIsGui.subject = [
-  "",
+  "specificity",
   "techne", "society", "politics", "materiality", "identity",
   "emotion", "critique", "aesthetics", "god", "satan",
-  "beauty", "horror", "desire", "critique", "revolution"
+  "beauty", "horror", "desire", "critique", "universality"
 ];
 
 ArtIsGui.options = [ArtIsGui.extent, ArtIsGui.connection, ArtIsGui.relation,
@@ -41959,33 +42020,30 @@ ArtIsGui.selects = ["#change-definition-extent",
 // Contract manipulation GUI
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.setSelectOptions = function(selectName, options) {
-  var $sel = $(selectName);
+ArtIsGui.setSelectOptions = function (selectName, options) {
+  const $sel = $(selectName);
   $sel.empty();
-  var index = 0;
-  options.forEach(function(key) {
-    if (key == "") {
-      key = "—";
-    }
+  let index = 0;
+  options.forEach(key => {
     $sel.append($("<option></option>")
                 .attr("value", index).html([key]));
     index++;
   });
 };
 
-ArtIsGui.populateSelects = function() {
-  for(var i = 0; i < this.selects.length; i++) {
+ArtIsGui.populateSelects = function () {
+  for(let i = 0; i < this.selects.length; i++) {
     this.setSelectOptions(this.selects[i], this.options[i]);
   }
 };
 
-ArtIsGui.setSelect = function(select, num, index) {
+ArtIsGui.setSelect = function (select, num, index) {
   $(select + " :nth-child(" + (parseInt(num[index], 16) + 1) + ")")
     .prop('selected', true);
 };
 
-ArtIsGui.setSelectsFromNum = function(num) {
-  for(var i = 0; i < this.selects.length; i++) {
+ArtIsGui.setSelectsFromNum = function (num) {
+  for(let i = 0; i < this.selects.length; i++) {
     this.set_select(this.selects[i], num, 3 + (i * 2));
   }
 };
@@ -41994,50 +42052,43 @@ ArtIsGui.setSelectsFromNum = function(num) {
 // UI state generation and validation
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.is_valid_definition = function(index) {
-  var result = true;
-  // Just make sure one of the last options has been chosen
-  var i = this.selects.length - 1;
-  //for(var i = 0; i < selects.length; i++) {
-  if (parseInt($(this.selects[i]).val(), 10) == 0) {
-    result = false;
-    //break;
-  }
-  //}
-  return result;
-};
-
 ArtIsGui.price_to_set_description = function (index) {
   return this.PRICES[index];
 };
 
-ArtIsGui.selectedAccountCanAffordPrice = function (index, callback) {
-  var price = this.price_to_set_description(index);
-  var selectedAccount = $('#gui-gas-account').val();
-  web3.eth.getBalance(selectedAccount, function (error, accountBalance) {
-    // The gas will always be more than this, but this is what we are asking
-    callback(error, price <= accountBalance);
+ArtIsGui.selectedAccountCanAffordPrice = function(index, callback) {
+  // EstimateGas hates us, so don't use it.
+  web3.eth.getGasPrice((error, gasPrice) => {
+    // Vague estimate from testrpc
+    const estimate = gasPrice.toNumber() * 51630;
+    const price = this.price_to_set_description(index);
+    const totalCost = estimate + price;
+    const selectedAccount = Shared.selectedGasAccount();
+    web3.eth.getBalance(selectedAccount, (error, accountBalance) =>
+                        callback(error, totalCost <= accountBalance));
   });
-}
+};
 
-ArtIsGui.update_change_definition_ui = function(index) {
-  var self = this;
+ArtIsGui.update_change_definition_ui = function (index) {
   $('#update-button').prop('disabled', true);
-  this.contract.definitions.call(index).then(function(description) {
+  $('#price-warning').html('&nbsp;');
+  this.contract.definitions.call(index).then(description => {
     // description 0 is the theorist
     $("#change-definition-extent").val(description[1].toNumber());
     $("#change-definition-connection").val(description[2].toNumber());
     $("#change-definition-relation").val(description[3].toNumber());
     $("#change-definition-subject").val(description[4].toNumber());
-    var price = self.price_to_set_description(index);
+    const price = this.price_to_set_description(index);
     $("#price").text(price);
-    self.selectedAccountCanAffordPrice(index, function (error, can) {
+    this.selectedAccountCanAffordPrice(index, (error, can) => {
       if ((! error) && can) {
         $('#update-button').prop('disabled', false);
       } else {
-        // TODO: Tell the user.
+        $('#price-warning').text('Selected account has insufficient funds.');
       }
     });
+    // http://bluebirdjs.com/docs/warning-explanations.html#warning-a-promise-was-created-in-a-handler-but-was-not-returned-from-it
+    return null;
   });
 };
 
@@ -42045,10 +42096,10 @@ ArtIsGui.update_change_definition_ui = function(index) {
 // Displaying definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.formatValues = function(values) {
-  var desc = "";
-  this.options.forEach(function (options, index) {
-    var value = values[index];
+ArtIsGui.formatValues = function (values) {
+  let desc = "";
+  this.options.forEach((options, index) => {
+    const value = values[index];
     if (value != 0) {
       desc += options[value] + " ";
     }
@@ -42062,14 +42113,13 @@ ArtIsGui.isDescNonzero = function (description) {
 };
 
 ArtIsGui.displayDescription = function (index) {
-  var self = this;
-  this.contract.definitions.call(index).then(function(description) {
-    var displayIndex = index + 1;
-    var row = "<th scope=\"row\">" + displayIndex + "</th>";
-    if(self.isDescNonzero(description)) {
-      var theorist = description[0];
-      var values = description.slice(1);
-      row += "<td>Art is " + self.formatValues(values)
+  this.contract.definitions.call(index).then(description => {
+    const displayIndex = index + 1;
+    let row = "<th scope=\"row\">" + displayIndex + "</th>";
+    if(this.isDescNonzero(description)) {
+      const theorist = description[0];
+      const values = description.slice(1);
+      row += "<td>Art is " + this.formatValues(values)
         + ".</td><td><span class=\"theorist\">" + theorist
         + "</span></td>";
     } else {
@@ -42079,8 +42129,8 @@ ArtIsGui.displayDescription = function (index) {
   });
 };
 
-ArtIsGui.describeArt = function() {
-  for(var i = 0; i < this.NUM_DESCS; i++) {
+ArtIsGui.describeArt = function () {
+  for(let i = 0; i < this.NUM_DESCS; i++) {
     this.displayDescription(i);
   }
 };
@@ -42089,22 +42139,19 @@ ArtIsGui.describeArt = function() {
 // Changing (and watching for changes of) the definitions' states
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.changeDefinition = function() {
-  var index = this.editing_definition_index;
-  if(this.is_valid_definition(index)) {
-    var extent = $("#change-definition-extent").val();
-    var connection = $("#change-definition-connection").val();
-    var relation = $("#change-definition-relation").val();
-    var subject = $("#change-definition-subject").val();
-    var account = Shared.selectedGasAccount();
-    var price = this.price_to_set_description(index);
-    ArtIsGui.contract.setDefinition(index,
-                                    extent, connection, relation, subject,
-                                    {from: account, value: price})
-      .then(function() { Shared.hideUpdating(); });
-  } else {
-    alert("Please select an option for each part of the definition.");
-  }
+ArtIsGui.changeDefinition = function () {
+  const index = this.editing_definition_index;
+  const extent = $("#change-definition-extent").val();
+  const connection = $("#change-definition-connection").val();
+  const relation = $("#change-definition-relation").val();
+  const subject = $("#change-definition-subject").val();
+  const account = Shared.selectedGasAccount();
+  const price = this.price_to_set_description(index);
+  this.contract.setDefinition(index,
+                              extent, connection, relation, subject,
+                              {from: account, value: price})
+    .catch(e => alert ("Something went wrong. You probably didn't have enough Ether in your account (despite what the dialog may have told you)."))
+    .finally(() => Shared.hideUpdating());
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42115,9 +42162,13 @@ ArtIsGui.changeDefinition = function() {
 
 ArtIsGui.guiDisplayHook = function () {
   $("#art-is").hide();
-  var index = ArtIsGui.editing_definition_index;
+  const index = ArtIsGui.editing_definition_index;
   $('#change-definition-index').text(index + 1);
   ArtIsGui.update_change_definition_ui(index);
+};
+
+ArtIsGui.gasAccountChanged = function () {
+  account = Shared.selectedGasAccount();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42142,20 +42193,19 @@ ArtIsGui.userSelectedCancel = function () {
 ////////////////////////////////////////////////////////////////////////////////
 
 ArtIsGui.installInteractions = function () {
-  var self = this;
   $("#definitions tbody tr").hover(
-    function(e){
-      var index = $(e.currentTarget).index();
+    e => {
+      const index = $(e.currentTarget).index();
       $(".definition").eq(index).addClass("highlight");
     },
-    function(e){
-      var index = $(e.currentTarget).index();
+    e => {
+      const index = $(e.currentTarget).index();
       $(".definition").eq(index).removeClass("highlight");
     });
   $("#definitions tbody tr").click(
-    function(e) {
-      var index = 0 + $(e.currentTarget).index();
-      self.editing_definition_index = index;
+    e => {
+      const index = 0 + $(e.currentTarget).index();
+      this.editing_definition_index = index;
       Shared.showGui();
     });
 };
@@ -42166,22 +42216,23 @@ ArtIsGui.connectToWeb3 = function () {
     window.web3 = new Web3(web3.currentProvider);
   } else {
     console.log('No web3 provided. Making one.');
-    var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+    const provider = new Web3.providers.HttpProvider("http://localhost:8545");
     window.web3 = new Web3(provider);
   }
 };
 
-$(window).on('load', function () {
-  ArtIsGui.connectToWeb3();
-  Shared.init(ArtIsGui.guiDisplayHook);
-  ArtIsGui.populateSelects();
-  ArtIsGui.installInteractions();
-  ArtIs.deployed().then(function(instance) {
-    ArtIsGui.contract = instance;
-    ArtIsGui.contract
-      .DefinitionChanged({}, function(error, result) {
+ArtIsGui.initialise = function () {
+  this.connectToWeb3();
+  Shared.init(this.guiDisplayHook);
+  this.populateSelects();
+  this.installInteractions();
+  Shared.setGasAccountChangedCallback(this.gasAccountChanged, true);
+  ArtIs.deployed().then(instance => {
+    this.contract = instance;
+    this.contract
+      .DefinitionChanged({}, (error, result) => {
         if (! error) {
-          ArtIsGui.describeArt()
+          this.describeArt()
           // Hide updating when tx is mined.
           // Any update will do this,
           // so it's not ideal.
@@ -42189,10 +42240,14 @@ $(window).on('load', function () {
           Shared.hideUpdating();
         }
       });
-    ArtIsGui.describeArt();
+    this.describeArt();
     // Silence "a promise was created in a handler but was not returned from it"
     // resulting from all the promises created in describeArt().
     // http://bluebirdjs.com/docs/warning-explanations.html
     return null;
   });
+};
+
+$(window).on('load', () => {
+  ArtIsGui.initialise();
 });
