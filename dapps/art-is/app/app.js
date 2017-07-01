@@ -19,7 +19,7 @@
 // The main contract behaviour object
 ////////////////////////////////////////////////////////////////////////////////
 
-var ArtIsGui = {};
+const ArtIsGui = {};
 
 ArtIsGui.NUM_DESCS = 12;
 
@@ -41,7 +41,7 @@ ArtIsGui.PRICES = [
 ArtIsGui.indexes = [1,2,3,4,5,6,7,8,9,10,11,12];
 
 ArtIsGui.extent = [
-  "",
+  "what it is because",
   "good because it is", "bad because it is",
   "moral because it is", "immoral because it is",
   "creepy because it is",
@@ -51,8 +51,8 @@ ArtIsGui.extent = [
 ];
 
 ArtIsGui.connection = [
-  "",
   "not",
+  "universally",
   "ontologically", "epistemologically", "logically",
   "psychologically",
   "childishly", "sophisticatedly", "conservatively",
@@ -62,7 +62,7 @@ ArtIsGui.connection = [
 ];
 
 ArtIsGui.relation = [
-  "",
+  "engaging with",
   "reliant on", "derivative of", "determined by", "defined by",
   "embracing of",
   "reacting to", "commenting on", "embracing", "resolving",
@@ -72,10 +72,10 @@ ArtIsGui.relation = [
 ];
 
 ArtIsGui.subject = [
-  "",
+  "specificity",
   "techne", "society", "politics", "materiality", "identity",
   "emotion", "critique", "aesthetics", "god", "satan",
-  "beauty", "horror", "desire", "critique", "revolution"
+  "beauty", "horror", "desire", "critique", "universality"
 ];
 
 ArtIsGui.options = [ArtIsGui.extent, ArtIsGui.connection, ArtIsGui.relation,
@@ -90,33 +90,30 @@ ArtIsGui.selects = ["#change-definition-extent",
 // Contract manipulation GUI
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.setSelectOptions = function(selectName, options) {
-  var $sel = $(selectName);
+ArtIsGui.setSelectOptions = function (selectName, options) {
+  const $sel = $(selectName);
   $sel.empty();
-  var index = 0;
-  options.forEach(function(key) {
-    if (key == "") {
-      key = "—";
-    }
+  let index = 0;
+  options.forEach(key => {
     $sel.append($("<option></option>")
                 .attr("value", index).html([key]));
     index++;
   });
 };
 
-ArtIsGui.populateSelects = function() {
-  for(var i = 0; i < this.selects.length; i++) {
+ArtIsGui.populateSelects = function () {
+  for(let i = 0; i < this.selects.length; i++) {
     this.setSelectOptions(this.selects[i], this.options[i]);
   }
 };
 
-ArtIsGui.setSelect = function(select, num, index) {
+ArtIsGui.setSelect = function (select, num, index) {
   $(select + " :nth-child(" + (parseInt(num[index], 16) + 1) + ")")
     .prop('selected', true);
 };
 
-ArtIsGui.setSelectsFromNum = function(num) {
-  for(var i = 0; i < this.selects.length; i++) {
+ArtIsGui.setSelectsFromNum = function (num) {
+  for(let i = 0; i < this.selects.length; i++) {
     this.set_select(this.selects[i], num, 3 + (i * 2));
   }
 };
@@ -125,50 +122,43 @@ ArtIsGui.setSelectsFromNum = function(num) {
 // UI state generation and validation
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.is_valid_definition = function(index) {
-  var result = true;
-  // Just make sure one of the last options has been chosen
-  var i = this.selects.length - 1;
-  //for(var i = 0; i < selects.length; i++) {
-  if (parseInt($(this.selects[i]).val(), 10) == 0) {
-    result = false;
-    //break;
-  }
-  //}
-  return result;
-};
-
 ArtIsGui.price_to_set_description = function (index) {
   return this.PRICES[index];
 };
 
-ArtIsGui.selectedAccountCanAffordPrice = function (index, callback) {
-  var price = this.price_to_set_description(index);
-  var selectedAccount = $('#gui-gas-account').val();
-  web3.eth.getBalance(selectedAccount, function (error, accountBalance) {
-    // The gas will always be more than this, but this is what we are asking
-    callback(error, price <= accountBalance);
+ArtIsGui.selectedAccountCanAffordPrice = function(index, callback) {
+  // EstimateGas hates us, so don't use it.
+  web3.eth.getGasPrice((error, gasPrice) => {
+    // Vague estimate from testrpc
+    const estimate = gasPrice.toNumber() * 51630;
+    const price = this.price_to_set_description(index);
+    const totalCost = estimate + price;
+    const selectedAccount = Shared.selectedGasAccount();
+    web3.eth.getBalance(selectedAccount, (error, accountBalance) =>
+                        callback(error, totalCost <= accountBalance));
   });
-}
+};
 
-ArtIsGui.update_change_definition_ui = function(index) {
-  var self = this;
+ArtIsGui.update_change_definition_ui = function (index) {
   $('#update-button').prop('disabled', true);
-  this.contract.definitions.call(index).then(function(description) {
+  $('#price-warning').html('&nbsp;');
+  this.contract.definitions.call(index).then(description => {
     // description 0 is the theorist
     $("#change-definition-extent").val(description[1].toNumber());
     $("#change-definition-connection").val(description[2].toNumber());
     $("#change-definition-relation").val(description[3].toNumber());
     $("#change-definition-subject").val(description[4].toNumber());
-    var price = self.price_to_set_description(index);
+    const price = this.price_to_set_description(index);
     $("#price").text(price);
-    self.selectedAccountCanAffordPrice(index, function (error, can) {
+    this.selectedAccountCanAffordPrice(index, (error, can) => {
       if ((! error) && can) {
         $('#update-button').prop('disabled', false);
       } else {
-        // TODO: Tell the user.
+        $('#price-warning').text('Selected account has insufficient funds.');
       }
     });
+    // http://bluebirdjs.com/docs/warning-explanations.html#warning-a-promise-was-created-in-a-handler-but-was-not-returned-from-it
+    return null;
   });
 };
 
@@ -176,10 +166,10 @@ ArtIsGui.update_change_definition_ui = function(index) {
 // Displaying definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.formatValues = function(values) {
-  var desc = "";
-  this.options.forEach(function (options, index) {
-    var value = values[index];
+ArtIsGui.formatValues = function (values) {
+  let desc = "";
+  this.options.forEach((options, index) => {
+    const value = values[index];
     if (value != 0) {
       desc += options[value] + " ";
     }
@@ -193,14 +183,13 @@ ArtIsGui.isDescNonzero = function (description) {
 };
 
 ArtIsGui.displayDescription = function (index) {
-  var self = this;
-  this.contract.definitions.call(index).then(function(description) {
-    var displayIndex = index + 1;
-    var row = "<th scope=\"row\">" + displayIndex + "</th>";
-    if(self.isDescNonzero(description)) {
-      var theorist = description[0];
-      var values = description.slice(1);
-      row += "<td>Art is " + self.formatValues(values)
+  this.contract.definitions.call(index).then(description => {
+    const displayIndex = index + 1;
+    let row = "<th scope=\"row\">" + displayIndex + "</th>";
+    if(this.isDescNonzero(description)) {
+      const theorist = description[0];
+      const values = description.slice(1);
+      row += "<td>Art is " + this.formatValues(values)
         + ".</td><td><span class=\"theorist\">" + theorist
         + "</span></td>";
     } else {
@@ -210,8 +199,8 @@ ArtIsGui.displayDescription = function (index) {
   });
 };
 
-ArtIsGui.describeArt = function() {
-  for(var i = 0; i < this.NUM_DESCS; i++) {
+ArtIsGui.describeArt = function () {
+  for(let i = 0; i < this.NUM_DESCS; i++) {
     this.displayDescription(i);
   }
 };
@@ -220,22 +209,19 @@ ArtIsGui.describeArt = function() {
 // Changing (and watching for changes of) the definitions' states
 ////////////////////////////////////////////////////////////////////////////////
 
-ArtIsGui.changeDefinition = function() {
-  var index = this.editing_definition_index;
-  if(this.is_valid_definition(index)) {
-    var extent = $("#change-definition-extent").val();
-    var connection = $("#change-definition-connection").val();
-    var relation = $("#change-definition-relation").val();
-    var subject = $("#change-definition-subject").val();
-    var account = Shared.selectedGasAccount();
-    var price = this.price_to_set_description(index);
-    ArtIsGui.contract.setDefinition(index,
-                                    extent, connection, relation, subject,
-                                    {from: account, value: price})
-      .then(function() { Shared.hideUpdating(); });
-  } else {
-    alert("Please select an option for each part of the definition.");
-  }
+ArtIsGui.changeDefinition = function () {
+  const index = this.editing_definition_index;
+  const extent = $("#change-definition-extent").val();
+  const connection = $("#change-definition-connection").val();
+  const relation = $("#change-definition-relation").val();
+  const subject = $("#change-definition-subject").val();
+  const account = Shared.selectedGasAccount();
+  const price = this.price_to_set_description(index);
+  this.contract.setDefinition(index,
+                              extent, connection, relation, subject,
+                              {from: account, value: price})
+    .catch(e => alert ("Something went wrong. You probably didn't have enough Ether in your account (despite what the dialog may have told you)."))
+    .finally(() => Shared.hideUpdating());
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -246,9 +232,13 @@ ArtIsGui.changeDefinition = function() {
 
 ArtIsGui.guiDisplayHook = function () {
   $("#art-is").hide();
-  var index = ArtIsGui.editing_definition_index;
+  const index = ArtIsGui.editing_definition_index;
   $('#change-definition-index').text(index + 1);
   ArtIsGui.update_change_definition_ui(index);
+};
+
+ArtIsGui.gasAccountChanged = function () {
+  account = Shared.selectedGasAccount();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -273,20 +263,19 @@ ArtIsGui.userSelectedCancel = function () {
 ////////////////////////////////////////////////////////////////////////////////
 
 ArtIsGui.installInteractions = function () {
-  var self = this;
   $("#definitions tbody tr").hover(
-    function(e){
-      var index = $(e.currentTarget).index();
+    e => {
+      const index = $(e.currentTarget).index();
       $(".definition").eq(index).addClass("highlight");
     },
-    function(e){
-      var index = $(e.currentTarget).index();
+    e => {
+      const index = $(e.currentTarget).index();
       $(".definition").eq(index).removeClass("highlight");
     });
   $("#definitions tbody tr").click(
-    function(e) {
-      var index = 0 + $(e.currentTarget).index();
-      self.editing_definition_index = index;
+    e => {
+      const index = 0 + $(e.currentTarget).index();
+      this.editing_definition_index = index;
       Shared.showGui();
     });
 };
@@ -297,22 +286,23 @@ ArtIsGui.connectToWeb3 = function () {
     window.web3 = new Web3(web3.currentProvider);
   } else {
     console.log('No web3 provided. Making one.');
-    var provider = new Web3.providers.HttpProvider("http://localhost:8545");
+    const provider = new Web3.providers.HttpProvider("http://localhost:8545");
     window.web3 = new Web3(provider);
   }
 };
 
-$(window).on('load', function () {
-  ArtIsGui.connectToWeb3();
-  Shared.init(ArtIsGui.guiDisplayHook);
-  ArtIsGui.populateSelects();
-  ArtIsGui.installInteractions();
-  ArtIs.deployed().then(function(instance) {
-    ArtIsGui.contract = instance;
-    ArtIsGui.contract
-      .DefinitionChanged({}, function(error, result) {
+ArtIsGui.initialise = function () {
+  this.connectToWeb3();
+  Shared.init(this.guiDisplayHook);
+  this.populateSelects();
+  this.installInteractions();
+  Shared.setGasAccountChangedCallback(this.gasAccountChanged, true);
+  ArtIs.deployed().then(instance => {
+    this.contract = instance;
+    this.contract
+      .DefinitionChanged({}, (error, result) => {
         if (! error) {
-          ArtIsGui.describeArt()
+          this.describeArt()
           // Hide updating when tx is mined.
           // Any update will do this,
           // so it's not ideal.
@@ -320,10 +310,14 @@ $(window).on('load', function () {
           Shared.hideUpdating();
         }
       });
-    ArtIsGui.describeArt();
+    this.describeArt();
     // Silence "a promise was created in a handler but was not returned from it"
     // resulting from all the promises created in describeArt().
     // http://bluebirdjs.com/docs/warning-explanations.html
     return null;
   });
+};
+
+$(window).on('load', () => {
+  ArtIsGui.initialise();
 });
