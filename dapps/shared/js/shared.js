@@ -30,6 +30,11 @@ Shared.bytesToString = function (value) {
 // GUI Account display
 ////////////////////////////////////////////////////////////////////////////////
 
+Shared.setGasAccountChangedCallback = function (callback, callOnCreation) {
+  this.gas_account_changed_callback = callback;
+  this.gas_account_changed_callback_call_on_creation = callOnCreation;
+};
+
 Shared.selectedGasAccount = function () {
   return $('#gui-gas-account').val();
 };
@@ -42,6 +47,12 @@ Shared.makeGasAccountList = function (accounts) {
     select.append($("<option></option>")
                   .attr("value", account)
                   .text(index + ": " + account));
+  }
+  if (this.gas_account_changed_callback) {
+    select.change(this.gas_account_changed_callback);
+  }
+  if (this.gas_account_changed_callback_call_on_creation) {
+    this.gas_account_changed_callback();
   }
 };
 
