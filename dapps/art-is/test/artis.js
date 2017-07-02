@@ -87,24 +87,29 @@ contract('ArtIs', (accounts) => {
         assert.notEqual(error.toString().indexOf("invalid JUMP"), -1);
     });
   });
+  it("should not allow owner to transfer ownership to zero", () => {
+    let artis;
+    return ArtIs.deployed().then(instance => {
+      return instance.owner.call();
+    }).then(result => {
+      assert.notEqual(result, 0x0);
+    });
+  });
   it("should not allow non-owner to transfer ownership", () => {
     let artis;
     return ArtIs.deployed().then(instance => {
       return instance.transferOwnership(accounts[1], {from: accounts[1]});
-    }).then(() => {
-      return ArtIs.drain({from: accounts[1]});
     }).catch(error => {
-        assert.equal(error.toString().indexOf("invalid JUMP"), -1);
+      assert.notEqual(error.toString().indexOf("invalid JUMP"), -1);
     });
   });
   it("should allow the owner to transfer ownership", () => {
     let artis;
     return ArtIs.deployed().then(instance => {
-      return instance.transferOwnership(accounts[1], {from: accounts[0]});
-    }).then(() => {
-      return ArtIs.drain({from: accounts[1]});
-    }).catch(error => {
-      assert.notEqual(error.toString().indexOf("invalid JUMP"), -1);
+      instance.transferOwnership(accounts[1]);
+      return instance.owner.call();
+    }).then(result => {
+      assert.equal(result, accounts[1]);
     });
   });
 });
