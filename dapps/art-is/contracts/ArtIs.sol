@@ -17,10 +17,25 @@
 
 pragma solidity ^0.4.8;
 
-
 contract owned {
-    function owned() { owner = msg.sender; }
-    address owner;
+    address public owner;
+
+    function owned() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner {
+        if (msg.sender != owner) throw;
+        _;
+    }
+
+    function transferOwnership(address newOwner)
+        onlyOwner
+    {
+        if (newOwner != address(0)) {
+            owner = newOwner;
+        }
+    }
 }
 
 
@@ -142,22 +157,16 @@ contract ArtIs is owned {
                           subject);
     }
 
-    function drain() public {
-        if (msg.sender == owner) {
-            if (this.balance > 0) {
-                // Transfer is 0.4.10
-                if (! owner.send(this.balance)) {
-                    throw;
-                }
+    function drain()
+        public
+        onlyOwner
+    {
+        if (this.balance > 0) {
+            // Transfer is 0.4.10
+            if (! owner.send(this.balance)) {
+                throw;
             }
-        } else {
-            throw;
         }
     }
 
-    function transferOwnership(address newOwner) public {
-        if (msg.sender == owner && (newOwner != address(0))) {
-            owner = newOwner;
-        }
-    }
 }
