@@ -15,6 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*global $ web3 Web3 Shared ArtIs */
+
 ////////////////////////////////////////////////////////////////////////////////
 // The main contract behaviour object
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,7 +43,7 @@ ArtIsGui.PRICES = [
 ArtIsGui.indexes = [1,2,3,4,5,6,7,8,9,10,11,12];
 
 ArtIsGui.extent = [
-  "what it is because",
+  "what it is because it is",
   "good because it is", "bad because it is",
   "moral because it is", "immoral because it is",
   "creepy because it is",
@@ -139,9 +141,19 @@ ArtIsGui.selectedAccountCanAffordPrice = function(index, callback) {
   });
 };
 
-ArtIsGui.update_change_definition_ui = function (index) {
-  $('#update-button').prop('disabled', true);
+ArtIsGui.updatePriceWarning = function (index) {
   $('#price-warning').html('&nbsp;');
+  this.selectedAccountCanAffordPrice(index, (error, can) => {
+    if ((! error) && can) {
+      $('#update-button').prop('disabled', false);
+    } else {
+      $('#price-warning').text('Selected account has insufficient funds.');
+    }
+  });
+};
+
+ArtIsGui.updateChangeDefinitionUi = function (index) {
+  $('#update-button').prop('disabled', true);
   this.contract.definitions.call(index).then(description => {
     // description 0 is the theorist
     $("#change-definition-extent").val(description[1].toNumber());
@@ -150,13 +162,7 @@ ArtIsGui.update_change_definition_ui = function (index) {
     $("#change-definition-subject").val(description[4].toNumber());
     const price = this.price_to_set_description(index);
     $("#price").text(price);
-    this.selectedAccountCanAffordPrice(index, (error, can) => {
-      if ((! error) && can) {
-        $('#update-button').prop('disabled', false);
-      } else {
-        $('#price-warning').text('Selected account has insufficient funds.');
-      }
-    });
+    this.updatePriceWarning(index);
     // http://bluebirdjs.com/docs/warning-explanations.html#warning-a-promise-was-created-in-a-handler-but-was-not-returned-from-it
     return null;
   });
@@ -170,9 +176,7 @@ ArtIsGui.formatValues = function (values) {
   let desc = "";
   this.options.forEach((options, index) => {
     const value = values[index];
-    if (value != 0) {
-      desc += options[value] + " ";
-    }
+    desc += options[value] + " ";
   });
   return desc.trim();
 };
@@ -220,7 +224,7 @@ ArtIsGui.changeDefinition = function () {
   this.contract.setDefinition(index,
                               extent, connection, relation, subject,
                               {from: account, value: price})
-    .catch(e => alert ("Something went wrong. You probably didn't have enough Ether in your account (despite what the dialog may have told you)."))
+    .catch(() => alert ("Something went wrong. You probably didn't have enough Ether in your account (despite what the dialog may have told you)."))
     .finally(() => Shared.hideUpdating());
 };
 
@@ -234,11 +238,12 @@ ArtIsGui.guiDisplayHook = function () {
   $("#art-is").hide();
   const index = ArtIsGui.editing_definition_index;
   $('#change-definition-index').text(index + 1);
-  ArtIsGui.update_change_definition_ui(index);
+  ArtIsGui.updateChangeDefinitionUi(index);
 };
 
 ArtIsGui.gasAccountChanged = function () {
-  account = Shared.selectedGasAccount();
+  const index = ArtIsGui.editing_definition_index;
+  ArtIsGui.updatePriceWarning(index);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -249,7 +254,7 @@ ArtIsGui.userSelectedUpdate = function () {
   Shared.showUpdating();
   Shared.hideGui();
   $("#art-is").show();
-  ArtIsGui.changeDefinition();
+  this.changeDefinition();
 };
 
 ArtIsGui.userSelectedCancel = function () {
@@ -300,7 +305,7 @@ ArtIsGui.initialise = function () {
   ArtIs.deployed().then(instance => {
     this.contract = instance;
     this.contract
-      .DefinitionChanged({}, (error, result) => {
+      .DefinitionChanged({}, error => {
         if (! error) {
           this.describeArt()
           // Hide updating when tx is mined.
