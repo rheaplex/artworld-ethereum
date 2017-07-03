@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var Shared = {};
+const Shared = {};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Event type conversion
@@ -40,10 +40,10 @@ Shared.selectedGasAccount = function () {
 };
 
 Shared.makeGasAccountList = function (accounts) {
-  var select = $('#gui-gas-account');
+  const select = $('#gui-gas-account');
   select.find('option').remove();
-  for (var index in accounts) {
-    var account = accounts[index];
+  for (let index in accounts) {
+    const account = accounts[index];
     select.append($("<option></option>")
                   .attr("value", account)
                   .text(index + ": " + account));
@@ -57,18 +57,17 @@ Shared.makeGasAccountList = function (accounts) {
 };
 
 Shared.setupGasAccounts = function () {
-  var self = this;
-  web3.eth.getAccounts(function(err, accs) {
+  web3.eth.getAccounts((err, accs) => {
     if (err != null) {
-      Shared.stopRunning("There was an error fetching your accounts.");
+      this.stopRunning("There was an error fetching your accounts.");
       return;
     }
     if (accs.length == 0) {
-      self.hideGui();
+      this.hideGui();
       alert("Couldn't get any accounts! Make sure your Ethereum client is configured correctly.");
       return;
     }
-    self.makeGasAccountList(accs);
+    this.makeGasAccountList(accs);
   });
 };
 
@@ -146,8 +145,8 @@ Shared.init = function (_gui_display_hook, callWhenReady) {
     }
   } else {
     // Try to connect to a locally running Ethereum node
-    var providerURL = 'http://localhost:8545';
-    var provider = new Web3.providers.HttpProvider(providerURL);
+    const providerURL = 'http://localhost:8545';
+    const provider = new Web3.providers.HttpProvider(providerURL);
     // This will complain about synchronous requests on the main thread being
     // deprecated, but we don't seem to have an asynchronous replacement yet.
     if (provider.isConnected()) {
