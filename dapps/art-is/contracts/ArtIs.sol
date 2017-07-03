@@ -17,6 +17,7 @@
 
 pragma solidity ^0.4.8;
 
+
 contract owned {
     address public owner;
 
@@ -25,7 +26,9 @@ contract owned {
     }
 
     modifier onlyOwner {
-        if (msg.sender != owner) throw;
+        if (msg.sender != owner) {
+            throw;
+        }
         _;
     }
 
@@ -83,8 +86,8 @@ contract ArtIs is owned {
 
     function ArtIs () {
         // Catch this at deploy time until we can use constants for array sizes
-        if (! ((definitions.length == PRICES.length)
-               && (definitions.length == NUM_DEFS))) {
+        if (! ((definitions.length == PRICES.length) &&
+               (definitions.length == NUM_DEFS))) {
             throw;
         }
         // Incredibly meaningful initial values
@@ -100,7 +103,8 @@ contract ArtIs is owned {
     }
 
     function isDefValueInRange (uint8 defValue) public returns (bool result) {
-        result = ((defValue >= DEF_MIN) && (defValue <= DEF_MAX));
+        result = ((defValue >= DEF_MIN) &&
+                  (defValue <= DEF_MAX));
     }
 
     function isDefIndexInRange (uint8 index) public returns (bool result) {
@@ -117,12 +121,12 @@ contract ArtIs is owned {
         public
         returns (bool result)
     {
-        bool subjectIsSet = subject > 0;
-        result = isDefIndexInRange(index)
-            && isDefValueInRange(extent)
-            && isDefValueInRange(connection)
-            && isDefValueInRange(relation)
-            && isDefValueInRange(subject);
+        result =
+            isDefIndexInRange(index) &&
+            isDefValueInRange(extent) &&
+            isDefValueInRange(connection) &&
+            isDefValueInRange(relation) &&
+            isDefValueInRange(subject);
     }
 
     function setDefinition(
@@ -136,7 +140,13 @@ contract ArtIs is owned {
         payable
     {
         // Solidity 0.4.4 doesn't recognise require or revert
-        if (! isDefValid(index, extent, connection, relation, subject)) {
+        if (! isDefValid(
+            index,
+            extent,
+            connection,
+            relation,
+            subject
+              )) {
             throw;
         }
         // isDefValid checks that index is in range, so we can use PRICES here
@@ -149,12 +159,14 @@ contract ArtIs is owned {
         definitions[index].connection = connection;
         definitions[index].relation = relation;
         definitions[index].subject = subject;
-        DefinitionChanged(theorist,
-                          index,
-                          extent,
-                          connection,
-                          relation,
-                          subject);
+        DefinitionChanged(
+            theorist,
+            index,
+            extent,
+            connection,
+            relation,
+            subject
+        );
     }
 
     function drain()
