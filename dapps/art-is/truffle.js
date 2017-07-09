@@ -18,10 +18,16 @@ module.exports = {
     ]
   }),
   networks: {
+    "live": {
+      network_id: 1, // Ethereum public network
+      host: "localhost",
+      port: 8545,
+      from: "0x069a4c2d3dE4f09C31CA640418C13e6f476Bb281",
+    },
     development: {
       host: "localhost",
       port: 8545,
-      network_id: "*" // Match any network id
+      network_id: "default" // Match any network id
     }
   }
 };
