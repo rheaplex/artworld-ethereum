@@ -15141,10 +15141,54 @@ window.__contracts__ = {
       "links": {},
       "address": "0x70320f08c56bf9de0e2107eb2de9c5cf25d836b6",
       "updated_at": 1499055594388
+    },
+    "1499573988154": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x729722f59fd0497a8eace54932546d7f91e3aa5d",
+      "updated_at": 1499573994622
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1499055594388
+  "updated_at": 1499573994622
 },
   "Migrations": {
   "contract_name": "Migrations",
@@ -15262,10 +15306,16 @@ window.__contracts__ = {
       "links": {},
       "address": "0x5d1bfa976800b595dfab41ccf591e86254018c02",
       "updated_at": 1499055594392
+    },
+    "1499573988154": {
+      "events": {},
+      "links": {},
+      "address": "0x8e03b5d349bff56621b12adddc1844a9d7cfe8f6",
+      "updated_at": 1499573994622
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1499055594392
+  "updated_at": 1499573994622
 },
   "owned": {
   "contract_name": "owned",
@@ -42215,7 +42265,7 @@ ArtIsGui.updatePriceWarning = function (index) {
     if ((! error) && can) {
       $('#update-button').prop('disabled', false);
     } else {
-      $('#price-warning').text('Selected account has insufficient funds.');
+      $('#price-warning').html('<span style="color: red;">Selected account has insufficient funds.</span>');
     }
   });
 };
@@ -42229,7 +42279,10 @@ ArtIsGui.updateChangeDefinitionUi = function (index) {
     $("#change-definition-relation").val(description[3].toNumber());
     $("#change-definition-subject").val(description[4].toNumber());
     const price = this.price_to_set_description(index);
-    $("#price").text(price);
+    const price_in_ether = web3.fromWei(price, 'ether').toString()
+          + ' Ether';
+    console.log(price_in_ether);
+    $("#price").text(price_in_ether);
     this.updatePriceWarning(index);
     // http://bluebirdjs.com/docs/warning-explanations.html#warning-a-promise-was-created-in-a-handler-but-was-not-returned-from-it
     return null;
@@ -42304,14 +42357,14 @@ ArtIsGui.changeDefinition = function () {
 
 ArtIsGui.guiDisplayHook = function () {
   $("#art-is").hide();
-  const index = ArtIsGui.editing_definition_index;
+  const index = this.editing_definition_index;
   $('#change-definition-index').text(index + 1);
-  ArtIsGui.updateChangeDefinitionUi(index);
+  this.updateChangeDefinitionUi(index);
 };
 
 ArtIsGui.gasAccountChanged = function () {
-  const index = ArtIsGui.editing_definition_index;
-  ArtIsGui.updatePriceWarning(index);
+  const index = this.editing_definition_index;
+  this.updatePriceWarning(index);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42366,10 +42419,11 @@ ArtIsGui.connectToWeb3 = function () {
 
 ArtIsGui.initialise = function () {
   this.connectToWeb3();
-  Shared.init(this.guiDisplayHook);
+  Shared.init(() => { this.guiDisplayHook(); });
   this.populateSelects();
   this.installInteractions();
-  Shared.setGasAccountChangedCallback(this.gasAccountChanged, true);
+  Shared.setGasAccountChangedCallback(() => { this.gasAccountChanged(); },
+                                      true);
   ArtIs.deployed().then(instance => {
     this.contract = instance;
     this.contract

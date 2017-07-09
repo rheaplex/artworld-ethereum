@@ -147,7 +147,7 @@ ArtIsGui.updatePriceWarning = function (index) {
     if ((! error) && can) {
       $('#update-button').prop('disabled', false);
     } else {
-      $('#price-warning').text('Selected account has insufficient funds.');
+      $('#price-warning').html('<span style="color: red;">Selected account has insufficient funds.</span>');
     }
   });
 };
@@ -161,7 +161,10 @@ ArtIsGui.updateChangeDefinitionUi = function (index) {
     $("#change-definition-relation").val(description[3].toNumber());
     $("#change-definition-subject").val(description[4].toNumber());
     const price = this.price_to_set_description(index);
-    $("#price").text(price);
+    const price_in_ether = web3.fromWei(price, 'ether').toString()
+          + ' Ether';
+    console.log(price_in_ether);
+    $("#price").text(price_in_ether);
     this.updatePriceWarning(index);
     // http://bluebirdjs.com/docs/warning-explanations.html#warning-a-promise-was-created-in-a-handler-but-was-not-returned-from-it
     return null;
@@ -236,14 +239,14 @@ ArtIsGui.changeDefinition = function () {
 
 ArtIsGui.guiDisplayHook = function () {
   $("#art-is").hide();
-  const index = ArtIsGui.editing_definition_index;
+  const index = this.editing_definition_index;
   $('#change-definition-index').text(index + 1);
-  ArtIsGui.updateChangeDefinitionUi(index);
+  this.updateChangeDefinitionUi(index);
 };
 
 ArtIsGui.gasAccountChanged = function () {
-  const index = ArtIsGui.editing_definition_index;
-  ArtIsGui.updatePriceWarning(index);
+  const index = this.editing_definition_index;
+  this.updatePriceWarning(index);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -298,10 +301,11 @@ ArtIsGui.connectToWeb3 = function () {
 
 ArtIsGui.initialise = function () {
   this.connectToWeb3();
-  Shared.init(this.guiDisplayHook);
+  Shared.init(() => { this.guiDisplayHook(); });
   this.populateSelects();
   this.installInteractions();
-  Shared.setGasAccountChangedCallback(this.gasAccountChanged, true);
+  Shared.setGasAccountChangedCallback(() => { this.gasAccountChanged(); },
+                                      true);
   ArtIs.deployed().then(instance => {
     this.contract = instance;
     this.contract
