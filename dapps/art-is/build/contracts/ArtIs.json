@@ -608,8 +608,52 @@
       "links": {},
       "address": "0x70320f08c56bf9de0e2107eb2de9c5cf25d836b6",
       "updated_at": 1499055594388
+    },
+    "1499573988154": {
+      "events": {
+        "0x62c614f10c9854e1d17750fdbafeeb67b7cc135f54a78c18229da316f8681dd3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "theorist",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "index",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "extent",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "connection",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "relation",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "name": "subject",
+              "type": "uint8"
+            }
+          ],
+          "name": "DefinitionChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x729722f59fd0497a8eace54932546d7f91e3aa5d",
+      "updated_at": 1499573994622
     }
   },
   "schema_version": "0.0.5",
-  "updated_at": 1499055594388
+  "updated_at": 1499573994622
 }
