@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>symbol</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/symbol.css">
+  </head>
+  <body>
+
+    <div id="updating">Updating...</div>
+
+    <div id="status"></div>
+
+    <div id="representations">
+      <div id="symbol">*</div>
+    </div>
+
+    <!-- Here so we don't have to try to click outside the symbol area. -->
+    <div id="background" onclick="showGui(event, -1)"></div>
+
+     <div class="gui" id="symbol-gui">
+      <h2>Update Symbol</h2>
+      <form>
+        <div class="form-group">
+          <label class="gui-label"
+                 for="symbol-gui-symbol">Symbol</label>
+          <input class="form-control"
+                 type="text"
+                 maxLength="1"
+                 id="symbol-gui-symbol">
+          <span class="help-block">Any unicode character.</span>
+        </div>
+        <div class="form-group">
+          <label for="gui-gas-account">Account to pay gas from</label>
+          <select class="form-control" id="gui-gas-account"></select>
+        </div>
+        <button type="button" class="btn btn-primary"
+                onClick="userSelectedUpdate()">Update</button>
+        &nbsp;
+        <button type="button" class="btn btn-default"
+                onClick="userSelectedCancel()">Cancel</button>
+      </form>
+      <p><b><i>Note that updating the symbol will cost gas!</i></b></p>
+      <p>To update the symbol, enter a new symbol in the text field above.
+        Then press &quot;Update&quot;.</p>
+      <p>If you do not wish to update the symbol, just press
+        &quot;Cancel&quot;.</p>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/symbol.js"></script>
+  </body>
+</html>

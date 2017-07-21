@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Democratic Palette</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/palette.css">
+</head>
+<body>
+
+  <div id="background" onclick="showVoteForColour(event, -1)"></div>
+
+  <div id="updating">Voting...</div>
+
+  <div id="status"></div>
+
+  <div id="representations">
+    <table class="representation full-height" id="stripes">
+      <tr>
+        <td class="stripe" onclick="showVoteForColour(event, 0)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 1)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 2)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 3)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 4)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 5)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 6)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 7)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 8)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 9)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 10)"></td>
+        <td class="stripe" onclick="showVoteForColour(event, 11)"></td>
+      </tr>
+    </table>
+
+    <table class="representation two-rows-of-six" id="squares">
+      <tr>
+        <td class="square" onclick="showVoteForColour(event, 0)"></td>
+        <td class="square" onclick="showVoteForColour(event, 1)"></td>
+        <td class="square" onclick="showVoteForColour(event, 2)"></td>
+        <td class="square" onclick="showVoteForColour(event, 3)"></td>
+        <td class="square" onclick="showVoteForColour(event, 4)"></td>
+        <td class="square" onclick="showVoteForColour(event, 5)"></td>
+      </tr>
+      <tr>
+        <td class="square" onclick="showVoteForColour(event, 6)"></td>
+        <td class="square" onclick="showVoteForColour(event, 7)"></td>
+        <td class="square" onclick="showVoteForColour(event, 8)"></td>
+        <td class="square" onclick="showVoteForColour(event, 9)"></td>
+        <td class="square" onclick="showVoteForColour(event, 10)"></td>
+        <td class="square" onclick="showVoteForColour(event, 11)"></td>
+      </tr>
+    </table>
+
+    <table class="representation two-rows-of-six" id="spots">
+      <tr>
+        <td class="spot" onclick="showVoteForColour(event, 0)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 1)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 2)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 3)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 4)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 5)"></td>
+      </tr>
+      <tr>
+        <td class="spot" onclick="showVoteForColour(event, 6)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 7)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 8)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 9)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 10)"></td>
+        <td class="spot" onclick="showVoteForColour(event, 11)"></td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="gui" id="palette-gui">
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active" id="set-state-li"><a href="#set-state" aria-controls="set-state" role="tab" data-toggle="tab" id="set-state-link">Vote For Colour</a></li>
+      <li role="presentation" id="set-representation-li"><a href="#set-representation" aria-controls="set-representation" role="tab" data-toggle="tab" id="set-representation-link">Set Representation Mode</a></li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="set-state">
+        <br>
+        <form>
+          <div class="form-group">
+            <label for="change-colour-picker">Colour to vote for</label>
+            <div id="change-colour-picker"></div>
+          </div>
+          <div class="form-group">
+            <div><strong>Current votes for this colour:</strong>
+              <span class="badge" id="selected-colour-votes">...</span></div>
+            <p class="help-block">Every vote is counted but only the colours
+              with the most votes will appear in the palette.</p>
+          </div>
+          <div class="form-group">
+            <label for="gui-gas-account">Account to pay gas from</label>
+            <select class="form-control" id="gui-gas-account"></select>
+          </div>
+          <button type="button" class="btn btn-primary" id="change-colour-ok"
+                  onClick="doVoteForColour()">Vote</button>
+          <button type="button" class="btn" id="change-colour-cancel"
+                  onClick="hideGui()">Cancel</button>
+        </form>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="set-representation">
+        <button type="button" class="btn btn-primary btn-lg rep-btn"
+                onclick="setRepresentation('stripes')">Stripes</button><br><br>
+        <button type="button" class="btn btn-primary btn-lg rep-btn"
+                onclick="setRepresentation('squares')">Squares</button><br><br>
+        <button type="button" class="btn btn-primary btn-lg rep-btn"
+                onclick="setRepresentation('spots')">Spots</button><br><br>
+        <button type="button" class="btn btn-success btn-lg rep-btn"
+                onclick="hideGui()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/Colour.js"></script>
+  <script src="js/ColourPicker.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/palette.js"></script>
+</body>
+</html>

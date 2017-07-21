@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>stroke</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/stroke.css">
+  </head>
+  <body>
+
+    <div id="updating">Updating...</div>
+
+    <div id="status"></div>
+
+    <div id="representations">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="centre">
+        <circle class="circle" id="stroke">
+      </svg>
+    </div>
+
+    <!-- Here so we don't have to try to click outside the canvas. -->
+    <div id="background" onclick="showGui(event, -1)"></div>
+
+    <div class="gui" id="stroke-gui">
+      <h2>Update Stroke</h2>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+           id="stroke-gui-preview">
+        <line id="stroke-gui-preview-stroke"
+              x1="10%"
+              y1="50%"
+              x2="90%"
+              y2="50%">
+      </svg>
+      <form>
+        <div class="form-group">
+          <label class="gui-label" for="stroke-gui-width">Width</label>
+          <div class="input-group">
+            <input class="form-control"
+                   id="stroke-gui-width"
+                   type="range"
+                   min="1"
+                   max="72"
+                   step="1">
+            <div class="input-group-addon" id="stroke-gui-width-value">0</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="gui-label" for="stroke-gui-linecap">Line Cap</label>
+          <select class="form-control"
+                  id="stroke-gui-linecap">
+            <option value="0">Butt</option>
+            <option value="1">Round</option>
+            <option value="2">Square</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="gui-label"
+                 for="stroke-gui-dasharray">Line Dashes</label>
+          <input class="form-control"
+                 type="text"
+                 id="stroke-gui-dasharray">
+          <span class="help-block">Enter as comma-separated values, e.g. 1,10,8,16</span>
+        </div>
+        <div class="form-group">
+          <label for="gui-gas-account">Account to pay gas from</label>
+          <select class="form-control" id="gui-gas-account"></select>
+        </div>
+        <button type="button" class="btn btn-primary"
+                onClick="userSelectedUpdate()">Update</button>
+        &nbsp;
+        <button type="button" class="btn btn-default"
+                onClick="userSelectedCancel()">Cancel</button>
+      </form>
+      <p><b><i>Note that updating the stroke will cost gas!</i></b></p>
+      <p>To update the line properties, alter the values above.
+        Then press &quot;Update&quot;.</p>
+      <p>If you do not wish to update the line properties, just press
+        &quot;Cancel&quot;.</p>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/stroke.js"></script>
+  </body>
+</html>

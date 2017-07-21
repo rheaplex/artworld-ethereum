@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>bitmap</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/bitmap.css">
+  </head>
+  <body>
+
+    <div id="updating">Updating...</div>
+
+    <div id="status"></div>
+
+    <div id="representations">
+      <canvas id="bitmap"></canvas>
+    </div>
+
+    <!-- Here so we don't have to try to click outside the canvas. -->
+    <div id="background" onclick="showGui(event, -1)"></div>
+
+    <div class="gui" id="bitmap-gui">
+      <h2>Update Bitmap</h2>
+      <div id="bitmap-gui-bitmap" class="center-block">
+      </div>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/bitmap.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+#grid {
+    background-color: grey;
+
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+}
+
+#gui-grid-preview {
+    background-color: grey;
+
+    width: 100px;
+    height: 100px;
+}
+
+#grid-gui {
+    width: 400px;
+    height: 590px;
+}

@@ -1,0 +1,59 @@
+#palette-gui {
+    width: 600px;
+    height: 550px;
+}
+
+.rep-btn {
+    width: 8em;
+}
+
+#vote-for-colour {
+}
+
+#set-representation {
+    text-align: center;
+    transform: translateY(45%);
+}
+
+#representations {
+}
+
+.representation {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.full-height {
+    width: 90vw;
+    height: 90vh;
+}
+
+.two-rows-of-six {
+    width: 90vw;
+    height: 30vw;
+}
+
+#stripes {
+}
+
+.stripe {
+}
+
+#squares {
+}
+
+.square {
+}
+
+#spots {
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+.spot {
+    border-radius: 100%;
+}

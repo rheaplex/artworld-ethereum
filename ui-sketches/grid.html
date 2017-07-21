@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>grid</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/grid.css">
+  </head>
+  <body>
+
+    <div id="updating">Updating...</div>
+
+    <div id="status"></div>
+
+    <div id="representations">
+      <canvas id="grid"></canvas>
+    </div>
+
+    <!-- Here so we don't have to try to click outside the canvas. -->
+    <div id="background" onclick="showGui(event, -1)"></div>
+
+    <div class="gui" id="grid-gui">
+      <h2>Update Grid</h2>
+      <canvas class="center-block" id="gui-grid-preview"></canvas>
+       <form>
+         <div class="form-group">
+          <label class="gui-label"
+                 for="grid-gui-rows">Row co-ordinates</label>
+          <input class="form-control"
+                 type="text"
+                 id="grid-gui-rows">
+        </div>
+         <div class="form-group">
+          <label class="gui-label"
+                 for="grid-gui-columns">Column co-ordinates</label>
+          <input class="form-control"
+                 type="text"
+                 id="grid-gui-columns">
+         </div>
+         <div class="form-group">
+           <label for="gui-gas-account">Account to pay gas from</label>
+           <select class="form-control" id="gui-gas-account"></select>
+         </div>
+         <button type="button" class="btn btn-primary"
+                 onClick="userSelectedUpdate()">Update</button>
+         &nbsp;
+         <button type="button" class="btn btn-default"
+                 onClick="userSelectedCancel()">Cancel</button>
+       </form>
+      <p><b><i>Note that updating the stroke will cost gas!</i></b></p>
+      <p>To update the Grid, alter the values above entering them as comma-separated values from 1 to 100, e.g. 1,20,50,98. Then press
+        &quot;Update&quot;.</p>
+      <p>If you do not wish to update the Grid, just press
+        &quot;Cancel&quot;.</p>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/grid.js"></script>
+  </body>
+</html>
