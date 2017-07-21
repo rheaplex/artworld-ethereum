@@ -120,3 +120,12 @@ a:hover {
 .hide-flex {
     display: none !important;
 }
+
+@keyframes non-refundable {
+    from { color: black; }
+    to { color: red; }
+}
+
+#non-refundable {
+    animation: non-refundable 1s infinite alternate;
+}
