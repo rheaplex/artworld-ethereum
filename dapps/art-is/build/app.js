@@ -42061,7 +42061,7 @@ Shared.makeGasAccountList = function (accounts) {
   }
 };
 
-Shared.setupGasAccounts = function () {
+Shared.setupGasAccounts = function (callback) {
   web3.eth.getAccounts((err, accs) => {
     if (err != null) {
       this.stopRunning("There was an error fetching your accounts.");
@@ -42073,6 +42073,7 @@ Shared.setupGasAccounts = function () {
       return;
     }
     this.makeGasAccountList(accs);
+    callback();
   });
 };
 
@@ -42087,14 +42088,18 @@ Shared.state_is_updating = false;
 Shared.gui_display_hook = false;
 
 Shared.showGui = function () {
+  console.log(0);
   if (! this.state_is_updating) {
     // Showing newly added account is better than keeping previous selection
-    this.setupGasAccounts();
-    $('.gui').show();
-    this.gui_is_showing = true;
-    if (this.gui_display_hook !== false) {
-      this.gui_display_hook();
-    }
+    this.setupGasAccounts(() => {
+      $('.gui').show();
+      this.gui_is_showing = true;
+      console.log(1);
+      if (this.gui_display_hook !== false) {
+        this.gui_display_hook();
+        console.log(2);
+      }
+    });
   }
 };
 
