@@ -149,18 +149,7 @@ Shared.init = function (_gui_display_hook, callWhenReady) {
       callWhenReady();
     }
   } else {
-    // Try to connect to a locally running Ethereum node
-    const providerURL = 'http://localhost:8545';
-    const provider = new Web3.providers.HttpProvider(providerURL);
-    // This will complain about synchronous requests on the main thread being
-    // deprecated, but we don't seem to have an asynchronous replacement yet.
-    if (provider.isConnected()) {
-      window.web3 = new Web3(provider);
-      if (callWhenReady) {
-        callWhenReady();
-      }
-    } else {
-      Shared.stopRunning('Cannot connect to the Ethereum network.');
+      this.stopRunning('Cannot connect to the Ethereum network.');
     }
   }
 };
