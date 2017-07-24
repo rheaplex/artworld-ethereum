@@ -288,19 +288,7 @@ ArtIsGui.installInteractions = function () {
     });
 };
 
-ArtIsGui.connectToWeb3 = function () {
-  if (typeof web3 !== 'undefined') {
-    // Use current provider
-    window.web3 = new Web3(web3.currentProvider);
-  } else {
-    console.log('No web3 provided. Making one.');
-    const provider = new Web3.providers.HttpProvider("http://localhost:8545");
-    window.web3 = new Web3(provider);
-  }
-};
-
 ArtIsGui.initialise = function () {
-  this.connectToWeb3();
   Shared.init(() => { this.guiDisplayHook(); });
   this.populateSelects();
   this.installInteractions();
