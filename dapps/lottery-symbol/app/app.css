@@ -1,0 +1,42 @@
+#symbol {
+    background-color: lightgrey;
+
+    text-align: center;
+    line-height: 100%;
+    font-size: 75vmin;
+
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+#symbol-gui {
+    /* Work out how to get panels to size to largest... */
+    width: 590px;
+    height: 580px;
+}
+
+#gui-current-entries-table {
+    width: 100%;
+}
+
+.gui-current-entries-symbol {
+    /*text-align: right;*/
+}
+
+/* Make sure all tabs are displayed the same size (...with the same height) */
+
+.tab-pane {
+    display: block;
+    visbility: hidden;
+}
+
+.tab-pane>.active {
+    visibility: visible;
+}

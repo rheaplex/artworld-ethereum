@@ -1,0 +1,1376 @@
+{
+  "contract_name": "LotterySymbol",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getEntries",
+      "outputs": [
+        {
+          "name": "entrants",
+          "type": "address[]"
+        },
+        {
+          "name": "symbols",
+          "type": "uint32[]"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "finalizeRound",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "currentRoundEnds",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ROUND_LENGTH",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "entrySymbol",
+          "type": "uint32"
+        }
+      ],
+      "name": "enterLottery",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "entries",
+      "outputs": [
+        {
+          "name": "entrant",
+          "type": "address"
+        },
+        {
+          "name": "symbol",
+          "type": "uint32"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "numEntries",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "hasRoundEnded",
+      "outputs": [
+        {
+          "name": "stale",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "symbol",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "name": "winner",
+          "type": "address"
+        }
+      ],
+      "name": "SymbolChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "entrant",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "symbol",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "name": "roundEnds",
+          "type": "uint256"
+        }
+      ],
+      "name": "NewEntry",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x60606040526000805463ffffffff1916612623178155600255341561002357600080fd5b5b4262015180016001555b5b61075c8061003e6000396000f300606060405236156100965763ffffffff7c010000000000000000000000000000000000000000000000000000000060003504166317be85c3811461009b5780631e82032514610149578063872939601461015e57806395d89b41146101835780639e817c03146101af578063b102f52b146101d4578063b30906d4146101f2578063d32a27d514610230578063fa0b621114610255575b600080fd5b34156100a657600080fd5b6100ae61027c565b604051808060200180602001838103835285818151815260200191508051906020019060200280838360005b838110156100f35780820151818401525b6020016100da565b50505050905001838103825284818151815260200191508051906020019060200280838360005b838110156101335780820151818401525b60200161011a565b5050505090500194505050505060405180910390f35b341561015457600080fd5b61015c6103ac565b005b341561016957600080fd5b6101716103c7565b60405190815260200160405180910390f35b341561018e57600080fd5b6101966103cd565b60405163ffffffff909116815260200160405180910390f35b34156101ba57600080fd5b6101716103d9565b60405190815260200160405180910390f35b34156101df57600080fd5b61015c63ffffffff600435166103e0565b005b34156101fd57600080fd5b610208600435610515565b604051600160a060020a03909216825263ffffffff1660208201526040908101905180910390f35b341561023b57600080fd5b61017161054f565b60405190815260200160405180910390f35b341561026057600080fd5b610268610555565b604051901515815260200160405180910390f35b61028461068f565b61028c61068f565b61029461068f565b61029c61068f565b60008060025411156103a4576002546040518059106102b85750595b908082528060200260200182016040525b5092506002546040518059106102dc5750595b908082528060200260200182016040525b509150600090505b60025481101561039d57600380548290811061030d57fe5b906000526020600020900160005b5054600160a060020a031683828151811061033257fe5b600160a060020a03909216602092830290910190910152600380548290811061035757fe5b906000526020600020900160005b505460a060020a900463ffffffff1682828151811061038057fe5b63ffffffff9092166020928302909101909101525b6001016102f5565b8294508193505b5b5050509091565b6103b4610555565b156103c4576103c161055e565b50505b5b565b60015481565b60005463ffffffff1681565b6201518081565b6103e8610660565b600354600254141561040857600380546001019061040690826106b3565b505b60408051908101604052600160a060020a033316815263ffffffff8216602082015260025460038054909190811061043c57fe5b906000526020600020900160005b508151815473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a03919091161781556020820151815463ffffffff9190911660a060020a0277ffffffff00000000000000000000000000000000000000001990911617905550600280546001908101909155547fa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd69033908390604051600160a060020a03909316835263ffffffff90911660208301526040808301919091526060909101905180910390a15b50565b600380548290811061052357fe5b906000526020600020900160005b5054600160a060020a038116915060a060020a900463ffffffff1682565b60025481565b60015442115b90565b600080600080600061056e6106dd565b600060025411156106575760025460001943019450844093508381151561059157fe5b0691506003828154811015156105a357fe5b906000526020600020900160005b50604080519081016040529054600160a060020a038116825260a060020a900463ffffffff1660208201908152909150516000805463ffffffff191663ffffffff92909216919091179055602081015195508051600060025594507f572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076868660405163ffffffff9092168252600160a060020a031660208201526040908101905180910390a15b5b505050509091565b610668610555565b156103c45761067561055e565b50506103c4610683565b5b5b565b4262015180016001555b565b60206040519081016040526000815290565b60206040519081016040526000815290565b8154818355818115116106d7576000838152602090206106d79181019083016106f4565b5b505050565b604080519081016040526000808252602082015290565b61055b91905b8082111561072957805477ffffffffffffffffffffffffffffffffffffffffffffffff191681556001016106fa565b5090565b905600a165627a7a7230582084436ed593ca55fd115d7c62353e0b3f0cd773a525200f9f6b018f113427e02f0029",
+  "networks": {
+    "1": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x1dae2b1331ae72ebb0cfac5107b69237731a9fa4",
+      "updated_at": 1502253274122
+    },
+    "1501304838468": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x14121f57858adde0a01eae73a5ffa1280097f680",
+      "updated_at": 1501305802697
+    },
+    "1501447275339": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x4144e92d3ad523f03f8fcabc0047819cf1a243ef",
+      "updated_at": 1501447319529
+    },
+    "1501458577257": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x8be342ce819a45673863288e2795b81f4276fb6d",
+      "updated_at": 1501458630520
+    },
+    "1501458834021": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x946800303ee0385e912de4def06238fdff3e0710",
+      "updated_at": 1501458853657
+    },
+    "1501459267099": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x281533d7fbe342f8ebb04d218d462b6721510de8",
+      "updated_at": 1501459309780
+    },
+    "1501459866538": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xaf27775b1b35af80e22f3ad8cd81ba5097160bba",
+      "updated_at": 1501459882662
+    },
+    "1501461947391": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x2a52d27a4bcefc569e7a6c93e6bdd8def5536244",
+      "updated_at": 1501461975153
+    },
+    "1501464547049": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x554524907b628739a63aa570e9727074837f2be9",
+      "updated_at": 1501464562524
+    },
+    "1501464879819": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xbbfed293dec9002e7020e3b96faab13cb2a9fa3c",
+      "updated_at": 1501464892006
+    },
+    "1501469680360": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x75d78d665b04ec4d109988747ae23ddeb4babfdc",
+      "updated_at": 1501469714305
+    },
+    "1501469967064": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xb0f29ef05ce1e09cf0cf976fb3ece40dbb0d1ccc",
+      "updated_at": 1501469988891
+    },
+    "1501470391222": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x80103439abb6fa6e6544733905c89745eced4cc3",
+      "updated_at": 1501470417371
+    },
+    "1501563940368": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xf648ae6d1b9f776fdbfe26dc55c96f7c53f7390e",
+      "updated_at": 1501563954124
+    },
+    "1501564170076": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x80814d6f78c3aefc3ac93d4cfe138183802699be",
+      "updated_at": 1501564181729
+    },
+    "1501564590968": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xb4eecfda8bd39ed69f8361bc67f5b67246526de7",
+      "updated_at": 1501564622917
+    },
+    "1501564786695": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x9a61f110dedaee8581e3bf72a780a759efd88227",
+      "updated_at": 1501564812180
+    },
+    "1501564979134": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xd05f1718cd013426989826577754a831823a03da",
+      "updated_at": 1501565020717
+    },
+    "1501565460346": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x7ea781a123d06683b9c9466bd6548146623c3f71",
+      "updated_at": 1501565500567
+    },
+    "1501565659767": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc92de47063cb344667938a6475688db4ddf8350b",
+      "updated_at": 1501565679646
+    },
+    "1501566953965": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x6e3b8f3c3442484242539c4eca682d9e3de0d930",
+      "updated_at": 1501566977503
+    },
+    "1501567198867": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x299c6e733193b8a430949f77f7e460c5e63a6231",
+      "updated_at": 1501567218213
+    },
+    "1501567704581": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xac26187a33c1c189b80b1e05fcedf1fb98875b87",
+      "updated_at": 1501567714759
+    },
+    "1501568635126": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc31b284754fc964ba25975898f657ea2e71a9f13",
+      "updated_at": 1501568956167
+    },
+    "1501569305485": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x0cc6680b1f5b20b96efe725ef7544cf01ef768d9",
+      "updated_at": 1501569368452
+    },
+    "1501611653333": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x7df053e06d9082bea1a0218f4d35e69029bc8dc1",
+      "updated_at": 1501611664555
+    },
+    "1501612308586": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x075a1a799eeef8a65f9fcbdd4b8af8ac1b06bb29",
+      "updated_at": 1501612318984
+    },
+    "1501612856479": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xb5ea1f7f8797458b681a093c044c568c69957ca6",
+      "updated_at": 1501612882185
+    },
+    "1501613314098": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xfcb74bbf2948c4ea8612cd00e6c849d111d43627",
+      "updated_at": 1501613323924
+    },
+    "1501613919612": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xf6d24ad463bcfd5ee9fc40334e2af56c071ae34f",
+      "updated_at": 1501613959051
+    },
+    "1501724832833": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xa1b6102960d295d6e536213e809b7894c9ab86ab",
+      "updated_at": 1501724985691
+    },
+    "1501739589533": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xda24dc2732cb527f6d771af5bde417c0596e236c",
+      "updated_at": 1501739626395
+    },
+    "1501822178068": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xf3f55bb9879dc44f36b89543836c38ac3bcd848a",
+      "updated_at": 1501822194625
+    },
+    "1501888709734": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x2658b6edfb2728b4f883c86a85f7880a00e8e9c6",
+      "updated_at": 1501888731672
+    },
+    "1502072035940": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xe15a07f14745b479f76c5da05606b93d2feb39de",
+      "updated_at": 1502072594994
+    },
+    "1502073127435": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x56a80f7d7826e8a1654e1eddc255183781da66fc",
+      "updated_at": 1502073206739
+    },
+    "1502073801697": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x280e8c32ccdeb265ffa5ea2e969b38a6a8390148",
+      "updated_at": 1502073818394
+    },
+    "1502074433233": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc79ec638949c58d9dcb6e2e5d1b2077744915c10",
+      "updated_at": 1502074454196
+    },
+    "1502074665171": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x0e8914629045c014ad15aa13b7b2613443868162",
+      "updated_at": 1502074715053
+    },
+    "1502136953582": {
+      "events": {
+        "0x572aa01540b8ba321117da4f2a151824951a0d60b82f239ae98a8e1b5dd49076": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "winner",
+              "type": "address"
+            }
+          ],
+          "name": "SymbolChanged",
+          "type": "event"
+        },
+        "0xa28bf3cc7978de0a92f5f9362cf0d4900df53b55b849befa2f8c0f65a5597fd6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "entrant",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "symbol",
+              "type": "uint32"
+            },
+            {
+              "indexed": false,
+              "name": "roundEnds",
+              "type": "uint256"
+            }
+          ],
+          "name": "NewEntry",
+          "type": "event"
+        },
+        "0x3c5ad147104e56be34a9176a6692f7df8d2f4b29a5af06bc6b98970d329d6577": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "desc",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "val",
+              "type": "uint256"
+            }
+          ],
+          "name": "Debug",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc30c2a33d0883dcc4c7154ebb6f85a629888f67d",
+      "updated_at": 1502137026168
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1502253274122
+}
