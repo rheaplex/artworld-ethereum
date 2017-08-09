@@ -1,0 +1,104 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lottery Symbol</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
+          rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <div id="updating">Entering...</div>
+
+    <div id="status"></div>
+
+    <div id="representation"
+         class="d-flex align-items-center justify-content-center">
+      <div id="symbol">&hellip;</div>
+
+      <div class="gui" id="symbol-gui">
+        <ul class="nav nav-tabs" id="gui-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#enter"
+               role="tab" aria-controls="enter">Enter</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#entries"
+               role="tab" aria-controls="entries">Entries</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#finalize"
+               role="tab" aria-controls="finalize">Finalize</a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane active" role="tabpanel" id="enter">
+            <h2>Enter Lottery</h2>
+            <h4 class="gui-next-round">Next lottery ends at...</h4>
+            <form>
+              <div class="form-group">
+                <label class="gui-label"
+                       for="symbol-gui-symbol">Symbol</label>
+                <input class="form-control"
+                       type="text"
+                       maxLength="1"
+                       id="symbol-gui-symbol"
+                       aria-describedby="symbolGuiSymbolHelpInline">
+                <small id="symbolGuiSymbolHelpInline"
+                       class="text-muted">Any unicode character</small>
+              </div>
+              <div id="enter-gui-gas">
+                <div id="gui-gas" class="form-group">
+                  <label for="gui-gas-account">Account to pay gas from</label>
+                  <select class="form-control" id="gui-gas-account"></select>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary"
+                      id="gui-update-button">Enter</button>
+              &nbsp;
+              <button type="button" class="btn btn-default"
+                      id="gui-cancel-button">Cancel</button>
+            </form>
+            <p><b><i>Note that entering the lottery to update the symbol will
+                  cost gas! Like any lottery, your entry may not
+                  win.</i></b></p>
+            <p>To enter the lottery, choose a new symbol in the text field
+              above. Then press &quot;Enter&quot;.</p>
+            <p>If you do not wish to update the symbol, just press
+              &quot;Cancel&quot;.</p>
+          </div>
+          <div class="tab-pane" role="tabpanel" id="entries">
+            <h2>Current Entries</h2>
+            <h4 class="gui-next-round">Next lottery ends at...</h4>
+            <table id="gui-current-entries-table">
+              <tbody id="gui-current-entries"></tbody>
+            </table>
+          </div>
+          <div class="tab-pane" role="tabpanel" id="finalize">
+            <h2>Finalize Current Round</h2>
+            <h4 class="gui-next-round">Next lottery ends at...</h4>
+            <div id="gui-gas-finalize"></div>
+            <p>If the current round of the lottery has not yet been finalized,
+              you can do so using this button.</p>
+            <p>This will use the account from the &quot;Enter Lottery&quot;
+              tab, change it there if needed!<p>
+            <button type="button" class="btn btn-primary"
+                    id="gui-finalize-button">Finalize</button>
+            &nbsp;
+            <button type="button" class="btn btn-default"
+                    id="gui-cancel-finalize-button">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
