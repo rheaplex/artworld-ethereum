@@ -58,10 +58,12 @@ Shared.makeGasAccountList = function (accounts) {
 
 Shared.setupGasAccounts = function (callback) {
   web3.eth.getAccounts((err, accs) => {
+    // Catastrophe. There is no web3 (so why didn't we stop earlier?)
     if (err != null) {
       this.stopRunning("There was an error fetching your accounts.");
       return;
     }
+    // Warning. No accounts have been enabled, but there's probably a web3
     if (accs.length == 0) {
       this.hideGui();
       alert("Couldn't access any accounts!");
@@ -83,16 +85,13 @@ Shared.state_is_updating = false;
 Shared.gui_display_hook = false;
 
 Shared.showGui = function () {
-  console.log(0);
   if (! this.state_is_updating) {
     // Showing newly added account is better than keeping previous selection
     this.setupGasAccounts(() => {
       $('.gui').show();
       this.gui_is_showing = true;
-      console.log(1);
       if (this.gui_display_hook !== false) {
         this.gui_display_hook();
-        console.log(2);
       }
     });
   }
@@ -103,7 +102,8 @@ Shared.hideGui = function () {
   this.gui_is_showing = false;
 };
 
-Shared.showUpdating = function () {
+Shared.showUpdating = function (message) {
+  $('#updating').html(message || 'Updating&hellip;');
   $('#updating').show();
   this.state_is_updating = true;
 };
@@ -126,11 +126,11 @@ Shared.hideStatus = function () {
 };
 
 Shared.stopRunning = function (message) {
-  $('#representation').hide();
   // Disable clicking to display the gui
-  $('#background').prop('onclick',null);
+  $('#background').prop('onclick', null);
   this.hideUpdating();
   this.hideGui();
+  $('#representation').hide();
   this.setStatus(message);
 };
 
@@ -149,7 +149,6 @@ Shared.init = function (_gui_display_hook, callWhenReady) {
       callWhenReady();
     }
   } else {
-      this.stopRunning('Cannot connect to the Ethereum network.');
-    }
+    this.stopRunning('Cannot connect to the Ethereum network.');
   }
 };
