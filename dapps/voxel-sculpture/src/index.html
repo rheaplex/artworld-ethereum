@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>Voxels</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+
+		<script src="js/three.js"></script>
+
+		<script type="text/javascript">
+          var makeCube = function (width, height, depth) {
+            var geometry = new THREE.BoxGeometry(width, height, depth);
+            var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+            var cube = new THREE.Mesh( geometry, material );
+            return cube;
+          };
+
+ 
+		</script>
+
+	</body>
+</html>
