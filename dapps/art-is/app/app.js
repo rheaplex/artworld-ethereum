@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*global $ web3 Web3 Shared ArtIs */
+/* global $ web3 Web3 Shared ArtIs */
 
 ////////////////////////////////////////////////////////////////////////////////
 // The main contract behaviour object
