@@ -1,0 +1,17 @@
+{
+  "name": "4x",
+  "version": "1.0.0",
+  "description": "The state of a physical artwork.",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rhea Myers",
+  "license": "GPL-3.0+",
+  "dependencies": {
+    "zeppelin-solidity": "^1.4.0"
+  }
+}
