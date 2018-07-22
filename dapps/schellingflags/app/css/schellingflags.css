@@ -1,0 +1,27 @@
+.flags {
+  text-align: center;
+  margin: auto 0;
+}
+
+.flag12 {
+  width: 30vh;
+  height: 22vh;
+  margin: 12px;
+  border: 1px solid #dddddd;
+  background-color: white;
+}
+
+.color-sample {
+  display: inline-block;
+  margin-top: 8px;
+  width: 10.5rem;
+  height: 1.75rem;
+  border: 1px solid lightgray;
+}
+
+.ui-flag {
+  height: 300px;
+  width: 500px;
+  margin: 12px;
+  border: 1px solid #dddddd;
+}

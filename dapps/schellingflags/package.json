@@ -1,0 +1,22 @@
+{
+  "name": "schellingflags",
+  "version": "1.0.0",
+  "description": "Decentralised flags.",
+  "main": " ",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.org/robmyers/artworld-ethereum/"
+  },
+  "author": "Rob Myers",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "openzeppelin-solidity": "1.10.0",
+    "truffle-contract": "^3.0.6"
+  }
+}
