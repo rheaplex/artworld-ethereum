@@ -1,0 +1,116 @@
+        <ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="display-tab" data-toggle="tab" href="#display" role="tab" aria-controls="display" aria-selected="true">Display</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="pledge-tab" data-toggle="tab" href="#pledge" role="tab" aria-controls="pledge" aria-selected="false">Pledge</a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="display" role="tabpanel" aria-labelledby="display-tab">
+    <form>
+      <div class="form-group">
+        <label for="number-of-flags">Number of flags to display</label>
+        <select class="form-control "id="number-of-flags"
+                onChange="changeNumberOfFlagsDisplayed">
+          <option>1</option>
+          <option>2</option>
+          <option>4</option>
+          <option>6</option>
+          <option>12</option>
+          <option>20</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="number-of-flags">Flags to display</label>
+        <select class="form-control "id="number-of-flags"
+                onChange="changeNumberOfFlagsDisplayed">
+          <option>Most pledged</option>
+          <option>Mine</option>
+        </select>
+      </div>
+      <button type="button" class="btn" id="display-ok"
+              onClick="Shared.hideGui()">Done</button>
+    </form>
+  </div>
+  <div class="tab-pane fade" id="pledge" role="tabpanel" aria-labelledby="pledge-tab">
+
+
+<div id="flags"></div>
+
+    <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="450"
+   height="300"
+   viewBox="0 0 119.0625 79.375002"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="three-stripes-horizontal.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="256"
+     inkscape:cx="0.80182874"
+     inkscape:cy="288.61263"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1600"
+     inkscape:window-height="863"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-217.62498)">
+    <rect
+       style="fill:#111111;fill-opacity:1;stroke-width:0.26458332;stroke:none"
+       id="rect4485"
+       width="119.0625"
+       height="26.458334"
+       x="0"
+       y="217.76462" />
+    <rect
+       style="fill:#222222;fill-opacity:1;stroke-width:0.26458332;stroke:none"
+       id="rect4485-3"
+       width="119.0625"
+       height="26.458334"
+       x="0"
+       y="244.08331" />
+    <rect
+       style="fill:#333333;fill-opacity:1;stroke-width:0.26458332;stroke:none"
+       id="rect4485-6"
+       width="119.0625"
+       height="26.458334"
+       x="0"
+       y="270.54166" />
+  </g>
+</svg>
