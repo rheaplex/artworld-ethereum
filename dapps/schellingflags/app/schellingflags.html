@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SchellingFlags</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
+          rel="stylesheet">
+    <link href="../../shared/css/bootstrap.css" rel="stylesheet">
+    <link href="../../shared/css/shared.css" rel="stylesheet">
+    <link href="./css/schellingflags.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="updating">Updating...</div>
+
+    <div id="status"></div>
+
+    <div id="representation" class="d-flex align-items-center">
+      <div id="flags" class="container"></div>
+    </div>
+    
+    <div class="gui-container d-flex align-items-center justify-content-center">
+      <div id="schellingflags-gui" class="gui">
+        <form>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <h4>Flag</h4>
+                  <div id="flag-design">
+                    <svg id="ui-flag"></svg>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div><strong>Flag ID</strong>
+                    <span id="current-flag-id">...</span></div>
+                </div>
+                <div class="form-group">
+                  <div><strong>Current Number of Pledges</strong>
+                    <span
+                          id="current-flag-pledge-count">...</span></div>
+                </div>
+                <div class="form-group">
+                  <label for="flag-layout">Flag Layout</label>
+                  <select class="form-control" id="flag-layout">
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="flag-overlay">Overlay</label>
+                  <select class="form-control" id="flag-overlay">
+                  </select>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <h3>Flag Colors</h3>
+                  <div class="form-group">
+                    <label for="flag-color-1">1</label>
+                    <select class="flag-color" id="flag-color-1"></select>
+                    <div class="color-sample">&nbsp;</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="flag-color-2">2</label>
+                    <select class="flag-color" id="flag-color-2"></select>
+                    <div class="color-sample">&nbsp;</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="flag-color-3">3</label>
+                    <select class="flag-color" id="flag-color-3"></select>
+                    <div class="color-sample">&nbsp;</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="flag-color-4">4</label>
+                    <select class="flag-color" id="flag-color-4"></select>
+                    <div class="color-sample">&nbsp;</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="flag-color-5">5</label>
+                    <select class="flag-color" id="flag-color-5"></select>
+                    <div class="color-sample">&nbsp;</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="flag-color-6">6</label>
+                    <select class="flag-color" id="flag-color-6"></select>
+                    <div class="color-sample">&nbsp;</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="flag-color-7">7</label>
+                    <select class="flag-color" id="flag-color-7"></select>
+                    <div class="color-sample">&nbsp;</div>
+                  </div>
+                  <button type="button" class="btn btn-primary"
+                          id="do-pledge-button">Pledge</button>
+                  <button type="button" class="btn"
+                          id="cancel-pledge-button">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <script src="../../shared/js/web3.js"></script>
+    <script src="./js/truffle-contract.js"></script>
+    <script src="../../shared/js/tether.js"></script>
+    <script src="../../shared/js/jquery.js"></script>
+    <script src="../../shared/js/bootstrap.js"></script>
+    <script src="./js/schellingflags.js"></script>
+  </body>
+</html>
