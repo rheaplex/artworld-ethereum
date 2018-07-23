@@ -1,0 +1,25 @@
+{
+  "name": "secret-artworks",
+  "version": "1.0.0",
+  "description": "A series of artworks with secret content.",
+  "main": " ",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/robmyers/artworld-ethereum.git"
+  },
+  "author": "Rob Myers",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://gitlab.com/robmyers/artworld-ethereum/issues"
+  },
+  "homepage": "https://gitlab.com/robmyers/artworld-ethereum#README",
+  "dependencies": {
+    "openzeppelin-solidity": "1.11.0"
+  }
+}
