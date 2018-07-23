@@ -13,6 +13,16 @@
  */
 
 module.exports = {
-  // See <http://truffleframework.com/docs/advanced/configuration>
-  // to customize your Truffle configuration!
+    networks: {
+	"live": {
+	    network_id: 1, // Ethereum public network
+	    host: "127.0.0.1",
+	    port: 8545
+	},
+	development: {
+	    network_id: "*", // Match any network id
+	    host: "127.0.0.1",
+	    port: 9545
+	}
+    }
 }
