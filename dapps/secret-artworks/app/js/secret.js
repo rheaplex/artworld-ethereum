@@ -5,18 +5,18 @@ Data.properties = {
 
   'hash of the content of': '0x242F21E612C260AC18187601798295E6C4576617E4EA8CE823902531C0044B35',
   
-  'Ethereum address of the contract containing': '0xDB91670CB86A36067A72A4E73B283BB5CDBD4E58',
+  'Ethereum address of the contract containing': '0x5B64319F093178A5DB00BAB4B274B1E665A66ECE',
 
-  'Ethereum address of the creator of the contract containing': '0x53DA753A4D453AA132DA0A20137C95C02E554C45',
-  'Ethereum block containing the transaction creating the contract containing': '0x2E4BEA38BAAA2CEB61E507F8669EF08627BBF29BFFAD2FD774CAF1DF1BB17F23',
-  'Ethereum transaction creating the contract containing': '0x3D00652F82DE9AB7396DE9E47979BCBDB360288CA88D8F3FB058266B4869550B ',
+  'Ethereum address of the creator of the contract containing': '0x7B227BB88E79284A3B21C723789E18FC5503B452',
+  'Ethereum block containing the transaction creating the contract containing': '0xCC7D4703E8B229BF5804E7D6EFFC58B05FB34410B540D0A83372A9D28EE037F3',
+  'Ethereum transaction creating the contract containing': '0x208722F6308E444626E438D37361365E63B02BEB770343022CAB2C714AFC8D91',
   
-  'Ethereum block containing the transaction setting the content of': '0xEA2CC6DB520384B60E8EF9E668F5B76268F043FA4ECAC5442A62020F36EDAF33',
-  'Ethereum transaction setting the content of': '0x9851467A6E4A658DEE7765238DE2A4F6F42776D69ACDC33F699ECD0B5CFA5878',
+  'Ethereum block containing the transaction setting the content of': '0xFCFEFC0D8B031FFCD55A3F2E834DA996D979826EB3C708611A06470958C14497',
+  'Ethereum transaction setting the content of': '0x7BA23D2138563D447D31B02D271FDCF3362F20488125756D58828ED2E654373C',
   
-  'Ethereum address of the owner of': '0xC837F51A0EFA33F8ECA03570E3D01A4B2CF97FFD',
-  'Ethereum block containing the transaction setting the current owner of': '0x0X699E264F26BE009FBBADEA371F28FB0044229B07AFFAB7E9608B83BB0C481676',
-  'Ethereum transaction setting the current owner of': '0x87E87D18AA019A885D2D36CADB398D1DC5D92C777A88F1490253C6722A569906',
+  'Ethereum address of the owner of': '0x7B227BB88E79284A3B21C723789E18FC5503B452',
+  'Ethereum block containing the transaction setting the current owner of': '0xCC7D4703E8B229BF5804E7D6EFFC58B05FB34410B540D0A83372A9D28EE037F3',
+  'Ethereum transaction setting the current owner of': '0x208722F6308E444626E438D37361365E63B02BEB770343022CAB2C714AFC8D91',
 }
 
 const SIXTEEN_COLORS = [
