@@ -17,7 +17,9 @@ module.exports = {
 	"live": {
 	    network_id: 1, // Ethereum public network
 	    host: "127.0.0.1",
-	    port: 8545
+	    port: 8545,
+	    gasPrice: 1000000000,
+	    from: "0x7b227bB88E79284a3B21C723789e18Fc5503B452"
 	},
 	development: {
 	    network_id: "*", // Match any network id
