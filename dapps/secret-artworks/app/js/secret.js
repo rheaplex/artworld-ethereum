@@ -1,23 +1,6 @@
 const Data = {};
 
-Data.properties = {
-  'secret property of': 'its content',
-
-  'hash of the content of': '0x242F21E612C260AC18187601798295E6C4576617E4EA8CE823902531C0044B35',
-  
-  'Ethereum address of the contract containing': '0x5B64319F093178A5DB00BAB4B274B1E665A66ECE',
-
-  'Ethereum address of the creator of the contract containing': '0x7B227BB88E79284A3B21C723789E18FC5503B452',
-  'Ethereum block containing the transaction creating the contract containing': '0xCC7D4703E8B229BF5804E7D6EFFC58B05FB34410B540D0A83372A9D28EE037F3',
-  'Ethereum transaction creating the contract containing': '0x208722F6308E444626E438D37361365E63B02BEB770343022CAB2C714AFC8D91',
-  
-  'Ethereum block containing the transaction setting the content of': '0xFCFEFC0D8B031FFCD55A3F2E834DA996D979826EB3C708611A06470958C14497',
-  'Ethereum transaction setting the content of': '0x7BA23D2138563D447D31B02D271FDCF3362F20488125756D58828ED2E654373C',
-  
-  'Ethereum address of the owner of': '0x7B227BB88E79284A3B21C723789E18FC5503B452',
-  'Ethereum block containing the transaction setting the current owner of': '0xCC7D4703E8B229BF5804E7D6EFFC58B05FB34410B540D0A83372A9D28EE037F3',
-  'Ethereum transaction setting the current owner of': '0x208722F6308E444626E438D37361365E63B02BEB770343022CAB2C714AFC8D91',
-}
+Data.properties = {}
 
 const SIXTEEN_COLORS = [
   '#F0F0F0', 'silver', 'gray', 'black', 'red', 'maroon', 'yellow', 'olive',
