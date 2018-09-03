@@ -814,6 +814,10 @@ $(() => {
   // CSS display is set to 'none' by the shared stylesheet, so .show() fails
   $('#schellingflags-gui').css('display', 'block')
   hideUI()
+
+  // Make sure the drawing doesn't go horribly wrong if the window is resized
+  // or zoomed.
+  $(window).resize(updateFlags)
   
   if (typeof web3 !== 'undefined') {
     // Use injected provider from Mist or Metamask etc.
