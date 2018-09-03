@@ -1,7 +1,43 @@
+/*  SchellingFlags - Flags as focal points for aesthetics and ideology.
+    Copyright (C) 2018  Rhea Myers <rob@Rhea Myers.org>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+///////////////////////////////////////////////////////////////////////////////
+/*
+FIXME: We moved to removing the UI from the DOM rather than merely hiding it
+       during development. Ideally we would update the ../../shared JS code
+       to hide the UI and make it transparent to events, as this would allow
+       us to be less careful about reattaching the UI before accessing
+       properties stored in it.
+       Given the current method, we should store UI data in an object separate
+       from the DOM and update/draw from that. This would be better
+       encapsulation anyway.
+*/
+///////////////////////////////////////////////////////////////////////////////
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Colors
 ///////////////////////////////////////////////////////////////////////////////
 
+// The number of colour choices
+const NUM_COLOR_VALS = 7
+
+// The colour names in the UI to the CSS colour names
 const COLORS = {
   "Black": "Black",
   "White": "White",
@@ -29,14 +65,19 @@ const COLORS = {
   "Dark Yellow": "Gold"
 };
 
+// Assumes order given above :-/
 const COLORS_NAMES = Object.keys(COLORS)
 
 const colorIndexToName = index => COLORS_NAMES[index]
 
+const colorIndexToColor = index => COLORS[colorIndexToName(index)]
+
 const colorIndexesToNames = indexes => indexes.map(colorIndexToName)
 
+const colorIndexesToColors = indexes => indexes.map(colorIndexToColor)
+
 ///////////////////////////////////////////////////////////////////////////////
-//
+// Shape drawing utilities
 ///////////////////////////////////////////////////////////////////////////////
 
 const diamondPathOffset = (width, height, remove) => {
@@ -532,7 +573,6 @@ const drawFlagByIndexes = (element, layout, overlay, colors) => {
   const colorNames = colorIndexesToNames(colors)
   const layoutName = LAYOUTS_INDEXES[layout]
   const overlayName = OVERLAYS_INDEXES[overlay]
-  console.log([colorNames, layoutName, overlayName])
   drawFlag(element, layoutName, overlayName, colorNames)
 }
 
@@ -540,14 +580,29 @@ const drawFlagByIndexes = (element, layout, overlay, colors) => {
 // UI
 ///////////////////////////////////////////////////////////////////////////////
 
+let schellingFlagsUI
+
+const hideUI = () => {
+  schellingFlagsUI.detach()
+}
+
+const showUI = () => {
+  schellingFlagsUI.appendTo('body')
+  // Clear the previous layout, if any. Useful for background clicks (no flag).
+  setLayoutSelectVal(0)
+  setOverlaySelectVal(0)
+  setUIColorVals(Array(NUM_COLOR_VALS).fill(0))
+}
+
 // Draw the flag
 
-var updateFlagUI = () => {
+const updateFlagUI = () => {
   const layout = getUILayoutVal()
   const overlay = getUIOverlayVal()
   const colors = getUIColorVals()
   drawFlagByIndexes($('#ui-flag'), layout, overlay, colors)
   updateFlagUIHash()
+  enableUIColorsForSelectedOptions()
 }
 
 // Colors
@@ -560,6 +615,7 @@ const createColorSelectOptions = select => {
 }
 
 const colorSelectChanged = e => {
+  e.stopPropagation()
   const select = e.target
   const index = $(select).val()
   $(select).next().css('background-color', COLORS[COLORS_NAMES[index]])
@@ -572,9 +628,10 @@ const initColorSelects = () => {
 }
 
 const setUIColorVals = (colorIndexes) => {
-  $('.flag-color').each(i => {
-    $(this).val(colorIndexes[i])
-    $(this).next().css('background-color', colorIndexToValue(colorIndexes[i]))
+  $('.flag-color').each((i, element) => {
+    $(element).val(colorIndexes[i])
+    $(element).next().css('background-color',
+                          colorIndexToColor(colorIndexes[i]))
   })
 }
 
@@ -603,6 +660,7 @@ const createLayoutSelectOptions = () => {
 }
 
 const layoutSelectChanged = e => {
+  e.stopPropagation()
   enableUIColorsForSelectedOptions()
   updateFlagUI()
 }
@@ -628,6 +686,7 @@ const createOverlaySelectOptions = () => {
 }
 
 const overlaySelectChanged = e => {
+  e.stopPropagation()
   enableUIColorsForSelectedOptions()
   updateFlagUI()
 }
@@ -653,27 +712,29 @@ const pledgeToFlag = async () => {
   const layout = getUILayoutVal()
   const overlay = getUIOverlayVal()
   const colors = getUIColorVals()
+  // We can only hide the UI (remove it from the DOM) once we have got the
+  // values from it.
+  hideUI()
   await schellingFlags.pledgeToFlagByProperties(layout, overlay, colors)
 }
 
 const updateFlag = async (index, flagID) => {
   if (flagID !== 0) {
-    const [colors, layout, overlay, pledgeCount] =
+    const [colors_, layout_, overlay_, pledgeCount_] =
           await schellingFlags.getFlag.call(flagID)
-    console.log(colors)
-    const colorIndexes = colors.map(web3.toDecimal)
-    console.log(colorIndexes)
+    const colors = colors_.map(web3.toDecimal)
+    const layout = web3.toDecimal(layout_)
+    const overlay = web3.toDecimal(overlay_)
+    const pledgeCount = web3.toDecimal(pledgeCount_)
     element = $(`#flag-${index}`)
-    console.log(element)
-    drawFlagByIndexes(element, web3.toDecimal(layout),
-                      web3.toDecimal(overlay), colorIndexes)
-    element.click(function(event) {
+    drawFlagByIndexes(element, layout, overlay, colors)
+    element.click(event => {
       event.stopPropagation()
+      // Do this before setting vals, to reattach it to the DOM for $ to find
+      showUI()
       setLayoutSelectVal(layout)
       setOverlaySelectVal(overlay)
       setUIColorVals(colors)
-      //$('representation').hide()
-      $('.gui').show()
       updateFlagUI()
     })
   }
@@ -682,7 +743,6 @@ const updateFlag = async (index, flagID) => {
 const updateFlags = async () => {
   const mostPopular = (await schellingFlags.getMostPopular.call())
         .map(web3.toDecimal)
-  console.log(mostPopular)
   createFlagSVGs($('#flags'), numRows, numCols)
   for (let i = 0; i < mostPopular.length; i++) {
     // We could do this in parallel
@@ -712,7 +772,6 @@ const initEventMostPopularChanged = async () => {
         console.log(err);
         return;
     }
-    console.log(result)
     // Just update everything rather than working out what changed
     updateFlags()
   })
@@ -722,43 +781,59 @@ const initEventMostPopularChanged = async () => {
 // Main Flow Of Execution
 ///////////////////////////////////////////////////////////////////////////////
 
-$(() => {  
+$(() => {
   $('body').click(event => {
+    console.log('body')
     event.stopPropagation()
-    $('.gui').show()
+    showUI()
     updateFlagUI()
   })
+  
+  // First set up the GUI, then later remove it from the DOM
+  
   $('#do-pledge-button').click(event => {
     event.stopPropagation()
-    $('.gui').hide()
     pledgeToFlag()
   })
   $('#cancel-pledge-button').click(event => {
     event.stopPropagation()
-    $('.gui').hide()
+    hideUI()
   })
   
   initColorSelects()
   initLayoutSelects()
   initOverlaySelects()
+  
+  // Prevent clicks bubbling to body and calling its click handler
+  $('.gui').click(event => event.stopPropagation())
+  
+  // Our code using flex layouts doesn't play nicely with the ../../shared js
+  // code, which assumes a fixed size overlay div for the GUI.
+  // So we implement our own system to remove and reattach the GUI instead.
+  schellingFlagsUI = $('.gui-container')
+  // CSS display is set to 'none' by the shared stylesheet, so .show() fails
+  $('#schellingflags-gui').css('display', 'block')
+  hideUI()
+  
   if (typeof web3 !== 'undefined') {
     // Use injected provider from Mist or Metamask etc.
     window.web3 = new Web3(web3.currentProvider);
-    } else {
+    
+    $.getJSON('../build/contracts/SchellingFlags.json')
+      .then(contract_data => {
+        const SchellingFlags = TruffleContract(contract_data)
+        SchellingFlags.setProvider(web3.currentProvider)
+        SchellingFlags.deployed()
+          .then(instance => {
+            schellingFlags = instance
+            updateFlags()
+            initEventMostPopularChanged()
+            //      $('#representation').show()
+            $('.gui-wrapper').css('pointer-events: none;')
+          })
+      })
+  } else {
     alert('Cannot connect to the Ethereum network.')
-    aaaaaaaaaaaa()
   }
-  $.getJSON('../build/contracts/SchellingFlags.json')
-    .then(contract_data => {
-      const SchellingFlags = TruffleContract(contract_data)
-      SchellingFlags.setProvider(web3.currentProvider)
-      SchellingFlags.deployed()
-        .then(instance => {
-          schellingFlags = instance
-          updateFlags()
-          initEventMostPopularChanged()
-          //      $('#representation').show()
-          $('.gui-wrapper').css('pointer-events: none;')
-        })
-    })
+
 })
