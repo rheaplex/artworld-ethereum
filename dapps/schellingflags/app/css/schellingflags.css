@@ -1,12 +1,16 @@
-.flags {
+#flags {
   text-align: center;
-  margin: auto 0;
+  width: 96vmin;
+  /* Height would be 48 but this includes the flag spacing */
+  height: 52vmin;
+  padding: 0;
 }
 
 .flag12 {
-  width: 30vh;
-  height: 22vh;
-  margin: 12px;
+  /* Dimensions are weird to allow for margins */
+  width: 21.25vmin;
+  height: 15vmin;
+  margin-bottom: 2.75vmin;
   border: 1px solid #dddddd;
   background-color: white;
 }
