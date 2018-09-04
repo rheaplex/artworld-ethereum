@@ -29,3 +29,20 @@
   margin: 12px;
   border: 1px solid #dddddd;
 }
+
+#schellingflags-gui {
+   float: left;
+
+    position:absolute;
+    left:0; right:0;
+    top:0; bottom:0;
+    margin: auto;
+    padding: 20px;
+
+    width: 800px;
+    height: 540px;
+
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
