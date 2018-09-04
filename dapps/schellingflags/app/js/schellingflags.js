@@ -15,21 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-///////////////////////////////////////////////////////////////////////////////
-/*
-FIXME: We moved to removing the UI from the DOM rather than merely hiding it
-       during development. Ideally we would update the ../../shared JS code
-       to hide the UI and make it transparent to events, as this would allow
-       us to be less careful about reattaching the UI before accessing
-       properties stored in it.
-       Given the current method, we should store UI data in an object separate
-       from the DOM and update/draw from that. This would be better
-       encapsulation anyway.
-*/
-///////////////////////////////////////////////////////////////////////////////
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // Colors
 ///////////////////////////////////////////////////////////////////////////////
@@ -580,14 +565,15 @@ const drawFlagByIndexes = (element, layout, overlay, colors) => {
 // UI
 ///////////////////////////////////////////////////////////////////////////////
 
-let schellingFlagsUI
-
 const hideUI = () => {
-  schellingFlagsUI.detach()
+  $('.gui').hide()
 }
 
 const showUI = () => {
-  schellingFlagsUI.appendTo('body')
+  $('.gui').show()
+}
+
+const clearUI = () => {
   // Clear the previous layout, if any. Useful for background clicks (no flag).
   setLayoutSelectVal(0)
   setOverlaySelectVal(0)
@@ -712,9 +698,6 @@ const pledgeToFlag = async () => {
   const layout = getUILayoutVal()
   const overlay = getUIOverlayVal()
   const colors = getUIColorVals()
-  // We can only hide the UI (remove it from the DOM) once we have got the
-  // values from it.
-  hideUI()
   await schellingFlags.pledgeToFlagByProperties(layout, overlay, colors)
 }
 
@@ -730,11 +713,10 @@ const updateFlag = async (index, flagID) => {
     drawFlagByIndexes(element, layout, overlay, colors)
     element.click(event => {
       event.stopPropagation()
-      // Do this before setting vals, to reattach it to the DOM for $ to find
-      showUI()
       setLayoutSelectVal(layout)
       setOverlaySelectVal(overlay)
       setUIColorVals(colors)
+      showUI()
       updateFlagUI()
     })
   }
@@ -785,14 +767,14 @@ $(() => {
   $('body').click(event => {
     console.log('body')
     event.stopPropagation()
+    clearUI()
     showUI()
     updateFlagUI()
   })
   
-  // First set up the GUI, then later remove it from the DOM
-  
   $('#do-pledge-button').click(event => {
     event.stopPropagation()
+    hideUI()
     pledgeToFlag()
   })
   $('#cancel-pledge-button').click(event => {
@@ -807,12 +789,6 @@ $(() => {
   // Prevent clicks bubbling to body and calling its click handler
   $('.gui').click(event => event.stopPropagation())
   
-  // Our code using flex layouts doesn't play nicely with the ../../shared js
-  // code, which assumes a fixed size overlay div for the GUI.
-  // So we implement our own system to remove and reattach the GUI instead.
-  schellingFlagsUI = $('.gui-container')
-  // CSS display is set to 'none' by the shared stylesheet, so .show() fails
-  $('#schellingflags-gui').css('display', 'block')
   hideUI()
 
   // Make sure the drawing doesn't go horribly wrong if the window is resized
@@ -832,8 +808,6 @@ $(() => {
             schellingFlags = instance
             updateFlags()
             initEventMostPopularChanged()
-            //      $('#representation').show()
-            $('.gui-wrapper').css('pointer-events: none;')
           })
       })
   } else {
