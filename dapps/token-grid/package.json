@@ -1,0 +1,6 @@
+{
+  "name": "token-grid",
+  "dependencies": {
+    "openzeppelin-solidity": "^2.2.0",
+  }
+}
