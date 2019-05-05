@@ -1,0 +1,36 @@
+#grid {
+    background-color: white;
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border: 0.1px #FAFAFA solid
+}
+
+#gui-grid-preview {
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    border: 0.1px #FAFAFA solid
+}
+
+#grid-gui {
+  float: left;
+
+  position:absolute;
+  left:0; right:0;
+  top:0; bottom:0;
+  margin: auto;
+  padding: 20px;
+
+  width: 800px;
+  height: 540px;
+
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
