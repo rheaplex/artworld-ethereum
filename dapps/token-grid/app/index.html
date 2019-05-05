@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>grid</title>
+    <link rel="stylesheet" href="../../shared/css/bootstrap.css">
+    <link rel="stylesheet" href="../../shared/css/shared.css">
+    <link rel="stylesheet" href="./css/grid.css">
+  </head>
+  <body>
+    <div id="representations">
+      <canvas id="grid"></canvas>
+    </div>
+    
+    <div class="gui" id="grid-gui">
+      <ul class="nav nav-tabs" id="grid-gui-tabs" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="update-grid-tab" data-toggle="tab"
+             href="#update-grid" role="tab" aria-controls="update-grid"
+             aria-selected="true">Update Grid</a></li>
+        <li class="nav-item">
+          <a class="nav-link" id="request-token-tab" data-toggle="tab"
+             href="#request-token" role="tab" aria-controls="request-token"
+             aria-selected="false">Request Token</a></li>
+      </ul>
+      <div class="tab-content" id="grid-gui-tabs-content">
+        <div class="tab-pane fade show active" id="update-grid" role="tabpanel"
+             aria-labelledby="update-grid-tab">
+          <br>
+          <canvas class="center-block" id="gui-grid-preview"></canvas>
+          <form>
+            <div class="form-group">
+              <label class="gui-label"
+                     for="grid-gui-rows">Row co-ordinates</label>
+              <input class="form-control"
+                     type="text"
+                     id="grid-gui-rows">
+            </div>
+            <div class="form-group">
+              <label class="gui-label"
+                     for="grid-gui-columns">Column co-ordinates</label>
+              <input class="form-control"
+                     type="text"
+                     id="grid-gui-columns">
+            </div>
+            <button type="button" class="btn btn-primary"
+                    id="grid-gui-update">Update</button>
+            &nbsp;
+            <button type="button" class="btn btn-default"
+                    id="grid-gui-cancel">Cancel</button>
+          </form>
+          <br>
+          <p><b><i><span style="color: red;">WARNING:</span> updating the grid
+                will burn one of your TGRID tokens and cost gas!</i></b><br>
+            Your account <tt><span class="account">unknown</span></tt> has
+            <i><span class="num-tokens">unknown</span></i> TGRID tokens.<br>
+            To update the Grid, alter the values above entering them as
+            comma-separated values from 1 to 255, e.g. 1,72,150,255 then select
+            &quot;Update&quot;. If you don't have a TGRID token, you
+            can&apos;t select &quot;Update&quot;.</p>
+        </div>
+        <div class="tab-pane fade" id="request-token" role="tabpanel"
+             aria-labelledby="request-token-tab">
+          <br>
+          <p>Your account <tt><span class="account">unknown</span></tt> has
+            <i><span class="num-tokens">unknown</span></i> TGRID tokens.</p>
+          <p><b><i><span style="color: red;">WARNING:</span> requesting a
+                token will cost you Ether for gas. Tokens do not represent
+                any real world values, goods, or rights and are sold without
+                warranty of any kind.</i></b></p>
+          <p>You can hold a maximum of 10 TGRID tokens per account, if you try
+            to buy more it won&apos;t work and you will lose your gas
+            payment.</p>
+          <form>
+            <button type="button" class="btn btn-primary"
+                    id="grid-gui-request">Request 1 TGRID</button>
+          </form>
+        </div>
+      </div>
+      </div>
+
+    <script src="../../shared/js/jquery.js"></script>
+    <script src="../../shared/js/popper.js"></script>
+    <script src="../../shared/js/bootstrap.js"></script>
+    <script src="../../shared/js/shared.js"></script>
+    <script src="../../shared/js/web3-1.0.js"></script>
+    <script src="../../shared/js/truffle-contract.js"></script>
+    <script src="./js/grid.js"></script>
+  </body>
+</html>
