@@ -240,9 +240,9 @@ const userSelectedUpdate = async event => {
     const setColumnsTo = widthsToHex('#grid-gui-columns')
     //  showUpdating()
     await tokenGrid.setGrid(setRowsTo, setColumnsTo, {from: account})
-    const rows = (await tokenGrid.rows()).toArray(1)
-    const columns = (await tokenGrid.columns()).toArray(1)
-    await drawGridRepresentation(rows, columns)
+    /*const rows = (await tokenGrid.rows()).toArray(1)
+      const columns = (await tokenGrid.columns()).toArray(1)
+      await drawGridRepresentation(rows, columns)*/
   }
 }
 
@@ -252,7 +252,6 @@ const userSelectedRequest = async event => {
   if (!account) {
     alert('Cannot purchase token without Ethereum account access.')
   } else {
-    //  showUpdating()
     await tokenGrid.requestToken({from: account})
   }
 }
@@ -267,14 +266,12 @@ const userSelectedCancel = event => {
 ////////////////////////////////////////////////////////////////////////
 
 const listenToEvents = () => {
-  const transfer = tokenGrid.Transfer({})
-  transfer.watch(async (err, result) => {
-    await updateGuiFromBlockchain()
-  })
-  const grid = tokenGrid.Grid({})
-  grid.watch(async (err, result) => {
-    await updateGridFromBlockchain()
-  })
+  tokenGrid
+    .Transfer()
+    .on('data', updateGuiFromBlockchain)
+  tokenGrid
+    .Grid()
+    .on('data', updateGridFromBlockchain)
 }
 
 const initUI = async () => {
@@ -286,6 +283,7 @@ const initUI = async () => {
   $('#grid-gui-update').click(userSelectedUpdate)
   $('#grid-gui-request').click(userSelectedRequest)
   $('#grid-gui-cancel').click(hideUI)
+  listenToEvents()
   const rows = (await tokenGrid.rows()).toArray(1)
   const columns = (await tokenGrid.columns()).toArray(1)
   drawGridRepresentation(rows, columns)
