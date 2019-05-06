@@ -600,8 +600,8 @@
           }
         ],
         "contractDependencies": [
-          760,
           377,
+          760,
           818,
           887
         ],
@@ -1750,8 +1750,8 @@
           }
         ],
         "contractDependencies": [
-          760,
           377,
+          760,
           818,
           887
         ],
@@ -2738,6 +2738,12 @@
     "version": "0.5.6+commit.b259423e.Emscripten.clang"
   },
   "networks": {
+    "1": {
+      "events": {},
+      "links": {},
+      "address": "0xB37abf6229264a469F9f297Db517c8CF9411f481",
+      "transactionHash": "0xea7c7738405dacc2ccfdd2207e0babe664238765387da0ae0042e469fdde7bf5"
+    },
     "5777": {
       "events": {
         "0x5b15fbe5363181fc44b5668fcf537728d2146170ca254b9c66f5888e66067f3c": {
@@ -2847,7 +2853,7 @@
     }
   },
   "schemaVersion": "3.0.8",
-  "updatedAt": "2019-05-05T01:53:34.899Z",
+  "updatedAt": "2019-05-06T01:21:02.047Z",
   "devdoc": {
     "methods": {
       "allowance(address,address)": {
