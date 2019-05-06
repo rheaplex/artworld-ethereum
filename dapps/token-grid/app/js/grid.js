@@ -1,4 +1,4 @@
-/*  Grid - A grid.
+/*  Token Grid - A grid that can only be updated by burning a token.
     Copyright (C) 2017, 2019 Rhea Myers <rob@Rhea Myers.org>
 
     This program is free software: you can redistribute it and/or modify
@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Globals are bad
@@ -145,6 +146,8 @@ const updateGuiFromBlockchain = async () => {
     const balance = (await tokenGrid.balanceOf(account)).toNumber()
     $('.account').text(account)
     $('.num-tokens').text(balance)
+    // Enable or disable the update and request OK buttons to avoid the user
+    // trying to do something that will fail and cost them gas.
     if(balance == 0) {
       $('#grid-gui-update').prop('disabled', true);
     } else {
@@ -240,9 +243,6 @@ const userSelectedUpdate = async event => {
     const setColumnsTo = widthsToHex('#grid-gui-columns')
     //  showUpdating()
     await tokenGrid.setGrid(setRowsTo, setColumnsTo, {from: account})
-    /*const rows = (await tokenGrid.rows()).toArray(1)
-      const columns = (await tokenGrid.columns()).toArray(1)
-      await drawGridRepresentation(rows, columns)*/
   }
 }
 
@@ -266,6 +266,7 @@ const userSelectedCancel = event => {
 ////////////////////////////////////////////////////////////////////////
 
 const listenToEvents = () => {
+  // truffle-contract style EventListener-s.
   tokenGrid
     .Transfer()
     .on('data', updateGuiFromBlockchain)
@@ -282,7 +283,7 @@ const initUI = async () => {
   $('#grid-gui-columns').on('input', guiColumnsChanged)
   $('#grid-gui-update').click(userSelectedUpdate)
   $('#grid-gui-request').click(userSelectedRequest)
-  $('#grid-gui-cancel').click(hideUI)
+  $('.grid-gui-cancel').click(hideUI)
   listenToEvents()
   const rows = (await tokenGrid.rows()).toArray(1)
   const columns = (await tokenGrid.columns()).toArray(1)
@@ -301,4 +302,4 @@ const initGrid = async callback => {
   }
 }
 
-window.addEventListener('load', async () => initGrid(initUI))
+$(window).on('load', async () => initGrid(initUI))
