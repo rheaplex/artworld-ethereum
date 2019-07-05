@@ -2,60 +2,89 @@
 
 const ProofOfWorkBitmap = artifacts.require('./ProofOfWorkBitmap.sol')
 
-const crypto = require('crypto')
-
 // eb973b9198f3800302f3852035c716c79615ebea8924108ef718c53900000000  2db010cc
 
-// Convert the BigNumber to a Buffer containing its 256-bit representation
+const one = web3.utils.toBN('1')
 
-const bignum2uint256 = bignum => {
-  const numstr = ('0000000000000000000000000000000000000000000000000000000000000000' + bignum.toString(16)).slice(-64)
-  let bytes = new Uint8Array(32)
-  for(let i = 0; i < 32; i++) {
-    bytes[i] = parseInt(numstr.substring(i * 2, (i * 2) + 2), 16)
-  }
-  return Buffer.from(bytes.buffer)
-}
-
-const powHash = (previousNum, newNum, nonceNum) => {
-  const hash = crypto.createHash('sha256')
-  hash.update(previousNum)
-  hash.update(newNum)
-  hash.update(nonceNum)
-  return hash.digest('hex')
-}
-
-const calculatePow = (previousHash, bitmap, numZeroBytes) => {
-  let zeros = '0'.repeat(numZeroBytes * 2)
-  let nonce = web3.toBigNumber('0')
+const calculatePow = (previousHash, bitmap, difficulty) => {
+  let zeros = '0'.repeat(difficulty * 2)
+  let nonce = web3.utils.toBN(one)
   let digest;
-  for(;;nonce = nonce.plus(1)) {
-    digest = powHash(previousHash, bitmap, bignum2uint256(nonce))
-    /*if (digest.endsWith('00')) {
+  for(;;nonce = nonce.add(one)) {
+    digest = web3.utils.soliditySha3(
+      {t: 'bytes32', v: previousHash},
+      {t: 'bytes32', v: bitmap},
+      {t: 'uint256', v: nonce}
+    )
+    if (digest.endsWith('00')) {
       console.log(digest + "\t" + nonce.toString(16))
-    }*/
+    }
     if (digest.endsWith(zeros)) {
       break
     }
   }
-  return (digest, nonce.toString(16))
+  return [digest, `0x${nonce.toString('hex')}`]
 }
 
 contract('ProofOfWorkBitmap', () => {
+  const initialBitmap = '0x1312423443534645645645745745674560000000000000000000000000000000'
+  let initialHash = '0xeb973b9198f3800302f3852035c716c79615ebea8924108ef718c53900000000'
+  let initialNonce = '0x2db010cc'
+  let previousHash
+  let instance
+  
+  before(async () => {
+    instance = await ProofOfWorkBitmap.deployed()
+    previousHash = (await instance.hash()).toString();
+    [initialHash, initialNonce] = calculatePow(
+      previousHash,
+      initialBitmap,
+      (await instance.difficulty()).toNumber()
+    )
+    console.log([initialHash, initialNonce])
+  })
 
-  it('should start with difficulty of 8', async () => {
-    const instance = await ProofOfWorkBitmap.deployed()
-    const difficulty = await instance.difficulty.call()
-    const previousHash = bignum2uint256(web3.toBigNumber(0))
-    const bitmap = bignum2uint256(web3.toBigNumber(
-      '131242344353464564564574574567456'))
-    const [digest, nonce] = calculatePow(previousHash, bitmap, 4);
-    console.log(digest + "\t" + nonce)
+  it('should start with difficulty of 4 and everything else 0', async () => {
+    assert.equal((await instance.difficulty()).toNumber(), 4)
+    assert.equal((await instance.nonce()).toNumber(), 0)
+    assert.equal((await instance.hash()).toString(), 0)
+    assert.equal((await instance.height()).toNumber(), 0)
   })
 
   it('should validate a correct proof of work', async () => {
-    const instance = await ProofOfWorkBitmap.deployed()
-    const difficulty = await instance.difficulty.call()
+    assert.isTrue((await instance.validatePow(
+      initialBitmap,
+      initialNonce,
+      initialHash
+    )))
   })
 
+  it('should set bitmap with correct proof of work', async () => {
+    const receipt = await instance.setBitmap(
+      initialBitmap,
+      initialNonce,
+      initialHash
+    )
+    assert.equal((await instance.bitmap()).toString(), initialBitmap)
+    assert.equal(`0x${(await instance.nonce()).toString('hex')}`, initialNonce)
+    assert.equal((await instance.hash()).toString(), initialHash)
+    assert.equal(
+      (await instance.height()).toNumber(),
+      receipt.receipt.blockNumber
+    )
+    assert.equal((await instance.difficulty()).toNumber(), 8)
+  })
+
+  it('should not set bitmap with incorrect proof of work', async () => {
+    try {
+      await instance.setBitmap(
+        initialBitmap,
+        initialNonce,
+        '0x0a'
+      )
+      assert.fail('incorrect PoW should fail')
+    } catch (e) {
+      assert.isTrue(e.message.endsWith('invalid proof-of-work.'))
+    }
+  })
 })

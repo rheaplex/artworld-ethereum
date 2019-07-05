@@ -1,0 +1,36 @@
+#bitmap {
+    background-color: grey;
+
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+}
+
+#bitmap-gui-bitmap {
+    width: 480px;
+    height: 480px;
+}
+
+.bitmap-gui-pixel {
+    float: left;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background-color: lightgrey;
+}
+
+.bitmap-gui-pixel-on {
+    background-color: black;
+}
+
+#status {
+  hidden: false;
+}
