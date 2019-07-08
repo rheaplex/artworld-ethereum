@@ -16,9 +16,9 @@ const calculatePow = (previousHash, bitmap, difficulty) => {
       {t: 'bytes32', v: bitmap},
       {t: 'uint256', v: nonce}
     )
-    if (digest.endsWith('00')) {
+    /*if (digest.endsWith('0000')) {
       console.log(digest + "\t" + nonce.toString(16))
-    }
+    }*/
     if (digest.endsWith(zeros)) {
       break
     }
@@ -27,21 +27,21 @@ const calculatePow = (previousHash, bitmap, difficulty) => {
 }
 
 contract('ProofOfWorkBitmap', () => {
-  const initialBitmap = '0x1312423443534645645645745745674560000000000000000000000000000000'
-  let initialHash = '0xeb973b9198f3800302f3852035c716c79615ebea8924108ef718c53900000000'
-  let initialNonce = '0x2db010cc'
+  const initialBitmap = '0x5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03'
+  let initialHash = '0x666feda26176ce6eb51e840f1bd96008b3d7714a55bad259e6c43b9500000000'
+  let initialNonce = '0xbef11eb9'
   let previousHash
   let instance
-  
+
   before(async () => {
     instance = await ProofOfWorkBitmap.deployed()
     previousHash = (await instance.hash()).toString();
-    [initialHash, initialNonce] = calculatePow(
+    /*[initialHash, initialNonce] = calculatePow(
       previousHash,
       initialBitmap,
       (await instance.difficulty()).toNumber()
     )
-    console.log([initialHash, initialNonce])
+    console.log([initialHash, initialNonce])*/
   })
 
   it('should start with difficulty of 4 and everything else 0', async () => {
@@ -72,7 +72,7 @@ contract('ProofOfWorkBitmap', () => {
       (await instance.height()).toNumber(),
       receipt.receipt.blockNumber
     )
-    assert.equal((await instance.difficulty()).toNumber(), 8)
+    assert.equal((await instance.difficulty()).toNumber(), 4)
   })
 
   it('should not set bitmap with incorrect proof of work', async () => {
