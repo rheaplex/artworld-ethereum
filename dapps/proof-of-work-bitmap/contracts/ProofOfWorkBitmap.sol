@@ -16,6 +16,10 @@ contract ProofOfWorkBitmap {
         bytes32 hash
     );
 
+    constructor() public {
+        bitmap = 131242344353464564564574574567456;
+    }
+
     function max(uint a, uint b) private pure returns (uint) {
         return a > b ? a : b;
     }

@@ -8,41 +8,30 @@
     <link rel="stylesheet" href="./css/bitmap.css">
   </head>
   <body>
-
     <div id="updating">Updating...</div>
 
     <div id="representation">
       <canvas id="bitmap"></canvas>
     </div>
 
-    <!-- Here so we don't have to try to click outside the canvas. -->
-    <div id="background" data-toggle="modal" data-target="#gui"></div>
-
-    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"
-         id="gui">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Update Bitmap</h2>
-          </div>
-          <div class="modal-body">
-            <div id="bitmap-gui-bitmap" class="center-block">
-            </div>
-            <form>
-              <button type="button" class="btn btn-primary"
-                      id="bitmap-gui-update">Update</button>
-              &nbsp;
-              <button type="button" class="btn btn-default grid-gui-cancel"
-                      id="bitmap-gui-cancel-update"
-                      data-dismiss="modal">Cancel</button>
-            </form>
-          </div>
+    <div class="modal" id="gui" is-active="true">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <h1 class="title">Update Bitmap</h1>
+          <div id="bitmap-gui-bitmap" class="center-block"></div>
+          <br>
+          <button class="button is-success"
+                  id="bitmap-gui-update">Update</button>
+          &nbsp;
+          <button class="button is-info"
+                  id="bitmap-gui-cancel">Cancel</button>
         </div>
       </div>
     </div>
 
     <script src="../../shared/javascript/web3.js"></script>
     <script src="../../shared/javascript/shared.js"></script>
-    <script src=".../js/bitmap.js"></script>
+    <script src="./js/bitmap.js"></script>
   </body>
 </html>
