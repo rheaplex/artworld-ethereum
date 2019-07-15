@@ -4,7 +4,7 @@
 
 class EthereumNetwork {
   constructor () {
-    this.initialized = false
+    this.initialized = false;
   }
 
   /*
@@ -15,17 +15,17 @@ class EthereumNetwork {
   initializeWeb3 () {
     if (window.ethereum) {
       // Modern web3
-      window.web3 = new Web3(ethereum)
+      window.web3 = new Web3(ethereum);
       this.initialized = true
     } else if (window.web3) {
       // Old school web3
-      window.web3 = new Web3(web3.currentProvider)
-      this.initialized = true
+      window.web3 = new Web3(web3.currentProvider);
+      this.initialized = true;
     } else {
       // No web3 access
-      this.initialized = false
+      this.initialized = false;
     }
-    return this.initialized
+    return this.initialized;
   }
 
   /*
@@ -33,21 +33,21 @@ class EthereumNetwork {
     If they don't let us access any, return false.
   */
 
-  async tryForAccountAccess () => {
-    let account
+  async tryForAccountAccess () {
+    let account;
     if (window.ethereum) {
       try {
         // Request account access if needed
-        account = (await ethereum.enable())[0]
+        account = (await ethereum.enable())[0];
       } catch (error) {
-        account = false
+        account = false;
       }
     } else if (window.web3) {
-      account = (await web3.eth.getAccounts())[0]
+      account = (await web3.eth.getAccounts())[0];
     } else {
-      account = false
+      account = false;
     }
-    return account
+    return account;
   }
 
     /*
@@ -56,12 +56,13 @@ class EthereumNetwork {
   */
   
   async loadContract (contractJSONPath) {
-    const contractNetworkResponse = await fetch(contractJSONPath)
-    const contractJSON = await contractNetworkResponse.json()
-    const contract = TruffleContract(contractJSON)
-    contract.setProvider(web3.currentProvider)
-    const deployed = await contract.deployed()
-    return deployed
+    const contractNetworkResponse = await fetch(contractJSONPath);
+    const contractJSON = await contractNetworkResponse.json();
+    const abi = contractJSON.abi;
+    const network = await web3.eth.net.getId();
+    const address = contractJSON.networks[network].address;
+    const contract = new web3.eth.Contract(abi, address);
+    return contract;
   }
 
   /*
@@ -69,11 +70,11 @@ class EthereumNetwork {
   */
     
   listenToEvent (contractInstance, eventName, callback) {
-    return contractInstance[eventName]().on('data', callback)
+    return contractInstance[eventName]().on('data', callback);
   }
 
   getEventProperty (event, property) {
-    return event['property']
+    return event['property'];
   }
 }
 
@@ -82,23 +83,35 @@ class EthereumNetwork {
 */
 
 class Gui {
-  function finishWithError (reason) {
-    document.body.innerHTML = `<div class="container"><div class="row justify-content-md-center"><div class="alert alert-danger" role="alert"><h4 class="alert-heading">Error</h4><p>${reason}</p></div></div></div>`
+  constructor() {
+    this.hideUpdating();
   }
 
-  function showGui () {
-    document.querySelector('#gui')[0].style.display = "none"
+  finishWithError (reason) {
+    document.body.innerHTML = `<div class="container"><div class="row justify-content-md-center"><div class="alert alert-danger" role="alert"><h4 class="alert-heading">Error</h4><p>${reason}</p></div></div></div>`;
   }
 
-  function hideGui () {
-    document.querySelector('#gui')[0].style.display = "block"
+  showGui () {
+    document.getElementById('gui').classList.add('is-active');
   }
 
-  function showUpdating() {
-    document.querySelector('#updating').style.display = "block"
+  hideGui () {
+    document.getElementById('gui').classList.remove('is-active');
   }
 
-  function hideUpdating () {
-    document.querySelector('#updating').style.display = "none"
+  onClickShowGui(elementId) {
+    document.getElementById(elementId).onclick = () => this.showGui();
+  }
+
+  onClickHideGui(elementId) {
+    document.getElementById(elementId).onclick = () => this.hideGui();
+  }
+
+  showUpdating() {
+    document.getElementById('updating').style.display = 'block'
+  }
+
+  hideUpdating () {
+    document.getElementById('updating').style.display = 'none';
   }
 }
