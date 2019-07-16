@@ -17,7 +17,7 @@ contract ProofOfWorkBitmap {
     );
 
     constructor() public {
-        bitmap = 131242344353464564564574574567456;
+        bitmap = hex"31242344353464564564574574567456";
     }
 
     function max(uint a, uint b) private pure returns (uint) {
@@ -25,11 +25,13 @@ contract ProofOfWorkBitmap {
     }
 
     // The number of *bytes* at the end of the hash that must be zero
-    // This must always be at least 1, and has a maximum of 4 when the bitmap
+    // This must always be at least 1, and has a maximum of 2 when the bitmap
     // is first set.
     // It reduces slowly over the next many blocks.
+    // The initial value was much higher, it was reduced to play nicely with
+    // 2019 browser capabilities.
     function difficulty() public view returns (uint8 level) {
-        level = uint8(max(1, 4 - ((block.number - height) / 12)));
+        level = uint8(max(1, 2 - ((block.number - height) / 12)));
     }
 
     function validatePow(
@@ -75,5 +77,6 @@ contract ProofOfWorkBitmap {
         nonce = newNonce;
         hash = newHash;
         height = block.number;
+        emit BitmapChanged(msg.sender, bitmap, nonce, hash);
     }
 }
