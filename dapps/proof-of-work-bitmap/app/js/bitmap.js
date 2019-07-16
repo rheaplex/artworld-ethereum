@@ -15,22 +15,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 const symbol = '☣';
 
 const bitmapFromHexString = bitmapHex => {
   const bitmapBits = bitmapHex
-          .match(/.{2}/g)
-          .map(x => parseInt(x, 16).toString(2).split(''));
+        .slice(2)              // Strip 0x
+        .match(/.{2}/g)        // Take two hex digits / one byte at a time
+        .map(x => parseInt(x, 16).toString(2).padStart(8, '0').split(''));
   return [].concat(...bitmapBits);
 };
 
-const hexStringFromBitmap = bitmapArray => bitmapArray.join('')
+const hexStringFromBitmap = bitmapArray => '0x' + bitmapArray.join('')
       .match(/.{8}/g)
-      .map(x => parseInt(x, 2).toString(16))
+      .map(x => parseInt(x, 2).toString(16).padStart(2, '0'))
       .join('');
 
 class PixelsDisplay {
+  constructor (pow) {
+    pow.registerBitmapChangedHandler(event => this.drawPixelsRepresentation(
+      event.returnValues.bitmap
+    ));
+  }
+
   indexForCoords (x, y) {
     return (y * 16) + x;
   }
@@ -78,7 +84,7 @@ class PixelsDisplay {
     this.drawPixels(
       bitmapFromHexString(pixelValues),
       ctx,
-      this.drawSymbol,
+      this.drawRect,
       canvas.width / 16,
       'black',
       'white'
@@ -151,6 +157,13 @@ class ProofOfWorkPixels extends EthereumNetwork {
     );
   }
 
+  registerBitmapChangedHandler (callback) {
+    this.pixelsContract.events.BitmapChanged()
+      .on('data', event => {
+        callback(event)
+      });
+  }
+
   cancelCalculatePow() {
     this.cancel = true;
   }
@@ -161,7 +174,6 @@ class ProofOfWorkPixels extends EthereumNetwork {
     let nonce = web3.utils.toBN(1);
     let digest;
     for(;! this.cancel; nonce = nonce.add(one)) {
-      console.log('.');
       digest = web3.utils.soliditySha3(
         {t: 'bytes32', v: previousHash},
         {t: 'bytes32', v: bitmap},
@@ -180,29 +192,20 @@ class ProofOfWorkPixels extends EthereumNetwork {
   }
 
   async setBitmap (bitmap) {
+    const bitmapHex = hexStringFromBitmap(bitmap);
     const previousHash = await this.pixelsContract.methods.hash().call();
-    let difficulty = await this.pixelsContract.methods.difficulty()
-        .call();
-    let newHash;
-    let newNonce;
-    while (true) {
-      [newHash, newNonce] = this.calculatePow(previousHash, bitmap, difficulty);
-      // Try to catch the difficulty changing while we're calculating.
-      // The difficulty can still change between now and us broadcasting the
-      // results of this calculation to the network, but this reduces that
-      // window.
-      const currentDifficulty = await this.pixelsContract.difficulty().call();
-      if(currentDifficulty === difficulty) {
-        break;
-      } else {
-        difficulty = currentDifficulty;
-      }
-    }
+    const difficulty = await this.pixelsContract.methods.difficulty().call();
+    const [newHash, newNonce] = this.calculatePow(
+      previousHash,
+      bitmapHex,
+      difficulty
+    );
+    const account = await this.tryForAccountAccess();
     return await this.pixelsContract.methods.setBitmap(
-      hexStringFromBitmap(this.guiPixmapValues),
+      bitmapHex,
       newNonce,
       newHash
-    ).send();
+    ).send({from: account});
   }
 }
 
@@ -216,7 +219,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const display = new PixelsDisplay(pow);
     const gui = new PixelsGui(pow);
     //TODO: LISTEN TO PIXEL EVENTS
-    const bitmap = await pow.getBitmap()
+    const bitmap = await pow.getBitmap();
     display.drawPixelsRepresentation(bitmap);
   }
 });
