@@ -15,6 +15,7 @@
 #bitmap-gui-bitmap {
     width: 320px;
     height: 320px;
+    display: inline-block;
 }
 
 .bitmap-gui-pixel {
