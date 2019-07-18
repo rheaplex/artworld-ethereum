@@ -16,7 +16,7 @@ class EthereumNetwork {
     if (window.ethereum) {
       // Modern web3
       window.web3 = new Web3(ethereum);
-      this.initialized = true
+      this.initialized = true;
     } else if (window.web3) {
       // Old school web3
       window.web3 = new Web3(web3.currentProvider);
@@ -108,10 +108,10 @@ class Gui {
   }
 
   showUpdating() {
-    document.getElementById('updating').style.display = 'block'
+    document.getElementById('updating').classList.add('is-active');
   }
 
   hideUpdating () {
-    document.getElementById('updating').style.display = 'none';
+    document.getElementById('updating').classList.remove('is-active');
   }
 }

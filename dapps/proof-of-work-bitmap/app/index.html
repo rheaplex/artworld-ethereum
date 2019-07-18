@@ -8,18 +8,27 @@
     <link rel="stylesheet" href="./css/bitmap.css">
   </head>
   <body>
-    <div id="updating">Updating...</div>
-
     <div id="representation">
       <canvas id="bitmap"></canvas>
     </div>
 
-    <div class="modal" id="gui" is-active="true">
+    <div class="modal" id="updating">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="notification is-danger has-text-centered">
+          <h1 class="title">Calculating Proof-of-Work&hellip;</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="gui">
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="box">
           <h1 class="title">Update Bitmap</h1>
-          <div id="bitmap-gui-bitmap" class="center-block"></div>
+          <div class="container has-text-centered">
+            <div id="bitmap-gui-bitmap"></div>
+          </div>
           <br>
           <p><i><b>Note:</b> calculating the proof-of-work may take a few
               seconds once you press Update</i></p>
