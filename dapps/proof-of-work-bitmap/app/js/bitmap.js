@@ -1,5 +1,6 @@
-/*  Bitmap - A bitmap.
-    Copyright (C) 2017  Rob Myers <rob@robmyers.org>
+/* global EthereumNetwork, Gui */
+/*  bitmap.js - A bitmap updated using a proof-of-work puzzle.
+    Copyright (C) 2017, 2019  Rob Myers <rob@robmyers.org>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,16 +20,16 @@ const symbol = '☣';
 
 const bitmapFromHexString = bitmapHex => {
   const bitmapBits = bitmapHex
-        .slice(2)              // Strip 0x
-        .match(/.{2}/g)        // Take two hex digits / one byte at a time
-        .map(x => parseInt(x, 16).toString(2).padStart(8, '0').split(''));
+    .slice(2)              // Strip 0x
+    .match(/.{2}/g)        // Take two hex digits / one byte at a time
+    .map(x => parseInt(x, 16).toString(2).padStart(8, '0').split(''));
   return [].concat(...bitmapBits);
 };
 
 const hexStringFromBitmap = bitmapArray => '0x' + bitmapArray.join('')
-      .match(/.{8}/g)
-      .map(x => parseInt(x, 2).toString(16).padStart(2, '0'))
-      .join('');
+  .match(/.{8}/g)
+  .map(x => parseInt(x, 2).toString(16).padStart(2, '0'))
+  .join('');
 
 class PixelsDisplay {
   constructor (pow) {
@@ -71,13 +72,13 @@ class PixelsDisplay {
   }
 
   drawSymbol (ctx, h, v, cellSize) {
-    ctx.font = "" + cellSize + "px sans";
+    ctx.font = `${cellSize}px sans`;
     ctx.fillText(symbol, h, v + cellSize);
   }
 
   drawPixelsRepresentation (pixelValues) {
-    const canvas = document.getElementById("bitmap");
-    const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById('bitmap');
+    const ctx = canvas.getContext('2d');
     canvas.width  = 1600;
     canvas.height = 1600;
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -100,21 +101,22 @@ class PixelsGui extends Gui {
     this.createGuiBitmap();
     this.onClickShowGui('bitmap');
     this.onClickHideGui('bitmap-gui-cancel');
-    document.getElementById('bitmap-gui-update')
+    document
+      .getElementById('bitmap-gui-update')
       .onclick = () => this.submitClickHandler();
   }
 
   guiClickHandler (i) {
-    if (this.guiPixelValues[i] == "1") {
-      this.guiPixelValues[i] = "0";
+    if (this.guiPixelValues[i] == '1') {
+      this.guiPixelValues[i] = '0';
     } else {
-      this.guiPixelValues[i] = "1";
+      this.guiPixelValues[i] = '1';
     }
     this.setGuiBitmapState();
   }
   
   createGuiBitmap () {
-    const bitmap = document.getElementById("bitmap-gui-bitmap");
+    const bitmap = document.getElementById('bitmap-gui-bitmap');
     for (let i = 0; i < 256; i++) {
       const pixel = document.createElement('div');
       pixel.className = 'bitmap-gui-pixel';
@@ -125,13 +127,12 @@ class PixelsGui extends Gui {
   }
 
   setGuiBitmapState () {
-    const bitmap = document.getElementById("bitmap-gui-bitmap");
     for (let i = 0; i < 256; i++) {
-      const pixel = document.getElementById("gui-pixel-" + i);
-      if (this.guiPixelValues[i] == "1") {
-        pixel.classList.add("bitmap-gui-pixel-on");
+      const pixel = document.getElementById(`gui-pixel-${i}`);
+      if (this.guiPixelValues[i] == '1') {
+        pixel.classList.add('bitmap-gui-pixel-on');
       } else {
-        pixel.classList.remove("bitmap-gui-pixel-on");
+        pixel.classList.remove('bitmap-gui-pixel-on');
       }
     }
   }
@@ -145,13 +146,21 @@ class PixelsGui extends Gui {
 
   async submitClickHandler () {
     this.hideGui();
-    this.pow.setBitmap(this.guiPixelValues);
+    this.showUpdating();
+    const bitmapHex = hexStringFromBitmap(this.guiPixelValues);
+    const [newHash, newNonce] = await this.pow.calculatePow(bitmapHex);
+    // Make sure we hide the updating overlay regardless of whether the
+    // user approves the transaction or not.
+    try {
+      await this.pow.setBlockchainBitmap(bitmapHex, newHash, newNonce);
+    } finally {
+      this.hideUpdating();
+    }
   }
 }
 
 class ProofOfWorkPixels extends EthereumNetwork {
   async loadContracts() {
-    this.cancel = false;
     this.pixelsContract = await this.loadContract(
       '../build/contracts/ProofOfWorkBitmap.json'
     );
@@ -160,48 +169,45 @@ class ProofOfWorkPixels extends EthereumNetwork {
   registerBitmapChangedHandler (callback) {
     this.pixelsContract.events.BitmapChanged()
       .on('data', event => {
-        callback(event)
+        callback(event);
       });
   }
 
-  cancelCalculatePow() {
-    this.cancel = true;
-  }
-
-  calculatePow (previousHash, bitmap, difficulty) {
+  _calculatePow (previousHash, bitmap, difficulty) {
     const one = web3.utils.toBN('1');
     const zeros = '0'.repeat(difficulty * 2);
     let nonce = web3.utils.toBN(1);
     let digest;
-    for(;! this.cancel; nonce = nonce.add(one)) {
+    for(;; nonce = nonce.add(one)) {
       digest = web3.utils.soliditySha3(
         {t: 'bytes32', v: previousHash},
         {t: 'bytes32', v: bitmap},
         {t: 'uint256', v: nonce}
-      )
+      );
       if (digest.endsWith(zeros)) {
-        break
+        break;
       }
     }
-    this.cancel = false;
-    return [digest, `0x${nonce.toString('hex')}`]
+    return [digest, `0x${nonce.toString('hex')}`];
   }
 
   async getBitmap () {
     return await this.pixelsContract.methods.bitmap().call();
   }
 
-  async setBitmap (bitmap) {
-    const bitmapHex = hexStringFromBitmap(bitmap);
+  async calculatePow (bitmapHex) {
     const previousHash = await this.pixelsContract.methods.hash().call();
     const difficulty = await this.pixelsContract.methods.difficulty().call();
-    const [newHash, newNonce] = this.calculatePow(
+    return this._calculatePow(
       previousHash,
       bitmapHex,
       difficulty
     );
+  }
+
+  async setBlockchainBitmap(bitmapHex, newHash, newNonce) {
     const account = await this.tryForAccountAccess();
-    return await this.pixelsContract.methods.setBitmap(
+    return this.pixelsContract.methods.setBitmap(
       bitmapHex,
       newNonce,
       newHash

@@ -17,7 +17,7 @@ contract ProofOfWorkBitmap {
     );
 
     constructor() public {
-        bitmap = hex"31242344353464564564574574567456";
+        bitmap = hex"b1252344353464564564574574567556000001000fe005400000010000008001"; //hex"31242344353464564564574574567456";
     }
 
     function max(uint a, uint b) private pure returns (uint) {
