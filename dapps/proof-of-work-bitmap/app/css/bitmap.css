@@ -1,3 +1,7 @@
+html {
+  overflow: hidden;
+}
+
 #bitmap {
     background-color: grey;
 
