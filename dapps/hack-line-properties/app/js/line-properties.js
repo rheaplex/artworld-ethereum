@@ -16,11 +16,13 @@
 */
 
 
-const lineCaps = ['butt', 'round', 'square'];
+const LINE_CAPS = ['butt', 'round', 'square'];
+
+const lineCap = index => LINE_CAPS[index % LINE_CAPS.length];
 
 const setLinePropertiesCss = (id, width, linecap, dasharray) => {
   const applicant = document.getElementById(id);
-  applicant.setAttribute('style', `fill: none; stroke: black; stroke-width: ${width}pt; stroke-linecap: ${lineCaps[linecap]}; stroke-dasharray: ${dasharray}`);
+  applicant.setAttribute('style', `fill: none; stroke: black; stroke-width: ${width}pt; stroke-linecap: ${lineCap(linecap)}; stroke-dasharray: ${dasharray}`);
   console.log(applicant);
 };
 
