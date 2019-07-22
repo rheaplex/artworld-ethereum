@@ -15,7 +15,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 const LINE_CAPS = ['butt', 'round', 'square'];
 
 const lineCap = index => LINE_CAPS[index % LINE_CAPS.length];
@@ -23,155 +22,26 @@ const lineCap = index => LINE_CAPS[index % LINE_CAPS.length];
 const setLinePropertiesCss = (id, width, linecap, dasharray) => {
   const applicant = document.getElementById(id);
   applicant.setAttribute('style', `fill: none; stroke: black; stroke-width: ${width}pt; stroke-linecap: ${lineCap(linecap)}; stroke-dasharray: ${dasharray}`);
-  console.log(applicant);
 };
 
-
-////////////////////////////////////////////////////////////////////////////////
-// Mocking
-////////////////////////////////////////////////////////////////////////////////
-
-if (typeof web3 === 'undefined') {
-  var _strokeWidth = 10;
-  var _strokeLinecap = 1;
-  var _strokeDasharray = '50, 50';
-
-  var getNetworkStrokeWidth = function (callback) {
-    callback(_strokeWidth);
-  };
-
-  var getNetworkStrokeLinecap = function (callback) {
-    callback(_strokeLinecap);
-  };
-
-  var getNetworkStrokeDasharray = function (callback) {
-    callback(_strokeDasharray);
-  };
-
-  var commitNetworkStroke = function (width, linecap, dasharray) {
-    _strokeWidth = width;
-    _strokeLinecap = linecap;
-    _strokeDasharray = dasharray;
-    setStyleRepresentation(_strokeWidth, _strokeLinecap, _strokeDasharray);
-  }
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Globals are bad
-////////////////////////////////////////////////////////////////////////////////
-
-var guiStrokeDisplayWidth = 10;
-var guiStrokeDisplayLinecap = 1;
-var guiStrokeDisplayDasharray = '50,50';
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Stroke display
-////////////////////////////////////////////////////////////////////////////////
-
-var getNetworkStrokeStyle = function (callback) {
-  getNetworkStrokeWidth(function (width) {
-    guiStrokeDisplayWidth = width;
-    getNetworkStrokeLinecap(function (cap) {
-      guiStrokeDisplayLinecap = cap;
-      getNetworkStrokeDasharray(function (dashes) {
-        guiStrokeDisplayDasharray = dashes;
-        if (callback) {
-          callback(guiStrokeDisplayWidth,
-                   guiStrokeDisplayLinecap,
-                   guiStrokeDisplayDasharray);
-        }
-      });
-    });
-  });
-};
-
-var setStyle = function (id, width, linecap, dasharray) {
-  var applicant = $('#' + id);
-  applicant.css('stroke-width', width + 'pt');
-  applicant.css('stroke-linecap', lineCaps[linecap]);
-  applicant.css('stroke-dasharray', dasharray);
-};
-
-var setStyleRepresentation = function (width, linecap, dasharray) {
-  setStyle('stroke', width, linecap, dasharray);
-};
-
-var setStyleGui = function (width, linecap, dasharray) {
-  setStyle('stroke-gui-preview-stroke', width, linecap, dasharray);
-};
-
-////////////////////////////////////////////////////////////////////////////////
-// GUI
-////////////////////////////////////////////////////////////////////////////////
-
-var setGuiWidth = function (width) {
-  $('#stroke-gui-width').val(width);
-  $('#stroke-gui-width-value').text(width);
-};
-
-var setGuiLinecap = function (cap) {
-  $('#stroke-gui-linecap').val(cap);
-};
-
-var setGuiDasharray = function (dasharray) {
-  $('#stroke-gui-dasharray').val(dasharray);
-};
-
-var updateGui = function () {
-  setStyleGui(guiStrokeDisplayWidth,
-              guiStrokeDisplayLinecap,
-              guiStrokeDisplayDasharray);
-  setGuiWidth(guiStrokeDisplayWidth);
-  setGuiLinecap(guiStrokeDisplayLinecap)
-  setGuiDasharray(guiStrokeDisplayDasharray);
-};
-
-var guiDisplayHookFun = function () {
-  getNetworkStrokeStyle(updateGui);
-};
-
-var widthChanged = function () {
-  guiStrokeDisplayWidth = $('#stroke-gui-width').val();
-  updateGui();
-};
-
-var linecapChanged = function () {
-  guiStrokeDisplayLinecap = $('#stroke-gui-linecap').val();
-  updateGui();
-};
-
-var dasharrayChanged = function () {
-  var dash = $('#stroke-gui-dasharray');
-  dash.val(dash.val().replace(/[^0-9,]/g, ''));
-  guiStrokeDisplayDasharray = dash.val();
-  updateGui();
-};
-
-////////////////////////////////////////////////////////////////////////////////
-// User actions
-////////////////////////////////////////////////////////////////////////////////
-
-var userSelectedUpdate = function () {
-  commitNetworkStroke(guiStrokeDisplayWidth,
-                      guiStrokeDisplayLinecap,
-                      guiStrokeDisplayDasharray);
-  showUpdating();
-  hideGui();
-};
-
-var userSelectedCancel = function () {
-  hideGui();
-};
-
-
+const hexToDashes = hex => hex.match(/[0-9A-F]{2}/g).map(a => parseInt(a, 16));
 
 
 class PropertiesDisplay {
   constructor (properties) {
-    this.properties = properties;
+    properties.registerLinePropertiesChangedHandler(
+      this.drawPropertiesRepresentationEvent.bind(this)
+    );
   }
+
+  drawPropertiesRepresentationEvent (event) {
+    this.drawPropertiesRepresentation(
+      parseInt(event.returnValues.width, 10),
+      lineCap(parseInt(event.returnValues.cap, 10)),
+      hexToDashes(event.returnValues.dashes)
+    );
+  }
+
   drawPropertiesRepresentation (width, linecap, dasharray) {
     setLinePropertiesCss('properties', width, linecap, dasharray);
   }
@@ -185,40 +55,114 @@ class PropertiesGui extends Gui {
     this.onClickShowGui('representation');
     this.onClickHideGui('properties-gui-cancel');
     document.getElementById('properties-gui-update')
-      .onclick = () => this.submitClickHandler();
+      .onclick = this.submitClickHandler.bind(this);
     document.getElementById('stroke-gui-width')
-      .addEventListener('input', this.widthChanged);
+      .addEventListener('input', this.widthChanged.bind(this));
     document.getElementById('stroke-gui-linecap')
-      .addEventListener('input', this.linecapChanged);
+      .addEventListener('input', this.linecapChanged.bind(this));
     document.getElementById('stroke-gui-dasharray')
-      .addEventListener('keydown', this.dasharrayChanged);
-    document.getElementById('stroke-gui-dasharray')
-      .addEventListener('input', this.dasharrayChanged);
+      .addEventListener('keyup', this.dasharrayChanged.bind(this));
+  }
+
+  widthChanged() {
+    this.strokeWidth = document.getElementById('stroke-gui-width').value;
+    document.getElementById(
+      'stroke-gui-width-value'
+    ).innerText = this.strokeWidth;
+    this.drawPropertiesRepresentation();
+  }
+
+  linecapChanged () {
+    this.lineCap = document.getElementById('stroke-gui-linecap').value;
+    this.drawPropertiesRepresentation();
+  }
+
+  dasharrayChanged () {
+    const dash = document.getElementById('stroke-gui-dasharray');
+    dash.value = dash.value.replace(/[^0-9,]/g, '');
+    this.dashes = dash.value
+      .replace(/,+/g, ',')
+      .split(',')
+      .map(n => parseInt(n, 10))
+      .filter(n => !Number.isNaN(n));
+    this.drawPropertiesRepresentation();
+  }
+
+  // super.showGui() isn't async, but that's OK
+
+  async showGui () {
+    const [
+      strokeWidth,
+      lineCap,
+      dashes
+    ] = await this.properties.getBlockchainProperties();
+    this.strokeWidth = strokeWidth;
+    this.lineCap = lineCap;
+    this.dashes = dashes;
+    document.getElementById('stroke-gui-width').value = this.strokeWidth;
+    document.getElementById(
+      'stroke-gui-width-value'
+    ).innerText = this.strokeWidth;
+    document.getElementById('stroke-gui-linecap').value = this.lineCap;
+    document.getElementById(
+      'stroke-gui-dasharray'
+    ).value = this.dashes.join(',');
+    this.drawPropertiesRepresentation();
+    super.showGui();
   }
 
   async submitClickHandler () {
     this.hideGui();
     this.showUpdating();
-    //FIXME: For GUI dev only
-    setTimeout(this.hideUpdating, 1000);
+    try {
+      await this.properties.setBlockchainProperties(
+        this.strokeWidth,
+        this.lineCap,
+        '0x' + this.dashes.map(n => n.toString(16).padStart('0', 2)).join('')
+      );
+    } finally {
+      this.hideUpdating();
+    }
   }
 
-  drawPropertiesRepresentation (width, linecap, dasharray) {
+  drawPropertiesRepresentation () {
     setLinePropertiesCss(
       'stroke-gui-preview-stroke',
-      width,
-      linecap,
-      dasharray
+      this.strokeWidth,
+      this.lineCap,
+      this.dashes
     );
   }
 }
 
 
 class HackLineProperties extends EthereumNetwork {
+  async loadContracts() {
+    this.propertiesContract = await this.loadContract(
+      '../build/contracts/SecureLineProperties.json'
+    );
+  }
 
+  async getBlockchainProperties () {
+    const properties = await this.propertiesContract.methods
+          .getProperties().call();
+    return [
+      parseInt(properties[0], 10),
+      parseInt(properties[1], 10),
+      hexToDashes(properties[2])
+    ];
+  }
+
+  async setBlockchainProperties (width, cap, dashes) {
+    const account = await this.tryForAccountAccess();
+    await this.propertiesContract.methods.
+      setProperties(width, cap, dashes).send({from: account});
+  }
+
+  registerLinePropertiesChangedHandler (callback) {
+    this.propertiesContract.events.LineProperties().on('data', callback);
+  }
 }
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -227,16 +171,14 @@ class HackLineProperties extends EthereumNetwork {
 
 document.addEventListener('DOMContentLoaded', async () => {
   const properties = await new HackLineProperties();
-  //properties.initializeWeb3();
-  //if (! properties.initialized) {
-    //document.write('Could not connect to Ethereum network');
-  //} else {
-    //await properties.loadContracts();
+  properties.initializeWeb3();
+  if (! properties.initialized) {
+    document.write('Could not connect to Ethereum network');
+  } else {
+    await properties.loadContracts();
+    const [width, cap, dashes] = await properties.getBlockchainProperties();
     const display = new PropertiesDisplay(properties);
     const gui = new PropertiesGui(properties);
-    //TODO: LISTEN TO PIXEL EVENTS
-//    const bitmap = await properties.getBitmap();
-    display.drawPropertiesRepresentation(10, 1, [50, 50]);
-    gui.drawPropertiesRepresentation(10, 1, [50, 50]);
-  //}
+    display.drawPropertiesRepresentation(width, cap, dashes);
+  }
 });
