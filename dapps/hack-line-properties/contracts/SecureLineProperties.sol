@@ -20,6 +20,9 @@ contract SecureLineProperties {
 
   function SecureLineProperties () public {
     owner = msg.sender;
+    width = 24;
+    cap = 1;
+    dashes = 0x0F08;
   }
 
   function setOwner (address newOwner) public onlyOwner {
@@ -27,21 +30,21 @@ contract SecureLineProperties {
   }
 
   /*
-  function _setWidth (uint256 newWidth) {
-      if (newWidth > 0 && newWidth <= 72) {
-          width = newWidth;
-      }
-  }
+    function _setWidth (uint256 newWidth) {
+    if (newWidth > 0 && newWidth <= 72) {
+    width = newWidth;
+    }
+    }
 
-  function _setCap (uint8 newCap) {
-      if (newCap <= 2) {
-          cap = newCap;
-      }
-  }
+    function _setCap (uint8 newCap) {
+    if (newCap <= 2) {
+    cap = newCap;
+    }
+    }
 
-  function _setDashes (uint256 newDashes) {
-      dashes = newDashes;
-  }
+    function _setDashes (uint256 newDashes) {
+    dashes = newDashes;
+    }
   */
   
   function _setProperties (uint256 newWidth, uint8 newCap, uint256 newDashes) {
@@ -69,5 +72,9 @@ contract SecureLineProperties {
       ) {
           _setProperties(newWidth, newCap, newDashes);
       }
+  }
+
+  function getProperties () public returns (uint256, uint8, uint256) {
+      return (width, cap, dashes);
   }
 }
