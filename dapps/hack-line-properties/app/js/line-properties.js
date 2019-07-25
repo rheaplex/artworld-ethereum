@@ -24,8 +24,21 @@ const setLinePropertiesCss = (id, width, linecap, dasharray) => {
   applicant.setAttribute('style', `fill: none; stroke: black; stroke-width: ${width}pt; stroke-linecap: ${lineCap(linecap)}; stroke-dasharray: ${dasharray}`);
 };
 
-const hexToDashes = hex => hex.match(/[0-9A-F]{2}/g).map(a => parseInt(a, 16));
+const hexToDashes = hex => hex.match(/[0-9a-fA-F]{2}/g)
+      .filter(a => a !== '00')
+      .map(a => parseInt(a, 16));
 
+const dashesToHex = dashes => '0x' + (dashes
+                                      .filter(a => a !== 0)
+                                      .map(n => n.toString(16).padStart(2, '0'))
+                                      .join('')
+                                      .padStart(64, '0'));
+
+const commasToDashes = str => str.split(',')
+      .map(a => parseInt(a, 10))
+      .filter(n => !Number.isNaN(n));
+
+const hexToCommas = hex => hexToDashes(hex).join(',');
 
 class PropertiesDisplay {
   constructor (properties) {
@@ -37,8 +50,8 @@ class PropertiesDisplay {
   drawPropertiesRepresentationEvent (event) {
     this.drawPropertiesRepresentation(
       parseInt(event.returnValues.width, 10),
-      lineCap(parseInt(event.returnValues.cap, 10)),
-      hexToDashes(event.returnValues.dashes)
+      parseInt(event.returnValues.cap, 10),
+      hexToCommas(event.returnValues.dashes)
     );
   }
 
@@ -80,11 +93,7 @@ class PropertiesGui extends Gui {
   dasharrayChanged () {
     const dash = document.getElementById('stroke-gui-dasharray');
     dash.value = dash.value.replace(/[^0-9,]/g, '');
-    this.dashes = dash.value
-      .replace(/,+/g, ',')
-      .split(',')
-      .map(n => parseInt(n, 10))
-      .filter(n => !Number.isNaN(n));
+    this.dashes = commasToDashes(dash.value);
     this.drawPropertiesRepresentation();
   }
 
@@ -118,8 +127,14 @@ class PropertiesGui extends Gui {
       await this.properties.setBlockchainProperties(
         this.strokeWidth,
         this.lineCap,
-        '0x' + this.dashes.map(n => n.toString(16).padStart('0', 2)).join('')
+        dashesToHex(this.dashes)
       );
+    } catch (e) {
+      if (e.message == 'not owner') {
+        const mustBeOwner = document.getElementById('must-be-owner');
+        mustBeOwner.classList.add('is-active');
+        setTimeout(() => mustBeOwner.classList.remove('is-active'), 4000);
+      }
     } finally {
       this.hideUpdating();
     }
@@ -155,8 +170,14 @@ class HackLineProperties extends EthereumNetwork {
 
   async setBlockchainProperties (width, cap, dashes) {
     const account = await this.tryForAccountAccess();
-    await this.propertiesContract.methods.
-      setProperties(width, cap, dashes).send({from: account});
+    if (account.toLowerCase() === (await this.propertiesContract.methods
+                                   .owner().call()).toLowerCase())
+    {
+      await this.propertiesContract.methods.
+        setProperties(width, cap, dashes).send({from: account});
+    } else {
+      throw new Error('not owner');
+    }
   }
 
   registerLinePropertiesChangedHandler (callback) {
