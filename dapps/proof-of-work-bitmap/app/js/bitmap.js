@@ -167,10 +167,7 @@ class ProofOfWorkPixels extends EthereumNetwork {
   }
 
   registerBitmapChangedHandler (callback) {
-    this.pixelsContract.events.BitmapChanged()
-      .on('data', event => {
-        callback(event);
-      });
+    this.pixelsContract.events.BitmapChanged().on('data', callback);
   }
 
   _calculatePow (previousHash, bitmap, difficulty) {
