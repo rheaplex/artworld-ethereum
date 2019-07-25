@@ -5,13 +5,13 @@ contract SecureLineProperties {
 
   uint256 public width;
   uint8   public cap;
-  uint256 public dashes;
+  bytes32 public dashes;
 
   event LineProperties(
       address setter,
       uint256 width,
       uint8 cap,
-      uint256 dashes
+      bytes32 dashes
   );
 
   modifier onlyOwner () {
@@ -42,12 +42,12 @@ contract SecureLineProperties {
     }
     }
 
-    function _setDashes (uint256 newDashes) {
+    function _setDashes (bytes32 newDashes) {
     dashes = newDashes;
     }
   */
   
-  function _setProperties (uint256 newWidth, uint8 newCap, uint256 newDashes) {
+  function _setProperties (uint256 newWidth, uint8 newCap, bytes32 newDashes) {
       width = newWidth;
       cap = newCap;
       dashes = newDashes;
@@ -57,7 +57,7 @@ contract SecureLineProperties {
   function setProperties (
       uint256 newWidth,
       uint8 newCap,
-      uint256 newDashes
+      bytes32 newDashes
   )
       public
       onlyOwner
@@ -74,7 +74,7 @@ contract SecureLineProperties {
       }
   }
 
-  function getProperties () public returns (uint256, uint8, uint256) {
+  function getProperties () public returns (uint256, uint8, bytes32) {
       return (width, cap, dashes);
   }
 }
