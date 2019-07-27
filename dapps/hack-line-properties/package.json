@@ -1,0 +1,6 @@
+{
+  "name": "hack-line-properties",
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.14"
+  }
+}
