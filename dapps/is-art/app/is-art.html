@@ -2,55 +2,56 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Is This Contract Art?</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Is This Contract Art?</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
           rel="stylesheet">
-    <link href="../../shared/css/bootstrap.css" rel="stylesheet">
-    <link href="../../shared/css/shared.css" rel="stylesheet">
-    <link href="is-art.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/bulma.min.css">
+    <link rel="stylesheet" href="./css/is-art.css">
   </head>
   <body>
-    <div id="updating">Updating...</div>
 
-    <div id="status"></div>
-
-    <div id="representation" class="d-flex align-items-center">
-      <div id="is-art">
+    <div id="representation" class="columns is-vcentered">
+      <div id="is-art" class="column">
         This<br>
         contract<br>
         <span id="is-art-status">may be</span> art</div>
     </div>
 
-    <div class="gui-container d-flex align-items-center justify-content-center">
-      <div id="is-art-gui" class="gui">
-        <h2>Toggle</h2>
-        <form>
-          <div class="form-group">
-            <label for="gui-gas-account">Account to pay gas from</label>
-            <select class="form-control" id="gui-gas-account"></select>
-          </div>
-          <button type="button" class="btn btn-primary"
-                  onClick="IsArt.userSelectedUpdate()">Update</button>
-          &nbsp;
-          <button type="button" class="btn btn-default"
-                  onClick="IsArt.userSelectedCancel()">Cancel</button>
-        </form>
-        <br>
-        <p><b><i>Note that toggling the status of the contract will cost
-              gas!</i></b></p>
-        <p>To toggle the status of the contract, press &quot;Update&quot;.</p>
-        <p>Otherwise, just press &quot;Cancel&quot;.</p>
+    <div class="modal" id="updating">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="notification is-danger has-text-centered">
+          <h1 class="title">Updating</h1>
+          <h2 class="subtitle">Check Ethereum browser/plugin for status updates</h2>
+        </div>
       </div>
     </div>
 
-    <script src="../../shared/js/jquery.js"></script>
-    <script src="../../shared/js/tether.js"></script>
-    <script src="../../shared/js/bootstrap.js"></script>
-    <script src="../../shared/js/web3.js"></script>
-    <script src="../../shared/js/shared.js"></script>
-    <script src="IsArt.sol.js"></script>
-    <script src="is-art.js"></script>
+    <div class="modal" id="gui">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <h1 class="title">Toggle</h1>
+          <h2 class="subtitle">Select the "Toggle" button below to update the
+            contract's state.</h2>
+          <div class="field is-grouped">
+            <div class="control">
+              <button type="button" class="button is-success"
+                      id="is-art-gui-update">Toggle</button>
+            </div>
+            <div class="control">
+              <button type="button" class="button is-info"
+                      id="is-art-gui-cancel">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../shared/javascript/web3.js"></script>
+    <script src="../../shared/javascript/shared.js"></script>
+    <script src="./js/IsArt.sol.js"></script>
+    <script src="./js/is-art.js"></script>
   </body>
 </html>
