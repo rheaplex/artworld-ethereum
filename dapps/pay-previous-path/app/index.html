@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pay Previous Path</title>
+    <link rel="stylesheet" href="../../shared/css/bulma.min.css">
+    <link rel="stylesheet" href="./css/ppp.css">
+  </head>
+  <body>
+    <div id="representation">
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+           width="100%" height="100%" id="representation-svg">
+        <path id="path" />
+      </svg>
+    </div>
+
+    <div class="modal" id="updating">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="notification is-danger has-text-centered">
+          <h1 class="title">Approve (or cancel) the transaction&hellip;</h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="gui">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <h1 class="title">Update Path</h1>
+          <div class="field">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                 width="256" height="256" id="path-gui-svg">
+              <path id="path-gui-path" />
+            </svg>
+          </div>
+          <div class="field">
+            <label class="label">Path</label>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input"
+                           type="text"
+                         id="path-gui-d" />
+                  <p class="help is-danger" id="path-gui-d-error"></p>
+                  <p class="help">Enter as content of SVG path d property: M, L, C, and Z commands only. Press Return to set.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">WARNING</label>
+            <div class="field-body">
+              <div class="field">
+                <p>Setting the path will charge a fee. When the next
+                  person sets the path you can recover their fee (which may be
+                  less than you pay now).<br />
+                  <i>Do not change the gas price or this will break the fee
+                    calculation and cause the transaction to fail!</i></p>
+              </div>
+            </div>
+          </div>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-success"
+                      id="path-gui-update">Update</button>
+            </div>
+            <div class="control">
+              <button class="button is-info"
+                      id="path-gui-cancel">Cancel</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <script src="../../shared/javascript/web3.js"></script>
+    <script src="../../shared/javascript/shared.js"></script>
+    <script src="./js/ppp.js"></script>
+  </body>
+</html>
