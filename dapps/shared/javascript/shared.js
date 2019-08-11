@@ -76,6 +76,11 @@ class EthereumNetwork {
   getEventProperty (event, property) {
     return event['property'];
   }
+
+  hexToString (value) {
+    // Remove trailing nulls in strings stored in bytes32.
+    return web3.utils.hexToUtf8(value).replace(/\0+$/, "");
+  };
 }
 
 /*
