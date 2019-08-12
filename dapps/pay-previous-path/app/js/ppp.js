@@ -184,6 +184,8 @@ class PathGui extends Gui {
       .onclick = this.submitClickHandler.bind(this);
     document.getElementById('path-gui-d')
       .addEventListener('input', this.setFromD.bind(this));
+    document.getElementById('path-gui-claim-payment')
+      .onclick = this.claimClickHandler.bind(this);
   }
 
   // super.showGui() isn't async, but that's OK
@@ -194,6 +196,14 @@ class PathGui extends Gui {
     document.getElementById('path-gui-d').value = pathSpecToD(this.spec);
     document.getElementById('path-gui-d-error').innerText = '';
     this.drawPathRepresentation();
+    const payments = await this.path.getPaymentBalance();
+    if (payments > 0) {
+      document.getElementById('path-gui-claim-amount')
+        .innerText = web3.utils.fromWei(payments, 'ether');
+      document.getElementById('path-gui-claim').classList.remove('is-hidden');
+    } else {
+      document.getElementById('path-gui-claim').classList.add('is-hidden');
+    }
     super.showGui();
   }
 
@@ -215,6 +225,18 @@ class PathGui extends Gui {
     this.showUpdating();
     try {
       await this.path.setBlockchainPath(this.spec);
+    } catch (e) {
+      //FIXME: ERROR, BUT NOT IF USER CANCELLED
+    } finally {
+      this.hideUpdating();
+    }
+  }
+
+    async claimClickHandler () {
+    this.hideGui();
+    this.showUpdating();
+    try {
+      await this.path.blockchainWithdrawPayments();
     } catch (e) {
       //FIXME: ERROR, BUT NOT IF USER CANCELLED
     } finally {
@@ -258,6 +280,24 @@ class PayPreviousPath extends EthereumNetwork {
     });
   }
 
+  async getPaymentBalance () {
+    const account = await this.tryForAccountAccess();
+    this.accountWeArePaying = account;
+    return this.pathContract.methods.payments(account).call();
+  }
+
+  async blockchainWithdrawPayments () {
+    const account = await this.tryForAccountAccess();
+    if (account != this.accountWeArePaying) {
+      alert("Account mismatch. Don't change account when trying to claim payments.");
+      return;
+    }
+    this.pathContract.methods
+      .withdrawPayments(this.accountWeArePaying)
+      .send({ from: this.accountWeArePaying });
+    delete this.accountWeArePaying;
+  }
+  
   registerPathChangedHandler (callback) {
     this.pathContract.events.PathChanged().on('data', callback);
   }
