@@ -19,7 +19,8 @@
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="notification is-danger has-text-centered">
-          <h1 class="title">Approve (or cancel) the transaction&hellip;</h1>
+          <h1 class="title">Updating</h1>
+          <h2 class="subtitle">Check Ethereum browser/plugin for status updates</h2>
         </div>
       </div>
     </div>
@@ -49,7 +50,6 @@
               </div>
             </div>
           </div>
-
           <div class="field">
             <label class="label">WARNING</label>
             <div class="field-body">
@@ -72,6 +72,15 @@
                       id="path-gui-cancel">Cancel</button>
             </div>
           </div>
+          <div class="field is-hidden" id="path-gui-claim">
+            <label class="label">You have
+              <span id="path-gui-claim-amount">0</span> Eth Reclaimable</label>
+            <div class="control">
+              <button class="button is-info"
+                      id="path-gui-claim-payment">Claim Payment</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
