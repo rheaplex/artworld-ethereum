@@ -1,3 +1,7 @@
+html {
+  overflow: hidden;
+}
+
 #representation {
   width: 75vmin;
   height: 75vmin;
