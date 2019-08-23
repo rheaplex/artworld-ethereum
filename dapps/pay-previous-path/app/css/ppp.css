@@ -41,3 +41,9 @@ html {
   stroke-width: 1px;
   fill: none;
 }
+
+.path-gui-path-err {
+  stroke: red !important;
+  stroke-width: 1px;
+  fill: none;
+}
