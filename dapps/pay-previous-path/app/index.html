@@ -11,7 +11,7 @@
     <div id="representation">
       <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
            viewBox="-130 -130 260 260" id="representation-svg">
-        <path id="path" />
+        <path id="path">
       </svg>
     </div>
 
@@ -33,7 +33,7 @@
           <div class="field">
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
                  viewBox="-130 -130 260 260" id="path-gui-svg">
-              <path id="path-gui-path" />
+              <path id="path-gui-path">
             </svg>
           </div>
           <div class="field">
@@ -43,9 +43,9 @@
                 <div class="control">
                   <input class="input"
                            type="text"
-                         id="path-gui-d" />
+                         id="path-gui-d">
                   <p class="help is-danger" id="path-gui-d-error"></p>
-                  <p class="help">Enter as content of SVG path d property: M, L, C, and Z commands only. Press Return to set.</p>
+                  <p class="help">Enter as content of SVG path d property: M, L, C, and Z commands only. Values range from -128 to 127.<br>Press Return to set.</p>
                 </div>
               </div>
             </div>
@@ -55,9 +55,11 @@
             <div class="field-body">
               <div class="field">
                 <p>Setting the path will charge a fee. When the next
-                  person sets the path you can recover their fee (which may be
-                  less than you pay now).<br />
-                  <i>Do not change the gas price or this will break the fee
+                  person sets the path you can claim <b>their</b> fee (which
+                  may be less than the fee that you pay now) as long as you
+                  still control this address.<br>
+                  <i>Do not change the gas price after you select
+                    &quot;update&quot; or else you will break the fee
                     calculation and cause the transaction to fail!</i></p>
               </div>
             </div>
