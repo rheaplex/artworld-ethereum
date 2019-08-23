@@ -41,9 +41,10 @@ const pathSpecToD = (spec) => {
       break;
     }
     if (closepath) {
-      d.push(' Z');
+      d.push('Z');
     }
   }
+  console.log(d);
   return d.join(' ');
 };
 
@@ -85,6 +86,7 @@ const dToPathSpec = (d) => {
     case 'z':
       if (index > 0) {
         spec.command[index] |= 128;
+        index++;
       }
       break;
     case 'M':
@@ -194,7 +196,7 @@ class PathGui extends Gui {
     const spec = await this.path.getBlockchainPath();
     this.spec = spec;
     document.getElementById('path-gui-d').value = pathSpecToD(this.spec);
-    document.getElementById('path-gui-d-error').innerText = '';
+    document.getElementById('path-gui-d-error').innerHTML = '&nbsp;';
     this.drawPathRepresentation();
     const payments = await this.path.getPaymentBalance();
     if (payments > 0) {
@@ -210,13 +212,29 @@ class PathGui extends Gui {
   setFromD () {
     const dField = document.getElementById('path-gui-d');
     const dIn = dField.value;
+    const specIn = this.spec;
+    const posIn = dField.selectionStart;
     try {
+      // Try to parse and update the representation
       this.spec = dToPathSpec(dIn);
       dField.value = pathSpecToD(this.spec);
       this.drawPathRepresentation();
-      document.getElementById('path-gui-d-error').innerText = '';
+      document.getElementById('path-gui-d-error').innerHTML = '&nbsp;';
+      document.getElementById('path-gui-update').disabled = false;
+      document.getElementById('path-gui-path').classList
+        .remove('path-gui-path-err');
+      // This will fail in so many ways but tracking where it should be would
+      // require a realer parser than we have.
+      dField.setSelectionRange(posIn, posIn);
     } catch (e) {
+      // Syntax error? Revert but lock
+      dField.value = dIn;
+            dField.setSelectionRange(posIn, posIn);
+      this.spec = specIn;
       document.getElementById('path-gui-d-error').innerText = e.message;
+      document.getElementById('path-gui-update').disabled = true;
+      document.getElementById('path-gui-path').classList
+        .add('path-gui-path-err');
     }
   }
   
