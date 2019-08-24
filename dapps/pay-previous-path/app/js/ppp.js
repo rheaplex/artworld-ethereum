@@ -44,7 +44,6 @@ const pathSpecToD = (spec) => {
       d.push('Z');
     }
   }
-  console.log(d);
   return d.join(' ');
 };
 
@@ -74,83 +73,86 @@ const dToPathSpec = (d) => {
     x: new Array(32).fill(0),
     y: new Array(32).fill(0),
   };
-  const tokens = d.match(/([a-zA-Z]|-?[0-9.]+)/g).reverse();
-  let index = 0;
-  while(tokens.length > 0 && index < 32) {
-    const command = tokens.pop();
-    if(! isNaN(command)) {
-      throw new Error(`Not a command: ${command}`);
-    }
-    switch(command) {
-    case 'Z':
-    case 'z':
-      if (index > 0) {
-        spec.command[index] |= 128;
+  let tokens = d.match(/([a-zA-Z]|-?[0-9.]+)/g);
+  if (tokens != null) {
+    tokens = tokens.reverse();
+    let index = 0;
+    while(tokens.length > 0 && index < 32) {
+      const command = tokens.pop();
+      if(! isNaN(command)) {
+        throw new Error(`Not a command: ${command}`);
+      }
+      switch(command) {
+      case 'Z':
+      case 'z':
+        if (index > 0) {
+          spec.command[index] |= 128;
+          index++;
+        }
+        break;
+      case 'M':
+        if(tokens.length < 2) {
+          throw new Error(`Too few numbers for M`);
+        }
+        spec.command[index] = 1;
+        spec.x[index] = ensureInt(tokens.pop());
+        spec.y[index] = ensureInt(tokens.pop());
         index++;
+        break;
+      case 'm':
+        if(tokens.length < 2) {
+          throw new Error(`Too few numbers for m`);
+        }
+        spec.command[index] = 129;
+        spec.x[index] = ensureInt(tokens.pop());
+        spec.y[index] = ensureInt(tokens.pop());
+        index++;
+        break;
+      case 'L':
+        if(tokens.length < 2) {
+          throw new Error(`Too few numbers for L`);
+        }
+        spec.command[index] = 2;
+        spec.x[index] = ensureInt(tokens.pop());
+        spec.y[index] = ensureInt(tokens.pop());
+        index++;
+        break;
+      case 'L':
+        if(tokens.length < 2) {
+          throw new Error(`Too few numbers for L`);
+        }
+        spec.command[index] = 130;
+        spec.x[index] = ensureInt(tokens.pop());
+        spec.y[index] = ensureInt(tokens.pop());
+        index++;
+        break;
+      case 'C':
+        if(tokens.length < 6) {
+          throw new Error(`Too few numbers for C`);
+        }
+        spec.command[index] = 3;
+        spec.x1[index] = ensureInt(tokens.pop());
+        spec.y1[index] = ensureInt(tokens.pop());
+        spec.x2[index] = ensureInt(tokens.pop());
+        spec.y2[index] = ensureInt(tokens.pop());
+        spec.x[index] = ensureInt(tokens.pop());
+        spec.y[index] = ensureInt(tokens.pop());
+        index++;
+        break;
+      case 'c':
+        if(tokens.length < 6) {
+          throw new Error(`Too few numbers for c`);
+        }
+        spec.command[index] = 131;
+        spec.x1[index] = ensureInt(tokens.pop());
+        spec.y1[index] = ensureInt(tokens.pop());
+        spec.x2[index] = ensureInt(tokens.pop());
+        spec.y2[index] = ensureInt(tokens.pop());
+        spec.x[index] = ensureInt(tokens.pop());
+        spec.y[index] = ensureInt(tokens.pop());
+        index++;
+        break;
       }
-      break;
-    case 'M':
-      if(tokens.length < 2) {
-        throw new Error(`Too few numbers for M`);
-      }
-      spec.command[index] = 1;
-      spec.x[index] = ensureInt(tokens.pop());
-      spec.y[index] = ensureInt(tokens.pop());
-      index++;
-      break;
-    case 'm':
-      if(tokens.length < 2) {
-        throw new Error(`Too few numbers for m`);
-      }
-      spec.command[index] = 129;
-      spec.x[index] = ensureInt(tokens.pop());
-      spec.y[index] = ensureInt(tokens.pop());
-      index++;
-      break;
-    case 'L':
-      if(tokens.length < 2) {
-        throw new Error(`Too few numbers for L`);
-      }
-      spec.command[index] = 2;
-      spec.x[index] = ensureInt(tokens.pop());
-      spec.y[index] = ensureInt(tokens.pop());
-      index++;
-      break;
-    case 'L':
-      if(tokens.length < 2) {
-        throw new Error(`Too few numbers for L`);
-      }
-      spec.command[index] = 130;
-      spec.x[index] = ensureInt(tokens.pop());
-      spec.y[index] = ensureInt(tokens.pop());
-      index++;
-      break;
-    case 'C':
-      if(tokens.length < 6) {
-        throw new Error(`Too few numbers for C`);
-      }
-      spec.command[index] = 3;
-      spec.x1[index] = ensureInt(tokens.pop());
-      spec.y1[index] = ensureInt(tokens.pop());
-      spec.x2[index] = ensureInt(tokens.pop());
-      spec.y2[index] = ensureInt(tokens.pop());
-      spec.x[index] = ensureInt(tokens.pop());
-      spec.y[index] = ensureInt(tokens.pop());
-      index++;
-      break;
-    case 'c':
-      if(tokens.length < 6) {
-        throw new Error(`Too few numbers for c`);
-      }
-      spec.command[index] = 131;
-      spec.x1[index] = ensureInt(tokens.pop());
-      spec.y1[index] = ensureInt(tokens.pop());
-      spec.x2[index] = ensureInt(tokens.pop());
-      spec.y2[index] = ensureInt(tokens.pop());
-      spec.x[index] = ensureInt(tokens.pop());
-      spec.y[index] = ensureInt(tokens.pop());
-      index++;
-      break;
     }
   }
   return spec;
