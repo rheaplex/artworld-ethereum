@@ -59,24 +59,70 @@ contract PayPreviousPath is PullPayment {
 
     constructor() public {
         previousPayer = msg.sender;
-        //FIXME: TEST PATH
         pointCommand[0] = 1;
-        pointX[0] = 10;
-        pointY[0] = 20;
-        pointCommand[1] = 2;
-        pointX[1] = 80;
-        pointY[1] = 120;
+        pointX[0] = -100;
+        pointY[0] = -100;
+        pointCommand[1] = 3;
+        pointX[1] = 100;
+        pointY[1] = 127;
+        pointX1[1] = -100;
+        pointY1[1] = 100;
+        pointX2[1] = -120;
+        pointY2[1] = 120;
         pointCommand[2] = 3;
-        pointX1[2] = 12;
-        pointY1[2] = 30;
-        pointX2[2] = 40;
-        pointY2[2] = 60;
-        pointX[2] = 120;
-        pointY[2] = 20;
-        pointCommand[3] = 2 + T_CLOSEPATH;
-        pointX[3] = 33;
-        pointY[3] = 14;
-
+        pointX[2] = 127;
+        pointY[2] = 0;
+        pointX1[2] = 23;
+        pointY1[2] = 23;
+        pointX2[2] = 127;
+        pointY2[2] = 127;
+        pointCommand[3] = 3;
+        pointX[3] = 100;
+        pointY[3] = 20;
+        pointX1[3] = 100;
+        pointY1[3] = 100;
+        pointX2[3] = 33;
+        pointY2[3] = 33;
+        pointCommand[4] = 131;
+        pointX[4] = -80;
+        pointY[4] = -80;
+        pointX1[4] = 80;
+        pointY1[4] = -76;
+        pointX2[4] = -10;
+        pointY2[4] = -10;
+        pointCommand[5] = 1;
+        pointX[5] = 0;
+        pointY[5] = 100;
+        pointCommand[6] = 3;
+        pointX[6] = -40;
+        pointY[6] = -23;
+        pointX1[6] = 90;
+        pointY1[6] = 60;
+        pointX2[6] = 25;
+        pointY2[6] = 33;
+        pointCommand[7] = 131;
+        pointX[7] = 0;
+        pointY[7] = 10;
+        pointX1[7] = 40;
+        pointY1[7] = -46;
+        pointX2[7] = -3;
+        pointY2[7] = -26;
+        pointCommand[8] = 1;
+        pointX[8] = -50;
+        pointY[8] = 50;
+        pointCommand[9] = 131;
+        pointX[9] = -48;
+        pointY[9] = 49;
+        pointX1[9] = -60;
+        pointY1[9] = 120;
+        pointX2[9] = -127;
+        pointY2[9] = 20;
+        pointCommand[10] = 1;
+        pointX[10] = -70;
+        pointY[10] = -50;
+        pointCommand[11] = 2;
+        pointX[11] = -20;
+        pointY[11] = 90;
     }
 
     function calculateFee (uint256 _gasPrice) public pure returns (uint256) {
