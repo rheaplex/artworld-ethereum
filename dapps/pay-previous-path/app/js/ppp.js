@@ -86,8 +86,8 @@ const dToPathSpec = (d) => {
       case 'Z':
       case 'z':
         if (index > 0) {
-          spec.command[index] |= 128;
-          index++;
+          spec.command[index - 1] |= 128;
+          //index++;
         }
         break;
       case 'M':
