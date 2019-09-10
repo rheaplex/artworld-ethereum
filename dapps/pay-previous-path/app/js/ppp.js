@@ -37,7 +37,7 @@ const pathSpecToD = (spec) => {
       d.push(`${relative? 'l' : 'L'} ${spec.x[i]} ${spec.y[i]}`);
       break;
     case 3:
-      d.push(`${relative? 'c' : 'C'} ${spec.x1[i]} ${spec.y1[i]} ${spec.x2[i]} ${spec.y2[i]} ${spec.x[i]} ${spec.y[i]}`);
+      d.push(`${relative? 'c' : 'C'} ${spec.x1[i]} ${spec.y1[i]}, ${spec.x2[i]} ${spec.y2[i]}, ${spec.x[i]} ${spec.y[i]}`);
       break;
     }
     if (closepath) {
@@ -63,6 +63,12 @@ const ensureInt = (i) => {
   return val;
 };
 
+const ensureComma = (c) => {
+  if (c !== ',') {
+    throw new Error(`Not a comma: ${c}`);
+  }
+};
+
 const dToPathSpec = (d) => {
   const spec = {
     command: new Array(32).fill(0),
@@ -73,7 +79,7 @@ const dToPathSpec = (d) => {
     x: new Array(32).fill(0),
     y: new Array(32).fill(0),
   };
-  let tokens = d.match(/([a-zA-Z]|-?[0-9.]+)/g);
+  let tokens = d.match(/([a-zA-Z]|-?[0-9.]+|,)/g);
   if (tokens != null) {
     tokens = tokens.reverse();
     let index = 0;
@@ -133,8 +139,10 @@ const dToPathSpec = (d) => {
         spec.command[index] = 3;
         spec.x1[index] = ensureInt(tokens.pop());
         spec.y1[index] = ensureInt(tokens.pop());
+        ensureComma(tokens.pop());
         spec.x2[index] = ensureInt(tokens.pop());
         spec.y2[index] = ensureInt(tokens.pop());
+        ensureComma(tokens.pop());
         spec.x[index] = ensureInt(tokens.pop());
         spec.y[index] = ensureInt(tokens.pop());
         index++;
@@ -146,8 +154,10 @@ const dToPathSpec = (d) => {
         spec.command[index] = 131;
         spec.x1[index] = ensureInt(tokens.pop());
         spec.y1[index] = ensureInt(tokens.pop());
+        ensureComma(tokens.pop());
         spec.x2[index] = ensureInt(tokens.pop());
         spec.y2[index] = ensureInt(tokens.pop());
+        ensureComma(tokens.pop());
         spec.x[index] = ensureInt(tokens.pop());
         spec.y[index] = ensureInt(tokens.pop());
         index++;
@@ -228,12 +238,17 @@ class PathGui extends Gui {
       // This will fail in so many ways but tracking where it should be would
       // require a realer parser than we have.
       dField.setSelectionRange(posIn, posIn);
+      // If the user is adding a token, don't glue it to the previous one
+      if (dIn.endsWith(' ')) {
+        dField.value += ' ';
+      }
     } catch (e) {
-      // Syntax error? Revert but lock
+      // Syntax error? Revert, but lock the update button
       dField.value = dIn;
-            dField.setSelectionRange(posIn, posIn);
+      dField.setSelectionRange(posIn, posIn);
       this.spec = specIn;
-      document.getElementById('path-gui-d-error').innerText = e.message;
+      document.getElementById('path-gui-d-error')
+        .innerHTML = `<b>Error</b> ${e.message}`;
       document.getElementById('path-gui-update').disabled = true;
       document.getElementById('path-gui-path').classList
         .add('path-gui-path-err');
