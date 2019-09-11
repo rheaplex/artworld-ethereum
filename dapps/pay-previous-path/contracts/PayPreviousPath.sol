@@ -131,7 +131,6 @@ contract PayPreviousPath is PullPayment {
     }
 
     function hasCorrectFee () internal returns (bool) {
-
         return msg.value == calculateFee(tx.gasprice);
     }
 
