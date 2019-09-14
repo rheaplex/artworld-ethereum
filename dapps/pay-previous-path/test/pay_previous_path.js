@@ -1,66 +1,147 @@
-/* globals artifacts, assert, contract, it */
+/*global artifacts, assert, before, contract, it*/
 
-const PayPreviousPath = artifacts.require('./PayPreviousPath.sol')
+const PayPreviousPath = artifacts.require('PayPreviousPath');
 
-const x1 = [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2]
-const y1 = [0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1]
-const t1 = [1,2,3,4,3,2,1,2,3,4,1,2,3,4,3,2,1,2,3,4,1,2,3,4,3,2,1,2,3,4,1,2]
+const toBNArray = a => a.map(web3.utils.toBN);
 
-const toNumberArray = a => { return a.map(x => x.toNumber()) }
+const x1 = toBNArray([
+  1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2
+]);
+const y1 = toBNArray([
+  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
+]);
+const x2 = toBNArray([
+  1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2
+]);
+const y2 = toBNArray([
+  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
+]);
+const x = toBNArray([
+  1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2
+]);
+const y = toBNArray([
+  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1
+]);
+const t = toBNArray([
+  1,2,3,4,3,2,1,2,3,4,1,2,3,4,3,2,1,2,3,4,1,2,3,4,3,2,1,2,3,4,1,2
+]);
+const tt = toBNArray([
+  1,3,4,1,2,3,4,3,2,1,2,3,4,1,2,3,4,3,2,1,2,3,4,1,2,2,3,4,3,2,1,2
+]);
 
-const payAmount = parseInt(web3.toWei(0.01, 'ether'))
+const txCost = (r, gasPrice) => web3.utils.toBN(gasPrice * r.receipt.gasUsed);
 
-contract('PayPreviousPath', accounts => {
+const fromBNArray = a => a.map(b => b.toNumber());
 
+contract('PayPreviousPath', async accounts => {
+  let ppp;
+
+  before(async () => {
+    ppp = await PayPreviousPath.deployed();
+  });
+  
   it('should allow users to set the path', async () => {
-    const instance = await PayPreviousPath.deployed()
-    // Hello gotcha. toWei returns string for numbers (bignum for bignums)
-    const initialAmount = (await instance.previousPayerAmount.call()).toNumber()
-    await instance.setPath.sendTransaction(x1,
-                                           y1,
-                                           t1,
-                                           {value: payAmount + initialAmount,
-                                            from: accounts[1]})
-    const payer = await instance.previousPayer.call()
-    assert.equal(payer, accounts[1])
-    const amount = (await instance.previousPayerAmount.call()).toNumber()
-    assert.equal(amount, payAmount)
-    const balance = web3.eth.getBalance(instance.address).toNumber()
-    assert.equal(balance, payAmount + initialAmount)
-  })
+    const senderBalanceBefore = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[1]
+    ));
+    const gasPrice = await web3.eth.getGasPrice();
+    const fee = await ppp.calculateFee(gasPrice);
+    const r = await ppp.setPath(
+      t,
+      x1,
+      y1,
+      x2,
+      y2,
+      x,
+      y,
+      {
+        value: fee,
+        gasPrice: gasPrice,
+        from: accounts[1]
+      }
+    );
+    const senderBalanceAfter = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[1]
+    ));
+    assert.ok(senderBalanceBefore.eq(
+      senderBalanceAfter.add(fee).add(txCost(r, gasPrice))
+    ));
+  });
 
   it('should allow users to get the path', async () => {
-    const instance = await PayPreviousPath.deployed()
-    const [x,y,t] = await instance.getCurrentPath.call()
-    assert.deepEqual(toNumberArray(x), x1)
-    assert.deepEqual(toNumberArray(y), y1)
-    assert.deepEqual(toNumberArray(t), t1)
-  })
+    const path = await ppp.getPath();
+    assert.deepEqual(fromBNArray(path.command), fromBNArray(t));
+    assert.deepEqual(fromBNArray(path.x1), fromBNArray(x1));
+    assert.deepEqual(fromBNArray(path.y1), fromBNArray(y1));
+    assert.deepEqual(fromBNArray(path.x2), fromBNArray(x2));
+    assert.deepEqual(fromBNArray(path.y2), fromBNArray(y2));
+    assert.deepEqual(fromBNArray(path.x), fromBNArray(x));
+    assert.deepEqual(fromBNArray(path.y), fromBNArray(y));
+  });
 
   it('should allow previous payer to withdraw their payment', async () => {
-    const instance = await PayPreviousPath.deployed()
-    const startingBalance = web3.eth.getBalance(accounts[0]).toNumber()
-    await instance.withdrawPreviousPayments.sendTransaction({from: accounts[0]})
-    const newBalance = web3.eth.getBalance(accounts[0]).toNumber()
-    assert.isOk(newBalance > startingBalance)
-  })
+    const gasPrice = await web3.eth.getGasPrice();
+    const fee = await ppp.calculateFee(gasPrice);
+    await ppp.setPath(
+      tt,
+      x2,
+      y2,
+      x,
+      y,
+      x1,
+      y1,
+      {
+        value: fee,
+        gasPrice: gasPrice,
+        from: accounts[2]
+      }
+    );
+    const senderBalanceBefore = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[1]
+    ));
+    const r = await ppp.withdrawPayments(
+      accounts[1],
+      { from: accounts[1], gasPrice: gasPrice }
+    );
+    const senderBalanceAfter = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[1]
+    ));
+    assert.ok(senderBalanceAfter.gt(
+      senderBalanceBefore.sub(txCost(r, gasPrice))
+    ));
+  });
 
-  it('should not allow current payer to withdraw their payment', async () => {
-    const instance = await PayPreviousPath.deployed()
-    const startingBalance = web3.eth.getBalance(accounts[1]).toNumber()
-    await instance.withdrawPreviousPayments.sendTransaction({from: accounts[1]})
-    const newBalance = web3.eth.getBalance(accounts[1]).toNumber()
-    // Lower because of gas payment
-    assert.isOk(newBalance < startingBalance)
-  })
+  it('current payer should have nothing to withdraw', async () => {
+    const gasPrice = await web3.eth.getGasPrice();
+    const senderBalanceBefore = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[2]
+    ));
+    const r = await ppp.withdrawPayments(
+      accounts[2],
+      { from: accounts[2], gasPrice: gasPrice }
+    );
+    const senderBalanceAfter = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[2]
+    ));
+    assert.ok(senderBalanceAfter.eq(
+      senderBalanceBefore.sub(txCost(r, gasPrice))
+    ));
+  });
 
-  it('should not allow other users to withdraw any payments', async () => {
-    const instance = await PayPreviousPath.deployed()
-    const startingBalance = web3.eth.getBalance(accounts[2]).toNumber()
-    await instance.withdrawPreviousPayments.sendTransaction({from: accounts[2]})
-    const newBalance = web3.eth.getBalance(accounts[2]).toNumber()
-    // Lower because of gas payment
-    assert.isOk(newBalance < startingBalance)
-  })
-
-})
+  it('other users should have nothing to withdraw', async () => {
+    const gasPrice = await web3.eth.getGasPrice();
+    const senderBalanceBefore = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[3]
+    ));
+    const r = await ppp.withdrawPayments(
+      accounts[3],
+      { from: accounts[3], gasPrice: gasPrice }
+    );
+    const senderBalanceAfter = web3.utils.toBN(await web3.eth.getBalance(
+      accounts[3]
+    ));
+    assert.ok(senderBalanceAfter.eq(
+      senderBalanceBefore.sub(txCost(r, gasPrice))
+    ));
+  });
+});
