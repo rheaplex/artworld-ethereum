@@ -5,64 +5,137 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ratio</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/shared.css">
-    <link rel="stylesheet" href="css/ratio.css">
+    <link rel="stylesheet" href="../../shared/css/bulma.min.css">
+    <link rel="stylesheet" href="./css/ratio.css">
   </head>
   <body>
-
-    <div id="background" onclick="showGui(event, -1)"></div>
-
-    <div id="updating">Updating...</div>
-
-    <div id="status"></div>
-
-    <div id="representations">
+    <div id="representation">
       <div id="ratio-background">
-        <div id="ratio-area"></div>
+        <div id="ratio-area-a"></div>
       </div>
     </div>
 
-    <div class="gui" id="ratio-gui">
-      <h2>Update Ratio</h2>
-      <div id="ratio-gui-preview-ratio-background">
-        <div id="ratio-gui-preview-ratio-area"></div>
+    <div class="modal" id="updating">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="notification is-danger has-text-centered">
+          <h1 class="title">Updating</h1>
+          <h2 class="subtitle">Check Ethereum browser/plugin for status
+            updates</h2>
+        </div>
       </div>
-      <br>
-      <form>
-        <div class="form-group">
-          <label class="gui-label" for="ratio-gui-ratio">Ratio</label>
-          <div class="input-group">
-            <input class="form-control"
-                   id="ratio-gui-ratio"
-                   type="range"
-                   min="0"
-                   max="1"
-                   step="0.01">
-          <div class="input-group-addon" id="ratio-gui-ratio-value">0</div>
+    </div>
+    
+    <div class="modal" id="gui">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <div class="tabs">
+            <ul>
+              <li class="gui-tab" id="gui-tab-stake">
+                <label for="update-ratio">
+                  <a id="update-ratio-trigger">Stake</a>
+                </label>
+              </li>
+              <li class="gui-tab" id="gui-tab-withdraw">
+                <label for="withdraw-stake">
+                  <a id="withdraw-stake-trigger">Withdraw</a>
+                </label>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane" id="tab-pane-stake">
+              <div class="tabs is-toggle is-fullwidth">
+                <ul>
+                  <li class="stake-select" id="stake-select-a">
+                    <a id="stake-select-a-button">
+                      <span>A</span>
+                    </a>
+                  </li>
+                  <li class="stake-select" id="stake-select-b">
+                    <a id="stake-select-b-button">
+                      <span>B</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="field">
+                <label class="label">Add Eth to
+                  <span class="stake-add-to">-</span>
+                  <i>(Your current
+                  <span class="stake-add-to">-</span>
+                  balance is <span id="stake-current-amount">-</span>
+                  Ether)</i>
+                </label>
+                <div class="control">
+                  <input class="input" type="text" id="stake-amount-to-send"
+                         placeholder="Amount of Ether to send">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Preview of New Ratio</label>
+                <div id="ratio-gui-preview-ratio-background">
+                  <div id="ratio-gui-preview-ratio-area-a"></div>
+                </div>
+                <br />
+              </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button class="button is-success"
+                          id="staking-gui-add-stake">Add&nbsp;Stake&nbsp;to
+                    &nbsp;<span class="stake-add-to">-</span></button>
+                </div>
+                <div class="control">
+                  <button class="button is-info"
+                          id="staking-gui-stake-cancel">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="tab-pane-withdraw">
+            <div class="tabs is-toggle is-fullwidth">
+              <ul>
+                <li class="withdraw-select" id="withdraw-select-a">
+                  <a id="withdraw-select-a-button">
+                    <span>A</span>
+                  </a>
+                </li>
+                <li class="withdraw-select" id="withdraw-select-both">
+                  <a id="withdraw-select-both-button">
+                    <span>Both A &amp; B</span>
+                  </a>
+                </li>
+                <li class="withdraw-select" id="withdraw-select-b">
+                  <a id="withdraw-select-b-button">
+                    <span>B</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="field">
+              <p>Your current
+                <span class="withdraw-from">-</span>
+                balance is <span id="withdraw-balance">-</span> Ether.</p>
+              <br />
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-success"
+                        id="staking-gui-withdraw-stake">Withdraw This Amount
+                  </button>
+              </div>
+              <div class="control">
+                <button class="button is-info"
+                        id="staking-gui-withdraw-cancel">Cancel</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="gui-gas-account">Account to pay gas from</label>
-          <select class="form-control" id="gui-gas-account"></select>
-        </div>
-        <button type="button" class="btn btn-primary"
-                onClick="userSelectedUpdate()">Update</button>
-        &nbsp;
-        <button type="button" class="btn btn-default"
-                onClick="userSelectedCancel()">Cancel</button>
-      </form>
-      <br>
-      <p><b><i>Note that updating the ratio will cost gas!</i></b></p>
-      <p>To update the ratio, position the slider.
-        Then press &quot;Update&quot;.</p>
-      <p>If you do not wish to update the ratio, just press &quot;Cancel&quot;
-        .</p>
-    </div>
+      </div><
 
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script src="js/shared.js"></script>
-    <script src="js/ratio.js"></script>
+      <script src="../../shared/javascript/web3.js"></script>
+      <script src="../../shared/javascript/shared.js"></script>
+      <script src="./js/ratio.js"></script>
   </body>
 </html>

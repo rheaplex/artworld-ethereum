@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
-import './AStakes.sol';
-import './BStakes.sol';
+import "./AStakes.sol";
+import "./BStakes.sol";
 
 contract StakingRatio {
     // Emitted when the ratio changes
@@ -63,7 +63,7 @@ contract StakingRatio {
 
     // Copy and paste some code rather than make utility functions to share
     // with awkward logic and a larger attack surface.
-    
+
     function withdrawAll() external {
         uint256 aWithdrawal = aStakes.depositsOf(msg.sender);
         if (aWithdrawal > 0) {

@@ -1,15 +1,31 @@
-#ratio-area {
+html {
+  overflow: hidden;
+}
+
+#representation {
+  width: 75vmin;
+  height: 25vmin;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  /*border: 1px solid lightgray;*/
+}
+
+#ratio-area-a {
     background-color: black;
-    width: 50%;
-    height: 25vw;
+    /*width: 50%;*/
+    height: 25vmin;
     position: absolute;
 }
 
 #ratio-background {
     background-color: gray;
 
-    width: 98vw;
-    height: 25vw;
+    width: 75vmin;
+    height: 25vmin;
     position: absolute;
     top:0;
     bottom: 0;
@@ -19,14 +35,9 @@
     margin: auto;
 }
 
-#ratio-gui {
-    width: 400px;
-    height: 460px;
-}
-
-#ratio-gui-preview-ratio-area {
+#ratio-gui-preview-ratio-area-a {
     background-color: black;
-    width: 50%;
+    /*width: 50%;*/
     height: 42px;
     position: absolute;
 }
