@@ -1,37 +1,38 @@
 pragma solidity ^0.5.0;
 
-import "./AStakes.sol";
-import "./BStakes.sol";
+
+import "@openzeppelin/contracts/payment/escrow/Escrow.sol";
+
 
 contract StakingRatio {
     // Emitted when the ratio changes
     event Ratio(uint256 a, uint256 b);
 
-    AStakes aStakes;
-    BStakes bStakes;
+    Escrow aStakes;
+    Escrow bStakes;
 
     // The total amount staked
-    uint256 public aAmount;
-    uint256 public bAmount;
+    uint256 public totalAmountA;
+    uint256 public totalAmountB;
 
     constructor() public {
-        aStakes = new AStakes();
-        bStakes = new BStakes();
+        aStakes = new Escrow();
+        bStakes = new Escrow();
     }
 
     function stakeA() external payable {
         if (msg.value > 0) {
             aStakes.deposit.value(msg.value)(msg.sender);
-            aAmount += msg.value;
-            emit Ratio(aAmount, bAmount);
+            totalAmountA += msg.value;
+            emit Ratio(totalAmountA, totalAmountB);
         }
     }
 
     function stakeB() external payable {
         if (msg.value > 0) {
             bStakes.deposit.value(msg.value)(msg.sender);
-            bAmount += msg.value;
-            emit Ratio(aAmount, bAmount);
+            totalAmountB += msg.value;
+            emit Ratio(totalAmountA, totalAmountB);
         }
     }
 
@@ -46,8 +47,8 @@ contract StakingRatio {
     function withdrawA() external {
         uint256 withdrawal = aStakes.depositsOf(msg.sender);
         if (withdrawal > 0) {
-            aAmount -= withdrawal;
-            emit Ratio(aAmount, bAmount);
+            totalAmountA -= withdrawal;
+            emit Ratio(totalAmountA, totalAmountB);
             aStakes.withdraw(msg.sender);
         }
     }
@@ -55,8 +56,8 @@ contract StakingRatio {
     function withdrawB() external {
         uint256 withdrawal = bStakes.depositsOf(msg.sender);
         if (withdrawal > 0) {
-            bAmount -= withdrawal;
-            emit Ratio(aAmount, bAmount);
+            totalAmountB -= withdrawal;
+            emit Ratio(totalAmountA, totalAmountB);
             bStakes.withdraw(msg.sender);
         }
     }
@@ -67,16 +68,16 @@ contract StakingRatio {
     function withdrawAll() external {
         uint256 aWithdrawal = aStakes.depositsOf(msg.sender);
         if (aWithdrawal > 0) {
-            aAmount -= aWithdrawal;
+            totalAmountA -= aWithdrawal;
             aStakes.withdraw(msg.sender);
         }
         uint256 bWithdrawal = bStakes.depositsOf(msg.sender);
         if (bWithdrawal > 0) {
-            bAmount -= bWithdrawal;
+            totalAmountB -= bWithdrawal;
             bStakes.withdraw(msg.sender);
         }
         if ((aWithdrawal > 0) || (bWithdrawal > 0)) {
-            emit Ratio(aAmount, bAmount);
+            emit Ratio(totalAmountA, totalAmountB);
         }
     }
 }
