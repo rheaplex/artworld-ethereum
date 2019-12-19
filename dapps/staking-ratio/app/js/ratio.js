@@ -15,22 +15,37 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+////////////////////////////////////////////////////////////////////////////////
+// Utility functions
+////////////////////////////////////////////////////////////////////////////////
+
+// Calculate the width of a in [ A     |  B ] .
+// a and b are Ether amounts as JS floats.
 
 const calculateAWidth = (a, b, backgroundWidth) => {
   let aWidth;
-  if (b == 0) {
+  if (a == 0 && b == 0) {
     aWidth = backgroundWidth / 2;
+  } else if (a == 0) {
+    aWidth = 0;
+  } else if (b == 0) {
+    aWidth = backgroundWidth;
   } else {
     // Wei per eth, our scale for the interger math we are doing here
     const total = a + b;
     aWidth = (backgroundWidth / total) * a;
-    console.log([a, b, backgroundWidth, total, aWidth]);
   }
-  // Always at least one pixel wide
-  return Math.max(aWidth, 1);
+  return aWidth;
 };
 
+// Convert a string wei value to an Ether amount as a JS float.
+
 const wei2Ethf = wei => parseFloat(web3.utils.fromWei(wei));
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Display class
+////////////////////////////////////////////////////////////////////////////////
 
 class RatioDisplay {
   constructor (ratio) {
@@ -48,11 +63,16 @@ class RatioDisplay {
     document.getElementById('ratio-area-a').style.width = `${aWidth}px`;
   }
 
+  // Draw the ratio by fetching the values from web3.
+  // We should cache these values but we don't.
+
   async drawRatio () {
-    const a = wei2Ethf(await this.ratio.getStake('A'));
-    const b = wei2Ethf(await this.ratio.getStake('B'));
+    const a = await this.ratio.getTotal('A');
+    const b = await this.ratio.getTotal('B');
     this._drawRatio(a, b);
   }
+
+  // Draw the ratio in response to an event coming in.
 
   async drawRatioEvent (event) {
     const a = wei2Ethf(event.returnValues.a);
@@ -62,6 +82,10 @@ class RatioDisplay {
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+// Smart contract / network handling.
+////////////////////////////////////////////////////////////////////////////////
+
 class StakingRatio extends EthereumNetwork {
   async loadContracts() {
     this.ratioContract = await this.loadContract(
@@ -69,19 +93,38 @@ class StakingRatio extends EthereumNetwork {
     );
   }
 
+  // Add additional Ether stake to A or B from the current account.
+
+  async getTotal (which) {
+    let total;
+    switch (which) {
+    case 'A':
+      total = await this.ratioContract.methods.totalAmountA().call();
+      break;
+    case 'B':
+      total = await this.ratioContract.methods.totalAmountB().call();
+      break;
+    default:
+      throw(new Error(`Unknown addStake() spec: ${which}`));
+    }
+    return wei2Ethf(total);
+  }
+
+  // Fetch the current account's staked value amount(s).
+
   async getStake (which) {
     const account = await this.tryForAccountAccess();
     let amount;
     switch (which) {
     case 'A':
-      amount = web3.utils.toBN(
-        await this.ratioContract.methods.myAStake().call({ from: account })
-      );
+      amount = await this.ratioContract.methods.myAStake().call({
+        from: account
+      });
       break;
     case 'B':
-      amount = web3.utils.toBN(
-        await this.ratioContract.methods.myBStake().call({ from: account })
-      );
+      amount = await this.ratioContract.methods.myBStake().call({
+        from: account
+      });
       break;
     case 'combined':
       amount = web3.utils.toBN(
@@ -94,8 +137,10 @@ class StakingRatio extends EthereumNetwork {
     default:
       throw(new Error(`Unknown getStake() spec: ${which}`));
     }
-    return amount;
+    return wei2Ethf(amount);
   }
+
+  // Add additional Ether stake to A or B from the current account.
 
   async addStake (which, amount) {
     const account = await this.tryForAccountAccess();
@@ -117,6 +162,8 @@ class StakingRatio extends EthereumNetwork {
     }
   }
 
+  // Withdraw either or both of the current user's stakes.
+
   async withdrawStake (which) {
     const account = await this.tryForAccountAccess();
     let amount;
@@ -131,7 +178,7 @@ class StakingRatio extends EthereumNetwork {
       await this.ratioContract.methods.withdrawAll().send({ from: account });
       break;
     default:
-      throw(new Error(`Unknown getStake() spec: ${which}`));
+      throw(new Error(`Unknown withdrawStake() spec: ${which}`));
     }
     return amount;
   }
@@ -142,10 +189,15 @@ class StakingRatio extends EthereumNetwork {
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+// The state manipulation GUI for the ratio.
+////////////////////////////////////////////////////////////////////////////////
+
 class RatioGui extends Gui {
   constructor (ratio) {
     super();
     this.ratio = ratio;
+    // Register lots of event handlers...
     this.onClickShowGui('representation');
     this.onClickHideGui('staking-gui-stake-cancel');
     this.onClickHideGui('staking-gui-withdraw-cancel');
@@ -203,6 +255,8 @@ class RatioGui extends Gui {
     await this.updateStakeRatioPreview();
   }
 
+  // Select a top-level tab for a pane.
+  
   selectTab (tabClass, tabId) {
     Array.prototype.forEach.call(
       document.getElementsByClassName(tabClass),
@@ -210,6 +264,8 @@ class RatioGui extends Gui {
     );
     document.getElementById(tabId).classList.add('is-active');
   }
+
+  // Display the content for a tab pane.
 
   selectContent(contentClass, contentId) {
     Array.prototype.forEach.call(
@@ -229,15 +285,16 @@ class RatioGui extends Gui {
     this.selectContent('tab-pane', 'tab-pane-withdraw');
   }
 
+  // Called in response to selecting the A/B tabs within the Select pane
+  // to select A or B as the stake to add Ether to.
+
   async selectStake (which) {
     Array.prototype.forEach.call(
       document.getElementsByClassName('stake-add-to'),
       item => item.textContent = which
     );
     const amount = await this.ratio.getStake(which);
-    document.getElementById(
-      'stake-current-amount'
-    ).innerText = web3.utils.fromWei(amount, 'ether');
+    document.getElementById('stake-current-amount').innerText = amount;
     document.getElementById('stake-amount-to-send').value = '';
     this.stakeSelected = which;
     await this.updateStakeRatioPreview();
@@ -253,6 +310,11 @@ class RatioGui extends Gui {
     await this.selectStake('B');
   }
 
+  // Dynamically update the preview as the user enters an amount to add to
+  // their stake.
+  // Note that this will not result in an update if A or B are zero given the
+  // behaviour of calculateAWidth.
+
   async updateStakeRatioPreview () {
     const previewBackgroundWidth = web3.utils.toBN(
       document.getElementById(
@@ -263,12 +325,8 @@ class RatioGui extends Gui {
       document.getElementById('stake-amount-to-send').value
         || '0'
     );
-    let a = parseFloat(
-      web3.utils.fromWei(await this.ratio.getStake('A'), 'ether')
-    );
-    let b = parseFloat(
-      web3.utils.fromWei(await this.ratio.getStake('B'), 'ether')
-    );
+    let a = await this.ratio.getTotal('A');
+    let b = await this.ratio.getTotal('B');
     if (this.stakeSelected === 'A') {
       a += additionalValue;
     } else {
@@ -280,14 +338,16 @@ class RatioGui extends Gui {
     ).style.width = `${aWidth}px`;
   }
 
+  // Called in response to selecting the A/Both/B tabs within the Withdraw pane
+  // to select A, Both or B as the stake to withdraw.
+
   async selectWithdraw (which) {
     Array.prototype.forEach.call(
       document.getElementsByClassName('withdraw-from'),
       item => item.textContent = which
     );
     const amount = await this.ratio.getStake(which);
-    document.getElementById('withdraw-balance')
-      .innerText = web3.utils.fromWei(amount, 'ether');
+    document.getElementById('withdraw-balance').innerText = amount;
     this.withdrawSelected = which;
   }
 
@@ -306,6 +366,8 @@ class RatioGui extends Gui {
     await this.selectWithdraw('combined');
   }
 
+  // Add stake to X button event handler.
+
   async addStake () {
     this.showUpdating();
     this.hideGui();
@@ -322,6 +384,8 @@ class RatioGui extends Gui {
     }
   }
 
+  // Withdraw this amount button.
+
   async withdrawStake () {
     this.showUpdating();
     this.hideGui();
@@ -334,6 +398,7 @@ class RatioGui extends Gui {
     }
   }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Lifecycle

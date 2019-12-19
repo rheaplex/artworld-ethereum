@@ -11,12 +11,10 @@ html {
   left: 0;
   right: 0;
   margin: auto;
-  /*border: 1px solid lightgray;*/
 }
 
 #ratio-area-a {
-    background-color: black;
-    /*width: 50%;*/
+  background-color: black;
     height: 25vmin;
     position: absolute;
 }
@@ -37,7 +35,6 @@ html {
 
 #ratio-gui-preview-ratio-area-a {
     background-color: black;
-    /*width: 50%;*/
     height: 42px;
     position: absolute;
 }
