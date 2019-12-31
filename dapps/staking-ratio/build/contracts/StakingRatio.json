@@ -6612,6 +6612,33 @@
     "version": "0.5.12+commit.7709ece9.Emscripten.clang"
   },
   "networks": {
+    "1": {
+      "events": {
+        "0x1c84baf2927a30fe53df0acfee116d2ac8b9aa13d183a95b0d77d857a765d151": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "a",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "b",
+              "type": "uint256"
+            }
+          ],
+          "name": "Ratio",
+          "type": "event",
+          "signature": "0x1c84baf2927a30fe53df0acfee116d2ac8b9aa13d183a95b0d77d857a765d151"
+        }
+      },
+      "links": {},
+      "address": "0x302352A2Dddb04f5e2feb897693ea4fe4da97ba4",
+      "transactionHash": "0xb7ad11978b9195f36667de69f02a0be1361eb4a2b9e0e84440b3779927e61993"
+    },
     "5777": {
       "events": {
         "0x1c84baf2927a30fe53df0acfee116d2ac8b9aa13d183a95b0d77d857a765d151": {
@@ -6640,8 +6667,8 @@
       "transactionHash": "0x756a60cd3ab0874f8138252ed94977ee74cafb6606b6a6977138f4494fc7174a"
     }
   },
-  "schemaVersion": "3.0.19",
-  "updatedAt": "2019-12-19T04:09:33.404Z",
+  "schemaVersion": "3.0.20",
+  "updatedAt": "2019-12-31T06:38:31.284Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
