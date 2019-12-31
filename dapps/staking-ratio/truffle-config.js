@@ -1,4 +1,4 @@
-const HDWalletProvider = require('truffle-hdwallet-provider');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -13,9 +13,9 @@ module.exports = {
                                            process.env.ADDRESS_INDEX || 1),
       //host: "127.0.0.1",
       //port: 8545,
-      network_id: 1,
+        network_id: "*",
       gas: 6700000,
-      gasPrice: 3000000000,  // 3 gwei (in wei) (default: 100 gwei)
+      gasPrice: 10000000000,  // 3 gwei (in wei) (default: 100 gwei)
       // websockets: true,   // Enable EventEmitter interface for web3 (default: false)
       timeoutBlocks: 200,    // # of blocks before a deployment times out  (minimum/default: 50),
       confirmations: 1
