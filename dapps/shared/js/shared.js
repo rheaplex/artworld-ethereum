@@ -85,7 +85,7 @@ Shared.state_is_updating = false;
 Shared.gui_display_hook = false;
 
 Shared.showGui = function () {
-  console.log('hello')
+//  console.log('hello')
   if (! this.state_is_updating) {
     // Showing newly added account is better than keeping previous selection
     this.setupGasAccounts(() => {
@@ -99,7 +99,7 @@ Shared.showGui = function () {
 };
 
 Shared.hideGui = function () {
-  console.log('goodbye')
+  //console.log('goodbye')
   $('.gui').hide();
   this.gui_is_showing = false;
 };
