@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:700"
           rel="stylesheet">
-    <link href="app.css" rel="stylesheet">
+    <link href="../../shared/css/bootstrap.css" rel="stylesheet">
+    <link href="../../shared/css/shared.css" rel="stylesheet">
+    <link href="./css/app.css" rel="stylesheet">
   </head>
   <body>
-
-    <div id="updating">Entering...</div>
 
     <div id="status"></div>
 
@@ -44,19 +44,14 @@
               <div class="form-group">
                 <label class="gui-label"
                        for="symbol-gui-symbol">Symbol</label>
+                <!-- maxLength 2 *code points* because we allow emoji-->
                 <input class="form-control"
                        type="text"
-                       maxLength="1"
+                       maxLength="2"
                        id="symbol-gui-symbol"
                        aria-describedby="symbolGuiSymbolHelpInline">
                 <small id="symbolGuiSymbolHelpInline"
                        class="text-muted">Any unicode character</small>
-              </div>
-              <div id="enter-gui-gas">
-                <div id="gui-gas" class="form-group">
-                  <label for="gui-gas-account">Account to pay gas from</label>
-                  <select class="form-control" id="gui-gas-account"></select>
-                </div>
               </div>
               <button type="button" class="btn btn-primary"
                       id="gui-update-button">Enter</button>
@@ -64,9 +59,11 @@
               <button type="button" class="btn btn-default"
                       id="gui-cancel-button">Cancel</button>
             </form>
+            <br />
             <p><b><i>Note that entering the lottery to update the symbol will
-                  cost gas! Like any lottery, your entry may not
-                  win.</i></b></p>
+                  cost gas! Like any lottery, your entry may not win.
+                  The only &quot;prize&quot is setting the
+                  symbol.</i></b></p>
             <p>To enter the lottery, choose a new symbol in the text field
               above. Then press &quot;Enter&quot;.</p>
             <p>If you do not wish to update the symbol, just press
@@ -85,8 +82,6 @@
             <div id="gui-gas-finalize"></div>
             <p>If the current round of the lottery has not yet been finalized,
               you can do so using this button.</p>
-            <p>This will use the account from the &quot;Enter Lottery&quot;
-              tab, change it there if needed!<p>
             <button type="button" class="btn btn-primary"
                     id="gui-finalize-button">Finalize</button>
             &nbsp;
@@ -95,8 +90,13 @@
           </div>
         </div>
       </div>
+
+      <div id="updating">Entering...</div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="../../shared/js/jquery.js"></script>
+    <script src="../../shared/js/bootstrap.js"></script>
+    <script src="../../shared/javascript/web3.js"></script>
+    <script src="./js/app.js"></script>
   </body>
 </html>

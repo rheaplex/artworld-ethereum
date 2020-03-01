@@ -7,23 +7,21 @@
 
     width: 75vmin;
     height: 75vmin;
-    position: absolute;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    margin: auto;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #symbol-gui {
-    /* Work out how to get panels to size to largest... */
-    width: 590px;
-    height: 580px;
+  /* Work out how to get panels to size to largest... */
+  width: 590px;
+  height: 540px;
+  overflow-y: auto;
 }
 
 #gui-current-entries-table {
-    width: 100%;
+  width: 100%;
 }
 
 .gui-current-entries-symbol {
@@ -39,4 +37,13 @@
 
 .tab-pane>.active {
     visibility: visible;
+}
+
+#updating {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
 }
