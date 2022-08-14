@@ -2,7 +2,7 @@
   "name": "pay-previous-path",
   "version": "1.0.0",
   "dependencies": {
-    "@openzeppelin/contracts": "^2.3.0",
+    "@openzeppelin/contracts": "^4.7.2",
     "truffle-hdwallet-provider": "^1.0.17"
   }
 }
