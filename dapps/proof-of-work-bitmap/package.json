@@ -1,6 +1,6 @@
 {
   "name": "proof-of-work-bitmap",
   "dependencies": {
-    "truffle-hdwallet-provider": "^1.0.14"
+    "truffle-hdwallet-provider": "^1.0.17"
   }
 }
