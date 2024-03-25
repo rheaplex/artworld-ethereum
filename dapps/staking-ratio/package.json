@@ -2,6 +2,6 @@
   "name": "staking-ratio",
   "dependencies": {
     "@openzeppelin/contracts": "^2.3.0",
-    "@truffle/hdwallet-provider": "^1.0.28"
+    "@truffle/hdwallet-provider": "^1.7.0"
   }
 }
